@@ -1,0 +1,142 @@
+{% extends '../../layout//base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% block content %}
+<div class="container-fluid h-100">
+  <div class="row h-100">
+    {% include '../../layout/sidebar.html' %}
+    <div class="col-md-9">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+          <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+          <li class="breadcrumb-item"><a href="#" class="text-reset">Información personal</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Datos curriculares</li>
+        </ol>
+      </nav>
+      <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+      <h2 class="h6 text-uppercase">1. Información personal <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">II. Datos curriculares</span></h2>
+      <p class="text-muted text-sm mb-3">Grado máximo de escolaridad (en caso de contar con posgrado, se declarará la información desde la licenciatura)</p>
+
+      {% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Grado acádemico obtenido" titulo_dos="Institución educativa" titulo_tres="Carrera" agregar=agregar editar_id=editar_id %}
+
+      {% if agregar %}
+        <form action="{% url 'declaracion:datos-curriculares-agregar' folio_declaracion %}" method="post" novalidate>
+      {% elif editar_id %}
+        <form action="{% url 'declaracion:datos-curriculares-editar' folio_declaracion editar_id %}" method="post" novalidate>
+      {% else %}
+        <form action="{% url 'declaracion:datos-curriculares' folio_declaracion %}" method="post" novalidate>
+      {% endif %}
+
+        {% csrf_token %}
+
+        <div class="row">
+          <div class="col-md-5">
+            <label for="ente-publico" class="label-secondary">Grado académico obtenido<span class="text-danger text-lg font-weight-bold">*</span></label>
+            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nivel máximo de estudios.">
+              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+            </button>
+            {% bootstrap_field datos_curriculares_form.cat_grados_academicos  show_label=False%}
+          </div>
+          <div class="col-md-7">
+            <label for="ente-publico" class="label-secondary">Institución educativa<span class="text-danger text-lg font-weight-bold">*</span></label>
+            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nombre de la Institución educativa.">
+              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+            </button>
+            {% bootstrap_field datos_curriculares_form.institucion_educativa  show_label=False placeholder="Institución educativa" %}
+          </div>
+          <div class="col-md-5">
+            <div class="row">
+              <div class="col-12">
+                <label for="ente-publico" class="label-secondary">Ubicación de la institución educativa<span class="text-danger text-lg font-weight-bold">*</span></label>
+                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="País de ubicación de la Institución educativa.">
+                  <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                </button>
+                {%include  'layout/nacionalidad.html' with field=datos_curriculares_form.cat_pais show_label=False %}
+              </div>
+
+            </div>
+          </div>
+          <div class="col-md-7">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="ente-publico" class="label-secondary">Entidad federativa </label>
+                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Estado de ubicación de la Institución educativa.">
+                  <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                </button>
+                {% bootstrap_field datos_curriculares_form.cat_entidades_federativas  field_class='entidad'  show_label=False%}
+              </div>
+              <div class="col-md-6">
+                <label for="ente-publico" class="label-secondary">Municipio</label>
+                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Municipio de ubicación de la Institución educativa.">
+                  <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                </button>
+                {% bootstrap_field datos_curriculares_form.municipio  show_label=False placeholder="Municipio" %}
+              </div>
+            </div>
+          </div>
+          <div class="col-12">
+            <label for="ente-publico" class="label-secondary">Carrera o área de conocimiento</label>
+            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nombre de la carrera o estudio realizado.">
+              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+            </button>
+            {% bootstrap_field datos_curriculares_form.carrera_o_area  show_label=False placeholder="Carrera o área de conocimiento" %}
+          </div>
+          <div class="col-md-5">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="ente-publico" class="label-secondary">Estatus<span class="text-danger text-lg font-weight-bold">*</span></label>
+                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar el estatus en el que se encuentran sus estudios.">
+                  <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                </button>
+                {% bootstrap_field datos_curriculares_form.cat_estatus_estudios  show_label=False%}
+              </div>
+              <div class="col-md-6">
+                <label for="ente-publico" class="label-secondary">Año de conclusión</label>
+                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Año en el que finalizo sus estudios.">
+                  <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                </button>
+                {% bootstrap_field datos_curriculares_form.conclusion  show_label=False placeholder="Año de conclusión" %}
+
+              </div>
+            </div>
+          </div>
+          <div class="col-auto">
+            <label for="ente-publico" class="label-secondary">Documento obtenido:</label>
+            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccione el tipo de documento obtenido.">
+              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+            </button>
+            <div class="row">
+              {% include 'layout/radiobuttons.html' with field_select=datos_curriculares_form.fields.cat_documentos_obtenidos  field_name=datos_curriculares_form.cat_documentos_obtenidos %}
+            </div>
+          </div>
+          <div class="col-md-12">
+            <label for="ente-publico" class="label-secondary">Cédula profesional (Para licenciaturas y posgrados en México):</label>
+            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Número de Cédula Profesional.">
+              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+            </button>
+            {% bootstrap_field datos_curriculares_form.cedula_profesional  show_label=False placeholder="Cédula profesional (Para licenciaturas y posgrados en México)" %}
+
+          </div>
+          <div class="col-12">
+            <label for="ente-publico" class="label-secondary">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Observaciones y Comentarios">
+              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+            </button>
+            {% bootstrap_field observaciones_form.observacion  show_label=False placeholder="Observaciones y comentarios" %}
+          </div>
+
+        </div>
+          <div class="text-right">
+              <button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-success font-weight-semibold text-uppercase">
+                  Guargar y agregar grado académico <img src="{% static 'src/img/plus.svg' %}" alt="agregar" class="svg">
+              </button>
+          </div>
+          {% include 'layout/guardar.html' %}
+        <div class="row"><div class="col-12"><br/></div></div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% include '../../layout//footer.html' %}

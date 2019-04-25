@@ -1,0 +1,89 @@
+{% load static %}
+{% include 'layout/headertop.html' %}
+<section class="container">
+  <div class="row row-md mt-md-7 mb-7 py-7">
+    <div class="col-lg-6">
+      <h1 class="text-gray text-xl font-weight-medium text-uppercase line-height-md title-mobile text-mobile">Bienvenido al sistema <br> de declaraciones de <br> la <span class="text-primary-light font-weight-semibold">Ciudad de México</span></h1>
+      <p class="txt-Servidor mb-0">Si eres servidor público de la Ciudad de México aquí <br> puedes realizar tus declaraciones.</p>
+    </div>
+    <div class="col-lg-6 border-left-lg">
+      <h2 class="Ingresa-al-sistema mt-2 mb-0 text-uppercase">Ingresa al sistema</h2>
+      <p class="Escribe-tus-datos-por-favor">Escribe tus datos por favor</p>
+      {% if msg %}
+        <div class="alert alert-success" role="alert">
+          <h4 class="alert-heading">¡Se han guardado tus datos!</h4>
+          <p>Revisa tu bandeja de entrada y sigue las  instrucciones para activar tu usuario.</p>
+          <hr>
+          <p class="mb-0">Da clic al enlace enviado a tu correo.</p>
+        </div>
+      {% endif %}
+      <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group valida_rfc">
+          <label for="Usuario" class="mb-1">RFC:</label>
+          <input name="username" type="text" class="form-control {% if  form.username.errors  %}is-invalid{% endif %}" id="Usuario" aria-describedby="emailHelp" placeholder="R.F.C." autocomplete="username" required>
+          {% if  form.username.errors  %}
+            <div class="invalid-feedback was-validated">
+              {{  form.username.errors     }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group">
+          <label for="password" class="mb-1">Contraseña</label>
+          <input name="password" type="password" class="form-control inputForm {% if  form.password.errors  %}is-invalid{% endif %}" id="password" placeholder="Contraseña" autocomplete="current-password" required>
+        </div>
+        {% if  form.password.errors  %}
+          <div class="invalid-feedback was-validated">
+            {{  form.password.errors     }}
+          </div>
+        {% endif %}
+        <div class="mb-3">
+          <button type="submit" class="btn btn-success-lighter text-uppercase font-weight-semibold">Ingresar</button>
+        </div>
+        <a href="#ventana-modal" class="text-primary-light text-md font-weight-semibold d-inline-block mb-2" data-toggle="modal" data-target="#ventana-modal">¿Olvidaste tu contraseña?</a>
+        <p class="text-md font-weight-semibold text-gray-dark mb-0">¿Aún no tienes cuenta? <a href="{% url 'declaracion:nuevo' %}" class="text-primary-light">Crear cuenta</a></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Ventana modal para recuperar la contraseña con RFC como Homoclave  -->
+<div class="modal fade" id="ventana-modal" tabindex="-1" role="dialog" aria-labelledby="lost-password-label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close text-base" data-dismiss="modal" aria-label="Close">CERRAR
+          <img src="{% static 'src/img/close.svg' %}" alt="Cerrar" class="svg">
+        </button>
+        <h3 class="modal-title mt-5 mb-3 text-lg text-uppercase font-weight-normal" id="lost-password-label">Para recuperar tu contraseña escribe tu <span class="text-black">RFC con homoclave</span> por favor</h3>
+        <form action="{% url 'password_reset' %}" method="post" id="form_reset" class="mb-2">
+          {% csrf_token %}
+          <div class="form-group valida_rfc " id="rec-rfc">
+            <input type="text" class="form-control bg-transparent" id="id_rfc_rs" name="rfc" placeholder="RFC con homoclave" required autofocus>
+          </div>
+        </form>
+        <p class="text-success-lighter text-md">Si desconoces tu RFC o necesitas cambiarlo ponte en contacto con el enlace de tu ente público.</p>
+        <div class="text-right">
+          <button type="button" class="btn btn-primary font-weight-semibold" id="recuperar">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ventana modal despues de que el usuario ya escribio el RFC como homoclave  -->
+<div class="modal fade" id="modal-recuperar-contrasena" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <button type="button" class="close text-base" data-dismiss="modal" aria-label="Close">CERRAR
+          <img src="{% static 'src/img/close.svg' %}" alt="Cerrar" class="svg">
+        </button>
+        <h3 class="text-primary text-lg text-uppercase mt-7 mb-3">¡Muchas gracias!</h3>
+        <p class="text-lg w-75 mb-7 mx-auto">Hemos envíado a tu correo las instrucciones para reestablecer la contraseña.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% include 'layout/footer.html' %}

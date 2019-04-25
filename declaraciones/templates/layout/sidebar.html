@@ -1,0 +1,79 @@
+{% load mptt_tags %}
+{% load secciones %}
+{% load static %}
+<div class="col-md-3 p-0">
+  <div class="accordion sidebar" id="sidebar-accordion">
+    {% current_time as secciones %}
+    {% for seccion in secciones %}
+      <div class="card">
+        <button class="btn btn-link position-relative text-left p-0 sidebar__trigger collapsed" id="node-{{ seccion.id }}" type="button" data-toggle="collapse" data-target="#node-{{ seccion.id }}-Target" aria-expanded="false" aria-controls="node-{{ seccion.id }}-Target">
+          <div class="text-uppercase sidebar__heading none">{{ seccion.seccion }}
+           {% get_status seccion folio_declaracion as status%}
+                                  <div class="p-0 float-right icon-status {{ status.0 }}" data-toggle="tooltip"  title="{{ status.1 }}"  data-placement="left">
+                        </div>
+          </div>
+        </button>        
+        
+        {% with "not-show" as show %}          
+          {% show_menu request.path seccion.seccion as show %}
+          <div id="node-{{ seccion.id }}-Target" class="collapse sidebar__content {{show}}" aria-labelledby="node-{{ seccion.id }}" data-parent="#sidebar-accordion">
+            {% for children in seccion.get_children %}
+              {% if folio_declaracion %}
+                {% with "declaracion:"|add:children.url as url %}
+                  {% if children.parametro != ''  %}
+                    {% get_status children folio_declaracion as status %}
+                    <a href="{% url url folio_declaracion children.parametro %}" class="sidebar__link {{ status.0 }}"><span></span> {{children.seccion}}
+                        <div class="p-0 float-right icon-status {{ status.0 }}" data-toggle="tooltip"   data-placement="left" title="{{ status.1 }}">
+                        </div>
+                    </a>
+                  {% else %}
+                    {% get_status children folio_declaracion as status%}
+                    <a href="{% url url folio_declaracion %}" class="sidebar__link "><span></span> {{children.seccion}}
+                            <div class="p-0 float-right icon-status {{ status.0 }}" data-toggle="tooltip"  data-placement="left" title="{{ status.1 }}">
+
+                            </div></a>
+                  {% endif %}
+                {% endwith %}
+              {% else %}
+                <a href="#" class="sidebar__link"><span></span> {{children.seccion}}</a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endwith %} 
+    {% endfor %}
+    <div class="card">
+      <button class="btn btn-link position-relative text-left p-0 sidebar__trigger collapsed" id="taxReturn" type="button" data-toggle="collapse" data-target="#taxReturnTarget" aria-expanded="false" aria-controls="taxReturnTarget">
+        <div class="text-uppercase sidebar__heading success">Declaración fiscal</div>
+      </button>
+      <div id="taxReturnTarget" class="collapse sidebar__content" aria-labelledby="taxReturn" data-parent="#sidebar-accordion">
+        <a href="#" class="sidebar__link"><span></span> Lorem, ipsum dolor.</a>
+        <a href="#" class="sidebar__link"><span></span> Animi, repellendus illo?</a>
+        <a href="#" class="sidebar__link"><span></span> Accusamus, ipsa aut.</a>
+        <a href="#" class="sidebar__link"><span></span> Sit, veniam voluptate.</a>
+        <a href="#" class="sidebar__link"><span></span> Lorem, ipsum dolor.</a>
+        <a href="#" class="sidebar__link"><span></span> Commodi, distinctio dolore.</a>
+        <a href="#" class="sidebar__link observations">Observaciones de la declaración fiscal</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body bg-transparent border-0" id="progress_card">
+        <h6 id="progress_title" class="text-uppercase text-md">Avance de tu declaración</h6>
+        <div class="progress" id="progress_bar">
+          <div class="progress-bar bg-warning progress_card" role="progressbar" style="width: {{ avance }}%;" aria-valuenow="{{ avance }}" aria-valuemin="0" aria-valuemax="100">{{ avance }}%</div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-body bg-transparent border-0" id="progress_card">
+        <div style="width: 100%; height: 38px; border-radius: 4px; background-color: #ff9914; text-align: center; color: white; text-align: center; vertical-align: middle; line-height: 40px;">
+          {% if folio_declaracion %}
+            <a href="{% url 'declaracion:confirmacion-informacion-personal' folio_declaracion %}" style="color:white">FIRMAR MI DECLARACIÓN</a>
+          {% else %}
+            <a href="#" style="color:white">FIRMAR MI DECLARACIÓN</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

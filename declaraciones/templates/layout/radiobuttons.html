@@ -1,0 +1,38 @@
+{% load bootstrap4 %}
+{% load static %}
+<div class="row">
+        {% for x  in field_select.queryset %}
+            {% if x.default %}
+                <div class="col-md-{%if col_o %}{{col_o}}{%else%}4{%endif%}">
+                    <div class="custom-control custom-radio radio-secondary mb-2 mt-2">
+                        <div class="form-row">
+                            <div class="col-2 form-group">
+                                <input type="radio" id="id_{{ field_name.html_name }}-{{ x.pk }}" name="{{ field_name.html_name }}" value="{{ x.pk }}"
+                                       class="custom-control-input" {% if field_name.initial == x.pk %} checked{% endif %}  onclick="dui.checkBoxText('{{ field_name.html_name }}','id_{{otro_name.html_name  }}',true);">
+                                <label class="custom-control-label text-rg" for="id_{{ field_name.html_name }}-{{ x.pk }}">{{ x }}
+                                    <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Especificar ">
+                                        <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                    </button>
+                                </label>
+                            </div>
+                            <div class="col-8 form-group ml-3">
+                                    <div class="form-group">
+                                        <input type="text" name="{{ otro_name.html_name }}" maxlength="128" class="form-control" placeholder="Especifique" title="Especifique" id="id_{{ otro_name.html_name }}" {% if field_name.initial != x.pk %} readonly="true" {% endif %}   value="{% if otro_name.initial %}{{ otro_name.initial }}{% endif %}">
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+             <div class="col-md-{%if col %}{{col}}{%else%}4{%endif%}">
+                <div class="custom-control custom-radio radio-secondary mb-2 mt-2">
+                    <input type="radio" id="id_{{ field_name.html_name }}-{{ x.pk }}"
+                           name="{{ field_name.html_name }}"
+                           class="custom-control-input" value="{{ x.pk }}"  {% if field_name.initial == x.pk %} checked{% endif %} onclick="dui.checkBoxText('{{ field_name.html_name }}','id_{{otro_name.html_name  }}',false);">
+                    <label class="custom-control-label text-rg"
+                           for="id_{{ field_name.html_name }}-{{ x.pk }}">{{ x }}</label>
+                </div>
+              </div>
+            {% endif %}
+        {% endfor %}
+</div>

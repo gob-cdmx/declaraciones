@@ -1,0 +1,30 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% block content %}
+<div class="container-fluid h-100">
+  <div class="row h-100">
+    {% include 'layout/sidebar.html' %}
+    <div class="col-md-9 py-4 printable">
+      <h1 class="text-uppercase text-success-lighter text-xl">Confirmación</h1>
+      <p class="text-black text-lg w-75 mb-4">Por favor revisa detenidamente tu información ya que una vez que firmes tu declaración no será posible hacer ningún cambio.</p>
+      <h2 class="text-black text-lg text-uppercase mb-25">Declaración de intereses y patrimonial inicial</h2>
+      <h3 class="text-uppercase text-lg mb-25">1. Información general</h3>
+        {% include "declaracion/admin/frm_informacion_personal.html" %}
+
+        <div class="row mt-6 mb-4">
+          <div class="col-9 text-right">
+            <a href="{% url 'declaracion:confirmacion-intereses' folio_declaracion %}" class="btn btn-link btn-link-gray text-uppercase font-weight-bold">Siguiente <img src="{% static 'src/img/arrow.svg' %}" class="svg"></a>
+          </div>
+        </div>
+        <div class="print-button">
+          <img src="{% static 'src/img/impresora.svg' %}" alt="Imprimir" class="svg imprimir-pagina">
+        </div>
+        <div class="col-md-12 printable-area">
+          DOCUMENTO NO VÁLIDO
+        </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

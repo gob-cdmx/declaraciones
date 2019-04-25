@@ -1,0 +1,26 @@
+.footer {
+  background-color: #2b2b2b;
+  color: $white;
+  font-size: $font-size-xxs;
+  font-weight: $font-weight-lighter;
+
+  &__logo {
+    height: auto;
+    width: 180px;
+  }
+
+  &__heading {
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+  }
+
+  &__icon {
+    height: 15px;
+    object-fit: contain;
+    width: 15px;
+  }
+
+  a {
+    color: inherit;
+  }
+}

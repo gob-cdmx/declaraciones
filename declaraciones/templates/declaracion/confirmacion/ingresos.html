@@ -1,0 +1,30 @@
+{% extends 'layout/base.html' %} {% load static %} {% load bootstrap4 %} {% load flujo_declaracion %} {% block content %}
+<div class="container-fluid h-100">
+  <div class="row h-100">
+    {% include 'layout/sidebar.html' %}
+    <div class="col-md-9 pt-3 printable">
+      <h1 class="text-uppercase text-black h1"><span class="text-primary">Confirmación</span></h1>
+      <p class="text-black">Por favor revisa detenidamente tu información ya que una vez que firmes tu declaración no será posible hacer ningún cambio.</p>
+      <h5 class="text-black">DECLARACIÓN DE INTERESES Y PATRIMONIAL INICIAL</h5>
+      <h2 class="h6 text-uppercase">3. INGRESOS</h2> {% include 'declaracion/admin/frm_ingresos.html' %}
+      <div class="mt-3 d-flex justify-content-center">
+        <a href="{% url 'declaracion:confirmacion-intereses' folio_declaracion %}" class="btn btn-link btn-link-gray text-uppercase font-weight-bold">
+          <img src="{% static 'src/img/arrow.svg' %}" class="svg turned"> Anterior
+        </a>
+        <a href="{% url 'declaracion:confirmacion-activos' folio_declaracion %}" class="btn btn-link btn-link-gray text-uppercase font-weight-bold">
+          Siguiente <img src="{% static 'src/img/arrow.svg' %}" class="svg">
+        </a>
+      </div>
+      <div class="print-button">
+        <img src="{% static 'src/img/impresora.svg' %}" alt="Imprimir" class="svg imprimir-pagina">
+      </div>
+      <div class="col-md-12 printable-area">
+        DOCUMENTO NO VÁLIDO
+      </div>
+      <div class="row">
+        <div class="col-12"><br/></div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

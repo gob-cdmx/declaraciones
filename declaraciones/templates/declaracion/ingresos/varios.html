@@ -1,0 +1,241 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            {% include 'layout/sidebar.html' %}
+            <div class="col-md-9">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+                        <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+                        <li class="breadcrumb-item"><a href="#" class="text-reset">INGRESO</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Sueldos y salarios por otros empleos</li>
+                    </ol>
+                </nav>
+                <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+                <h2 class="h6 mb-3 text-uppercase">3. INGRESO <span class="text-black mx-1">|</span> <span
+                        class="text-primary font-weight-light">{{ nombre }}</span></h2>
+
+
+
+                {% if agregar %}
+                  <form action="{% url 'declaracion:ingresos-varios-agregar' folio_declaracion tipo %}" method="post" novalidate>
+                {% elif editar_id %}
+                  <form action="{% url 'declaracion:ingresos-varios-editar' folio_declaracion tipo editar_id %}" method="post" novalidate>
+                {% else %}
+                  <form action="{% url 'declaracion:ingresos-varios' folio_declaracion tipo %}" method="post" novalidate>
+                {% endif %}
+                    {% csrf_token %}
+                    <div class="row">
+                      {% include 'layout/no_aplica.html' %}
+                    </div>
+                    {% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Nombre, denominación o razón social de la que se recibe el ingreso" titulo_dos="Tipo de actividad o servicio que produjo el ingreso" titulo_tres="Sector/Industria" agregar=agregar editar_id=editar_id %}
+                    <div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+                         <div class="col-12">
+                            {% include 'layout/persona.html' with form=info_personal_var_form title="Tipo de persona de la que se recibe el ingreso " label=" de la que se recibe el ingreso." tipo=True nombre=False %}
+                         </div>
+
+
+
+                        <div class="col-6">
+                            <div class="form-group">
+                                {% bootstrap_label "RFC <small class='text-help text-primary'>(si aplica)</small>:" label_for="rfc" label_class="label-secondary" %}
+                                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                                    <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                </button>
+                                {% bootstrap_field info_personal_var_form.rfc placeholder="RFC - Homoclave (si aplica):"  field_class='valida_rfc'  show_label=False%}
+                            </div>
+                        </div>
+                        <div class="col-6">
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label class="label-secondary">Sector/Industria<span class="text-danger text-lg font-weight-bold">*</span> </label>
+                                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar tipo de sector o industria.">
+                                    <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                </button>
+                                {% include 'layout/radiobuttons.html' with field_select=info_personal_var_form.fields.cat_sectores_industria field_name=info_personal_var_form.cat_sectores_industria otro_name=info_personal_var_form.otro_sector %}
+                            </div>
+
+
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label class="label-secondary">Tipo de actividad o servicio que produjo el ingreso<span class="text-danger text-lg font-weight-bold">*</span></label>
+                                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar tipo de actividad.">
+                                    <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                </button>
+
+                                {% include 'layout/radiobuttons.html' with field_select=form.fields.cat_tipos_actividad field_name=form.cat_tipos_actividad otro_name=form.otra_actividad %}
+
+
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="ingreso-bruto-anual" class="text-muted text-sm mb-0">Descripción de la actividad que produce el ingreso</label><br>
+                                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Descripción de la actividad que produce el ingreso.">
+                                    <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                </button>
+                                {% bootstrap_field form.descripcion_actividad placeholder="Descripción de la actividad que produce el ingreso"   show_label=False%}
+
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="label-secondary mb-0">Domicilio</label>
+                            <p class="text-sm font-weight-light text-primary mb-2">Lugar en el que se encuentra:</p>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-row">
+                                {% include 'declaracion/direccion.html' with form=domicilio_form pais=True %}
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+
+                                {% bootstrap_label "Monto<span class='text-danger text-lg font-weight-bold'>*</span>:" label_for="ingreso_bruto_anual" label_class="label-secondary" %}
+                                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Ingreso anual del Declarante sin impuestos ni deducciones.">
+                                    <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                </button>
+                                {% bootstrap_field form.ingreso_bruto_anual placeholder="Monto"   show_label=False%}
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                {% bootstrap_label "Moneda<span class='text-danger text-lg font-weight-bold'>*</span>:" label_for="cat_monedas" label_class="label-secondary" %}
+                                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Ingreso anual del Declarante sin impuestos ni deducciones.">
+                                    <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                </button>
+                                {% bootstrap_field form.cat_monedas placeholder="Moneda" field_class="moneda" show_label=False%}
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row pb-4">
+                                <div class="col-12">
+                                    <label for="unidad-temporal" class="text-muted text-sm mb-0">Unidad temporal<span class="text-danger text-lg font-weight-bold">*</span></label>
+                                    <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"
+                                            title="Medición de actividad.">
+                                        <img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <div class="custom-control custom-radio custom-control-inline radio-secondary ">
+                                        <input {% if not form.es_transaccion.initial %} checked {% endif %} type="radio" id="id-es-unica-f" value="false" name="es-unica"
+                                               class="custom-control-input" onchange="dui.radioUnica('id-frecuencia-container')">
+                                        <label class="custom-control-label text-rg" for="id-es-unica-f">Duración
+                                            Frecuencia</label>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="custom-control custom-radio custom-control-inline radio-secondary">
+                                        <input {% if form.es_transaccion.initial %} checked {% endif %} type="radio" id="id-es-unica-m" value="true" name="es-unica"
+                                               class="custom-control-input " onchange="dui.radioUnica('id-unica-container')">
+                                        <label class="custom-control-label text-rg" for="id-es-unica-m">Transacción Única</label>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-12" id="id-frecuencia-container" style="display: {% if form.es_transaccion.initial %} none {% endif %};">
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <div class="form-group">
+
+                                                <input type="checkbox" class=""
+                                                       id="id_ingresos_varios-ut_dias" name="ingresos_varios-ut_dias">
+                                                <label class="form-check-label text-rg" for="id_ingresos_varios-ut_dias">Días</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group ">
+                                                <input type="checkbox" class=""
+                                                       id="ingresos_varios-ut_meses">
+                                                <label class="form-check-label text-rg"
+                                                       for="ingresos_varios-ut_meses">Meses</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="form-group">
+                                                <input type="checkbox" class=""
+                                                       id="ingresos_varios-ut_anual">
+                                                <label class="form-check-label text-rg"
+                                                       for="ingresos_varios-ut_anual">Años</label>
+                                            </div>
+                                        </div>
+
+                                         <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="ingreso-bruto-anual" class="text-muted text-sm mb-0">Duración/frecuencia total</label><br>
+                                                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Medición Total.">
+                                                    <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                                </button>
+                                                <label for="moneda" class="text-muted text-sm mb-0"> Indicar el número de días,
+                                                    meses y/o años que abarcó la actividad</label>
+                                                <div class="form-row">
+                                                    <div class="col-4 form-group">
+                                                        {% bootstrap_field form.duracion_dias  show_label=False placeholder="Duración días" %}
+
+                                                    </div>
+                                                    <div class="col-4 form-group">
+                                                        {% bootstrap_field form.duracion_meses  show_label=False placeholder="Duración meses" %}
+                                                    </div>
+                                                    <div class="col-4 form-group">
+                                                        {% bootstrap_field form.duracion_anual  show_label=False placeholder="Duración anual" %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="col-12" id="id-unica-container" style="display: {% if not form.es_transaccion.initial %} none {% endif %};">
+                                    <label for="observaciones" class="label-secondary">Fecha de la transacción</label>
+                                    <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Fecha de la transacción.">
+                                        <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                    </button><br/>
+                                    {% bootstrap_field form.es_transaccion    show_label=False%}
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="observaciones" class="label-secondary">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+                                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Detallar información de sueldos y salarios de otros empleos.">
+                                    <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                </button>
+                                {% bootstrap_field observaciones_form.observacion    show_label=False placeholder="Observaciones y comentarios" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-6 row-form" style="{% if checked %}display: none;{% endif %}">
+                        <div class="col-9"></div>
+                        <div class="col-3 text-right">
+                            <button  type="submit" name="accion" value="guardar_otro"
+                                    class="btn btn-link btn-link-plus text-primary font-weight-semibold text-uppercase">
+                                Guardar y agregar otro {{ siguiente }}
+                                <img src="{% static 'src/img/plus.svg'%}" alt="agregar" class="svg">
+                            </button>
+                        </div>
+                    </div>
+                    {% include 'layout/guardar.html' %}
+                    <div class="row"><div class="col-12"><br/></div></div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% include 'layout/footer.html' %}

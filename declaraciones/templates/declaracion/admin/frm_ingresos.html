@@ -1,0 +1,599 @@
+{% load no_aplica %}
+      <div class="row mb-2">
+        <div class="col-12 mb-2">
+          <h2 class="h6 text-uppercase mb-3"><span class="text-primary font-weight-light">I. SUELDOS Y SALARIOS PÚBLICOS</span></h2>
+          <div class="p_opciones">
+            <span>Ente público</span>
+            <span class="text-black_opciones">{{ declaracion.sueldospublicos_set.first.cat_entes_publicos }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>RFC del ente público</span>
+            <span class="text-black_opciones">{{ declaracion.sueldospublicos_set.first.rfc }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Ingreso bruto anual recibido por el encargo público</span>
+            <span class="text-black_opciones">{{ declaracion.sueldospublicos_set.first.ingreso_bruto_anual }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Moneda</span>
+            <span class="text-black_opciones">{{ declaracion.sueldospublicos_set.first.cat_monedas }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Unidad temporal</span>
+            <span class="text-black_opciones">{{ declaracion.sueldospublicos_set.first.es_transaccion|yesno:"Transacción Única,Duración Frecuencia" }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Duración/frecuencia total</span>
+            <span class="text-black_opciones">
+              Días: {{ declaracion.sueldospublicos_set.first.duracion_dias }}
+              Meses: {{ declaracion.sueldospublicos_set.first.duracion_meses }}
+              Años: {{ declaracion.sueldospublicos_set.first.duracion_anual }}
+            </span>
+          </div>
+          <div class="p_opciones">
+            <span>Observaciones</span>
+            <span class="text-black_opciones">{{ declaracion.sueldospublicos_set.first.observaciones }}</span>
+          </div>
+
+        </div>
+      </div>
+
+      <hr>
+
+
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase mb-2"><span class="text-primary font-weight-light">II. SUELDOS Y SALARIOS POR OTROS EMPLEOS</span></p>
+        </div>
+      </div>
+      {% no_aplica declaracion.folio 'ingresos-varios' '0' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for sueldo in sueldos %}
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase">SUELDO O SALARIO POR OTRO EMPLEO {{ forloop.counter }}</p>
+        </div>
+        <div class="col-6 mb-2">
+          <div class="p_opciones">
+            <span>Nombre denominación o razón social</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.nombre_completo }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>RFC</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.rfc }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Tipo de actividad o servicio que produjo el ingreso</span>
+            <span class="text-black_opciones">{{ sueldo.tipo_actividad }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Ingreso bruto anual recibido por la actividad</span>
+            <span class="text-black_opciones">{{ sueldo.ingreso_bruto_anual }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Moneda</span>
+            <span class="text-black_opciones">{{ sueldo.cat_monedas }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Unidad temporal</span>
+            <span class="text-black_opciones">{{ sueldo.es_transaccion|yesno:"Transacción Única,Duración Frecuencia"}}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Duración/frecuencia total</span>
+            <span class="text-black_opciones">
+              Días: {{ sueldo.duracion_dias }}
+              Meses: {{ sueldo.duracion_meses }}
+              Años: {{ sueldo.duracion_anual }}
+            </span>
+          </div>
+          <div class="p_opciones">
+            <span>Observaciones</span>
+            <span class="text-black_opciones">{{ sueldo.observaciones }}</span>
+          </div>
+        </div>
+
+        <div class="col-6 mb-2">
+          {% include 'declaracion/admin/frm_domicilio.html' with domicilio=sueldo.domicilio %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr>
+
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase mb-2"><span class="text-primary font-weight-light">III. ACTIVIDAD PROFESIONAL</span></p>
+        </div>
+      </div>
+      {% no_aplica declaracion.folio 'ingresos-varios' '1' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for sueldo in profesional %}
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase">ACTIVIDAD PROFESIONAL {{ forloop.counter }}</p>
+        </div>
+        <div class="col-6 mb-2">
+          <div class="p_opciones">
+            <span>Nombre denominación o razón social</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.nombre_completo }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>RFC</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.rfc }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Tipo de actividad o servicio que produjo el ingreso</span>
+            <span class="text-black_opciones">{{ sueldo.tipo_actividad }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Ingreso bruto anual recibido por la actividad</span>
+            <span class="text-black_opciones">{{ sueldo.ingreso_bruto_anual }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Moneda</span>
+            <span class="text-black_opciones">{{ sueldo.cat_monedas }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Unidad temporal</span>
+            <span class="text-black_opciones">{{ sueldo.es_transaccion|yesno:"Transacción Única,Duración Frecuencia"}}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Duración/frecuencia total</span>
+            <span class="text-black_opciones">
+              Días: {{ sueldo.duracion_dias }}
+              Meses: {{ sueldo.duracion_meses }}
+              Años: {{ sueldo.duracion_anual }}
+            </span>
+          </div>
+          <div class="p_opciones">
+            <span>Observaciones</span>
+            <span class="text-black_opciones">{{ sueldo.observaciones }}</span>
+          </div>
+        </div>
+
+        <div class="col-6 mb-2">
+          {% include 'declaracion/admin/frm_domicilio.html' with domicilio=sueldo.domicilio %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr>
+
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase mb-2"><span class="text-primary font-weight-light">IV. ACTIVIDAD EMPRESARIAL</span></p>
+        </div>
+      </div>
+      {% no_aplica declaracion.folio 'ingresos-varios' '2' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for sueldo in empresarial %}
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase">ACTIVIDAD EMPRESARIAL {{ forloop.counter }}</p>
+        </div>
+        <div class="col-6 mb-2">
+          <div class="p_opciones">
+            <span>Nombre denominación o razón social</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.nombre_completo }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>RFC</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.rfc }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Tipo de actividad o servicio que produjo el ingreso</span>
+            <span class="text-black_opciones">{{ sueldo.tipo_actividad }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Ingreso bruto anual recibido por la actividad</span>
+            <span class="text-black_opciones">{{ sueldo.ingreso_bruto_anual }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Moneda</span>
+            <span class="text-black_opciones">{{ sueldo.cat_monedas }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Unidad temporal</span>
+            <span class="text-black_opciones">{{ sueldo.es_transaccion|yesno:"Transacción Única,Duración Frecuencia"}}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Duración/frecuencia total</span>
+            <span class="text-black_opciones">
+              Días: {{ sueldo.duracion_dias }}
+              Meses: {{ sueldo.duracion_meses }}
+              Años: {{ sueldo.duracion_anual }}
+            </span>
+          </div>
+          <div class="p_opciones">
+            <span>Observaciones</span>
+            <span class="text-black_opciones">{{ sueldo.observaciones }}</span>
+          </div>
+        </div>
+
+        <div class="col-6 mb-2">
+          {% include 'declaracion/admin/frm_domicilio.html' with domicilio=sueldo.domicilio %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr>
+
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase mb-2"><span class="text-primary font-weight-light">V. ACTIVIDAD ECONÓMICA MENOR</span></p>
+        </div>
+      </div>
+      {% no_aplica declaracion.folio 'ingresos-varios' '3' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for sueldo in menor %}
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase">ACTIVIDAD ECONÓMICA MENOR {{ forloop.counter }}</p>
+        </div>
+        <div class="col-6 mb-2">
+          <div class="p_opciones">
+            <span>Nombre denominación o razón social</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.nombre_completo }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>RFC</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.rfc }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Tipo de actividad o servicio que produjo el ingreso</span>
+            <span class="text-black_opciones">{{ sueldo.tipo_actividad }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Ingreso bruto anual recibido por la actividad</span>
+            <span class="text-black_opciones">{{ sueldo.ingreso_bruto_anual }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Moneda</span>
+            <span class="text-black_opciones">{{ sueldo.cat_monedas }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Unidad temporal</span>
+            <span class="text-black_opciones">{{ sueldo.es_transaccion|yesno:"Transacción Única,Duración Frecuencia"}}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Duración/frecuencia total</span>
+            <span class="text-black_opciones">
+              Días: {{ sueldo.duracion_dias }}
+              Meses: {{ sueldo.duracion_meses }}
+              Años: {{ sueldo.duracion_anual }}
+            </span>
+          </div>
+          <div class="p_opciones">
+            <span>Observaciones</span>
+            <span class="text-black_opciones">{{ sueldo.observaciones }}</span>
+          </div>
+        </div>
+
+        <div class="col-6 mb-2">
+          {% include 'declaracion/admin/frm_domicilio.html' with domicilio=sueldo.domicilio %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr>
+
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase mb-2"><span class="text-primary font-weight-light">VI. ARRENDAMIENTO</span></p>
+        </div>
+      </div>
+      {% no_aplica declaracion.folio 'ingresos-varios' '4' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for sueldo in arrendamiento %}
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase">ARRENDAMIENTO {{ forloop.counter }}</p>
+        </div>
+        <div class="col-6 mb-2">
+          <div class="p_opciones">
+            <span>Nombre denominación o razón social</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.nombre_completo }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>RFC</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.rfc }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Tipo de actividad o servicio que produjo el ingreso</span>
+            <span class="text-black_opciones">{{ sueldo.tipo_actividad }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Ingreso bruto anual recibido por la actividad</span>
+            <span class="text-black_opciones">{{ sueldo.ingreso_bruto_anual }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Moneda</span>
+            <span class="text-black_opciones">{{ sueldo.cat_monedas }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Unidad temporal</span>
+            <span class="text-black_opciones">{{ sueldo.es_transaccion|yesno:"Transacción Única,Duración Frecuencia"}}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Duración/frecuencia total</span>
+            <span class="text-black_opciones">
+              Días: {{ sueldo.duracion_dias }}
+              Meses: {{ sueldo.duracion_meses }}
+              Años: {{ sueldo.duracion_anual }}
+            </span>
+          </div>
+          <div class="p_opciones">
+            <span>Observaciones</span>
+            <span class="text-black_opciones">{{ sueldo.observaciones }}</span>
+          </div>
+        </div>
+
+        <div class="col-6 mb-2">
+          {% include 'declaracion/admin/frm_domicilio.html' with domicilio=sueldo.domicilio %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr>
+
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase mb-2"><span class="text-primary font-weight-light">VII. INTERESES</span></p>
+        </div>
+      </div>
+      {% no_aplica declaracion.folio 'ingresos-varios' '5' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for sueldo in intereses %}
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase">INTERESES {{ forloop.counter }}</p>
+        </div>
+        <div class="col-6 mb-2">
+          <div class="p_opciones">
+            <span>Nombre denominación o razón social</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.nombre_completo }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>RFC</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.rfc }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Tipo de actividad o servicio que produjo el ingreso</span>
+            <span class="text-black_opciones">{{ sueldo.tipo_actividad }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Ingreso bruto anual recibido por la actividad</span>
+            <span class="text-black_opciones">{{ sueldo.ingreso_bruto_anual }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Moneda</span>
+            <span class="text-black_opciones">{{ sueldo.cat_monedas }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Unidad temporal</span>
+            <span class="text-black_opciones">{{ sueldo.es_transaccion|yesno:"Transacción Única,Duración Frecuencia"}}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Duración/frecuencia total</span>
+            <span class="text-black_opciones">
+              Días: {{ sueldo.duracion_dias }}
+              Meses: {{ sueldo.duracion_meses }}
+              Años: {{ sueldo.duracion_anual }}
+            </span>
+          </div>
+          <div class="p_opciones">
+            <span>Observaciones</span>
+            <span class="text-black_opciones">{{ sueldo.observaciones }}</span>
+          </div>
+        </div>
+
+        <div class="col-6 mb-2">
+          {% include 'declaracion/admin/frm_domicilio.html' with domicilio=sueldo.domicilio %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr>
+
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase mb-2"><span class="text-primary font-weight-light">VIII. PREMIOS</span></p>
+        </div>
+      </div>
+      {% no_aplica declaracion.folio 'ingresos-varios' '6' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for sueldo in premios %}
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase">PREMIOS {{ forloop.counter }}</p>
+        </div>
+        <div class="col-6 mb-2">
+          <div class="p_opciones">
+            <span>Nombre denominación o razón social</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.nombre_completo }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>RFC</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.rfc }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Tipo de actividad o servicio que produjo el ingreso</span>
+            <span class="text-black_opciones">{{ sueldo.tipo_actividad }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Ingreso bruto anual recibido por la actividad</span>
+            <span class="text-black_opciones">{{ sueldo.ingreso_bruto_anual }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Moneda</span>
+            <span class="text-black_opciones">{{ sueldo.cat_monedas }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Unidad temporal</span>
+            <span class="text-black_opciones">{{ sueldo.es_transaccion|yesno:"Transacción Única,Duración Frecuencia"}}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Duración/frecuencia total</span>
+            <span class="text-black_opciones">
+              Días: {{ sueldo.duracion_dias }}
+              Meses: {{ sueldo.duracion_meses }}
+              Años: {{ sueldo.duracion_anual }}
+            </span>
+          </div>
+          <div class="p_opciones">
+            <span>Observaciones</span>
+            <span class="text-black_opciones">{{ sueldo.observaciones }}</span>
+          </div>
+        </div>
+
+        <div class="col-6 mb-2">
+          {% include 'declaracion/admin/frm_domicilio.html' with domicilio=sueldo.domicilio %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr>
+
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase mb-2"><span class="text-primary font-weight-light">IX. ENAJENACIÓN DE BIENES</span></p>
+        </div>
+      </div>
+      {% no_aplica declaracion.folio 'ingresos-varios' '7' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for sueldo in bienes %}
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase">ENAJENACIÓN DE BIENES {{ forloop.counter }}</p>
+        </div>
+        <div class="col-6 mb-2">
+          <div class="p_opciones">
+            <span>Nombre denominación o razón social</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.nombre_completo }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>RFC</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.rfc }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Tipo de actividad o servicio que produjo el ingreso</span>
+            <span class="text-black_opciones">{{ sueldo.tipo_actividad }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Ingreso bruto anual recibido por la actividad</span>
+            <span class="text-black_opciones">{{ sueldo.ingreso_bruto_anual }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Moneda</span>
+            <span class="text-black_opciones">{{ sueldo.cat_monedas }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Unidad temporal</span>
+            <span class="text-black_opciones">{{ sueldo.es_transaccion|yesno:"Transacción Única,Duración Frecuencia"}}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Duración/frecuencia total</span>
+            <span class="text-black_opciones">
+              Días: {{ sueldo.duracion_dias }}
+              Meses: {{ sueldo.duracion_meses }}
+              Años: {{ sueldo.duracion_anual }}
+            </span>
+          </div>
+          <div class="p_opciones">
+            <span>Observaciones</span>
+            <span class="text-black_opciones">{{ sueldo.observaciones }}</span>
+          </div>
+        </div>
+
+        <div class="col-6 mb-2">
+          {% include 'declaracion/admin/frm_domicilio.html' with domicilio=sueldo.domicilio %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr>
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase mb-2"><span class="text-primary font-weight-light">X. OTROS INGRESOS</span></p>
+        </div>
+      </div>
+      {% no_aplica declaracion.folio 'ingresos-varios' '8' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for sueldo in otros %}
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase">OTROS INGRESOS {{ forloop.counter }}</p>
+        </div>
+        <div class="col-6 mb-2">
+          <div class="p_opciones">
+            <span>Nombre denominación o razón social</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.nombre_completo }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>RFC</span>
+            <span class="text-black_opciones">{{ sueldo.info_personal_var.rfc }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Tipo de actividad o servicio que produjo el ingreso</span>
+            <span class="text-black_opciones">{{ sueldo.tipo_actividad }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Ingreso bruto anual recibido por la actividad</span>
+            <span class="text-black_opciones">{{ sueldo.ingreso_bruto_anual }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Moneda</span>
+            <span class="text-black_opciones">{{ sueldo.cat_monedas }}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Unidad temporal</span>
+            <span class="text-black_opciones">{{ sueldo.es_transaccion|yesno:"Transacción Única,Duración Frecuencia"}}</span>
+          </div>
+          <div class="p_opciones">
+            <span>Duración/frecuencia total</span>
+            <span class="text-black_opciones">
+              Días: {{ sueldo.duracion_dias }}
+              Meses: {{ sueldo.duracion_meses }}
+              Años: {{ sueldo.duracion_anual }}
+            </span>
+          </div>
+          <div class="p_opciones">
+            <span>Observaciones</span>
+            <span class="text-black_opciones">{{ sueldo.observaciones }}</span>
+          </div>
+        </div>
+
+        <div class="col-6 mb-2">
+          {% include 'declaracion/admin/frm_domicilio.html' with domicilio=sueldo.domicilio %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr>
+      <div class="row mb-2">
+        <div class="col-12">
+          <p class="h6 text-uppercase mb-2"><span class="text-primary font-weight-light">
+            OBSERVACIONES DE TUS INGRESOS</span></p>
+        </div>
+        <div class="col-12 mb-2">
+          <p class="h6 p_opciones text-black_opciones">{{ observaciones|linebreaks|default_if_none:"" }}</p>
+        </div>
+      </div>

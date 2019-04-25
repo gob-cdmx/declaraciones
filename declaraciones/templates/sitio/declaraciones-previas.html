@@ -1,0 +1,44 @@
+{% load static %}
+{% include '../layout/headertop.html' %}
+<section>
+  <div class="container">
+    <div class="row row-md py-7">
+      <div class="col-12 mb-5">
+        <p class="text-gray text-xl">
+          <span class="text-primary-light font-weight-semibold">
+            DECLARACIONES PREVIAS</span>
+        </p>
+        <p>Puedes descargar las declaraciones que has realizado con anterioridad en formato PDF</p>
+      </div>
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col" class="text-center">TIPO DE DECLARACIÓN</th>
+          <th scope="col" class="text-center">FECHA DE REALIZACIÓN</th>
+          <th scope="col" class="text-center">DECLARACIÓN</th>
+          <th scope="col" class="text-center">ACUSE</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for declaracion in declaraciones %}
+        <tr>
+          <td class="font-weight-bold text-center text-uppercase">{{ declaracion.cat_tipos_declaracion }}</td>
+          <td class="font-weight-bold text-center text-uppercase">{{ declaracion.fecha_recepcion|date:"d / F / Y" }}</td>
+          <td class="font-weight-bold text-center text-uppercase">
+            <a href="{% url 'declaraciones-previas-descargar' declaracion.folio %}" target="_blank">
+              <img src="{% static 'src/img/descargar.svg' %}" alt="Descargar" class="svg">
+            </a>            
+          </td>
+          <td class="font-weight-bold text-center text-uppercase">
+            <a href="#">
+              <img src="{% static 'src/img/descargar.svg' %}" alt="Descargar" class="svg">
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% include '../layout/footer.html' %}

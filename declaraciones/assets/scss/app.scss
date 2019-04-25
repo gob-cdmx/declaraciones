@@ -1,0 +1,31 @@
+@charset "utf-8";
+
+@import "variables";
+
+@import "~bootstrap/scss/bootstrap";
+@import "selectize";
+@import "general";
+@import "utilities";
+
+@import "background";
+@import "buttons";
+@import "close";
+@import "declaraciones-den01";
+@import "declaraciones-den02";
+@import "declaraciones-den03";
+@import "faq";
+@import "footer";
+@import "form";
+@import "header";
+@import "lists";
+@import "separators";
+@import "scaffolding";
+@import "sidebar";
+@import "svg";
+@import "tooltip";
+@import "type";
+@import "ventanasModales";
+
+@import "menu-resultados";
+@import "datepicker";
+@import "~select2/src/scss/core.scss";

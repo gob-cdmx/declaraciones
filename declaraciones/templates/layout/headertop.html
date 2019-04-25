@@ -1,0 +1,65 @@
+{% load static %}
+{% include './header.html' %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-success-lighter header">
+  <a class="navbar-brand" href="{% url 'declaracion:perfil' %}">
+    <img src="{% static 'src/img/logo.png' %}" alt="Gobierno de la Ciudad de México">
+  </a>
+  <button class="navbar-toggler custom-toggler btn" type="button" data-toggle="collapse" data-target="#header-nav" aria-controls="header-nav" aria-expanded="false" aria-label="Toggle navigation">
+    <div class="custom-toggler__box">
+      <div class="custom-toggler__bar"></div>
+    </div>
+  </button>
+  <div class="collapse navbar-collapse" id="header-nav">
+    <div class="navbar-nav mr-auto text-sm align-items-lg-center font-weight-semibold mt-3 mt-lg-0">
+        {% if user.is_authenticated %}
+
+            {% if not user.is_staff and not user.is_superuser  %}
+                <a class="nav-item nav-link text-uppercase d-lg-none" href="{% url 'declaracion:perfil' %}">Mi
+                    cuenta</a>
+                <a class="nav-item nav-link text-uppercase" href="{% url 'declaracion:declaracion' %}">Realizar
+                    declaración</a>
+                <a class="nav-item nav-link text-uppercase" href="{% url 'informacion' %}">Información</a>
+                <a class="nav-item nav-link text-uppercase" href="{% url 'declaraciones-previas' %}">Declaraciones
+                    previas</a>
+                <a class="nav-item nav-link text-uppercase" href="{% url 'preguntas-frecuentes' %}">Preguntas
+                    frecuentes</a>
+            {% else %}
+                <a class="nav-item nav-link text-uppercase" href="{% url 'declaracion:busqueda-declarantes' %}">Declarantes</a>
+                <a class="nav-item nav-link text-uppercase" href="{% url 'declaracion:busqueda-declaraciones' %}">Declaraciones</a>
+                {% if user.is_superuser %}
+                    <a class="nav-item nav-link text-uppercase" href="{% url 'declaracion:busqueda-usuarios' %}">Usuarios</a>
+                {% endif %}
+
+            {% endif %}
+        {% else %}
+            <a class="nav-item nav-link text-uppercase" href="{% url 'preguntas-frecuentes' %}">Preguntas frecuentes</a>
+        {% endif %}
+
+      {% if user.is_authenticated %}
+        <a class="nav-item nav-link text-uppercase d-lg-none" href="{% url 'logout' %}">Cerrar sesión</a>
+      {% endif %}
+    </div>
+    <div class="vl pl-3 d-none d-lg-block">
+      {% if user.is_authenticated %}
+        <div class="dropdown header__dropdown h-100">
+          <button class="btn btn-link dropdown-toggle h-100 py-0 px-1 d-flex align-items-center" type="button" id="user-menu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img src="{% static 'src/img/usuario.svg' %}" alt="Usuario" class="svg mr-2">
+            <span>{{ user.first_name }} {{ user.last_name }} <span class="d-block">{{ user.get_username }}</span></span>
+          </button>
+          <div class="dropdown-menu" aria-labelledby="user-menu">
+            <a class="dropdown-item text-sm" href="{% url 'declaracion:perfil' %}">Mi cuenta</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item text-sm" href="{% url 'logout' %}">Cerrar sesión</a>
+          </div>
+        </div>
+      {% else %}
+        <a href="{% url 'login' %}" class="header__login d-flex flex-column align-items-center justify-content-center h-100 text-gray-light">
+          <img src="{% static 'src/img/candado-cerrado.svg' %}" alt="Inicia sesión" class="mb-2 svg svg-currentcolor">
+          <p class="font-weight-bold text-sm text-uppercase m-0">Ingresar</p>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+<div class="page-content">

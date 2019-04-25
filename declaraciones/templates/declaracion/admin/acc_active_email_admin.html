@@ -1,0 +1,116 @@
+{% load static %}
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style type="text/css">
+
+        @import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+        .activa {
+            width: 600px;
+            height: 452px;
+            margin: auto;
+            text-align: center;
+            font-family: Montserrat, sans-serif;
+        }
+
+        .HOLA {
+
+            font-family: Montserrat, sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: normal;
+            color: #000000;
+        }
+
+        .cuenta {
+
+            font-family: Montserrat, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.71;
+            color: #727176;
+        }
+
+        .texto {
+            font-weight: bold;
+            color: #31b700;
+        }
+
+        .click {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .pega {
+
+            font-size: 14px;
+            font-weight: bold;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.71;
+            text-align: center;
+            color: #727176;
+        }
+
+        .rfc {
+
+            font-family: Montserrat, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+
+            color: #ff9914;
+        }
+
+        .Rectangle {
+            width: 253px;
+            height: 38px;
+            border-radius: 4px;
+            background-color: #ff9914;
+            padding: 15px;
+            text-decoration: none;
+        }
+
+        .GRACIAS {
+
+            font-family: Montserrat, sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: 1.2;
+            text-align: center;
+            color: #000000;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="activa ">
+    <img src="{{ protocol }}://{{ domain }}{% static 'src/img/logotipo-gobierno-cdmx-2.svg' %}"
+         class="logotipo-gobierno-cdmx-2">
+    <br/>
+    <p class="HOLA"> HOLA {{ user.first_name|upper }} {{ user.last_name|upper }} </p>
+    <p class="cuenta">Una cuenta de usuario ha sido creada para ti en el <span class="texto" >ADMINISTRADOR</span> DEL <span
+            class="texto">SISTEMA DE DECLARACIONES DE LA CIUDAD DE MÉXICO</span>.</p><br/>
+
+    <a href="{{ protocol }}://{{ domain }}{% url 'activar' uidb64=uid token=token %}" class="Rectangle"><span
+            class="click">Haz click aquí para
+        activarla</span></a><br/><br/>
+    <p class="cuenta"><br/>Usuario: <span class="rfc">{{ user.username  }}</span><br></p>
+    <p class="cuenta"><br/>Comtraseña: <span class="rfc">{{ password }}</span><br></p>
+    <p class="cuenta">Al ingresar por primera vez, deberás cambiar tu contraseña.</p><br/>
+
+    <p class="pega">O puedes copiar/pegar este enlace en el navegador: <br/><br/>
+        <span> {{ protocol }}://{{ domain }}{% url 'activar' uidb64=uid token=token %}</span>
+    </p>
+
+    <p class="GRACIAS">¡GRACIAS!</p>
+</div>
+</body>
+</html>

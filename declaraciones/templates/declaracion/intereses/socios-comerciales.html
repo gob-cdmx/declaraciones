@@ -1,0 +1,127 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        {% include 'layout/sidebar.html'%}
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Interes</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Socios comerciales</li>
+                </ol>
+            </nav>
+            <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+            <h2 class="h6 text-uppercase mb-3">2. Interes <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">VI. Socios comerciales</span></h2>
+            {% if agregar %}
+              <form action="{% url 'declaracion:socios-comerciales-agregar' folio_declaracion %}" method="post" novalidate>
+            {% elif editar_id %}
+              <form action="{% url 'declaracion:socios-comerciales-editar' folio_declaracion editar_id %}" method="post" novalidate>
+            {% else %}
+              <form action="{% url 'declaracion:socios-comerciales' folio_declaracion %}" method="post" novalidate>
+            {% endif %}
+                {% csrf_token %}
+                <div class="row">
+                  {% include 'layout/no_aplica.html' %}
+                </div>
+                {% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Nombre de la actividad comercial vinculante" titulo_dos="Tipo de vínculo" titulo_tres="Sector / industria" agregar=agregar editar_id=editar_id %}
+                <div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+                    <div class="col-12">
+                        <label class="label-secondary mb-2">Nombre de la actividad comercial vinculante<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Giro comercial con un tercero.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field socios_comerciales_form.actividad_vinculante  show_label=False%}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2">Tipo de vínculo<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Naturaleza comercial del vínculo.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field socios_comerciales_form.tipo_vinculo  show_label=False placeholder="Tipo de vínculo" %}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2">Antigüedad del vínculo<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Señanlar en aa y mm">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field socios_comerciales_form.antiguedad_vinculo  show_label=False placeholder="Antigüedad del vínculo" %}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2">RFC de la entidad vinculante <small class="text-help text-primary">(Si aplica)</small><span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field socios_comerciales_form.rfc_entidad_vinculante  field_class='valida_rfc'  show_label=False placeholder="RFC de la entidad vinculante" %}
+                    </div>
+                    <div class="col-12">
+                        {% include 'layout/persona.html' with form=socio_infopersonalvar_form title="Tipo de persona del socio comercial" label="  del socio comercial" tipo=True%}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2">RFC- Homoclave del socio</label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <small class="text-help text-primary">(Si aplica)</small>
+                        {% bootstrap_field socio_infopersonalvar_form.rfc  field_class='valida_rfc' show_label=False placeholder="RFC- Homoclave del socio" %}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2">Lugar de nacimiento del socio<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Lugar de nacimiento del socio.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <small class="text-help text-primary">(Si aplica)</small>
+                        {% bootstrap_field socio_infopersonalvar_form.cat_pais  show_label=False placeholder="Lugar de nacimiento del socio" %}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2">Fecha de nacimiento del socio<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="dd/mm/aaaa">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <small class="text-help text-primary">(Si aplica)</small>
+                        {% bootstrap_field socio_infopersonalvar_form.fecha_nacimiento  show_label=False placeholder="Fecha de nacimiento del socio" %}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2">Porcentaje de participación<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Porcentaje de participación a la actividad.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field socios_comerciales_form.porcentaje_participacion label_class="label-secondary" show_label=False placeholder="Porcentaje de participación" %}
+                    </div>
+                    <div class="col-12">
+                        <label class="label-secondary mb-2">Sector / industria<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar el sector.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/radiobuttons.html' with field_select=socio_infopersonalvar_form.fields.cat_sectores_industria  field_name=socio_infopersonalvar_form.cat_sectores_industria otro_name=socio_infopersonalvar_form.otro_sector col=4 col_o=4 %}
+
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="observaciones" class="label-secondary">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Detallar información de los socios comerciales.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field observaciones_form.observacion   show_label=False placeholder="Observaciones y comentarios" %}
+                            <div class="text-right" style="{% if checked %}display: none;{% endif %}">
+                                <button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-primary font-weight-semibold text-uppercase">
+                                  Guardar y agregar otro socio
+                                    <img src="{% static 'src/img/plus.svg'%}" alt="agregar" class="svg">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% include 'layout/guardar.html' %}
+                <div class="row"><div class="col-12"><br/></div></div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

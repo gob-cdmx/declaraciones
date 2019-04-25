@@ -1,0 +1,24 @@
+.form-group ul {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-lighter;
+  padding-left: $spacer;
+
+  &:not(.errorlist) {
+    list-style: none;
+
+    li {
+      position: relative;
+
+      &::after {
+        background-color: $primary-light;
+        border-radius: 50%;
+        content: '';
+        height: 5px;
+        left: -10px;
+        position: absolute;
+        top: 5px;
+        width: 5px;
+      }
+    }
+  }
+}

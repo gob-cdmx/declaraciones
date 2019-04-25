@@ -1,0 +1,10 @@
+{% load no_aplica %}
+{% no_aplica as checked %}
+<div class="col-12">
+    <div class="bg-gray px-3 py-2 mb-3">
+        <div class="custom-control custom-checkbox my-1 checkbox-success">
+            <input type="checkbox" class="custom-control-input" id="no_aplica" name="no_aplica" {% if checked %} checked{% endif %}>
+            <label class="custom-control-label" for="no_aplica">No aplica</label>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,68 @@
+{% include 'layout/headertop.html' %}
+{% load bootstrap4 %}
+{% load static %}
+{% block content %}
+
+<section class="container">
+  <div class="row row-md ">
+     <div class="col-sm-12 col-md-8">
+        <h2 class="text-gray text-xl font-weight-medium text-uppercase mt-5 line-height-md title-mobile text-mobile"><span class="text-primary-light font-weight-semibold">{{ result.nombres|upper }} {{ result.apellido1|upper }} {{ result.apellido2|upper }}</span></h2>
+     </div>
+     <div class="col-sm-12 col-md-4 mt-4">
+        <a href="{% url 'declaracion:busqueda-declarantes' %}" class="btn btn-warning btn-block btn-lg font-weight-semibold text-light"> <img src="{% static 'src/img/regresar.svg' %}"> REGRESAR AL LISTADO</a>
+     </div>
+
+
+
+  </div>
+  <div class="row row-md">
+    <div class="col-12 mb-5">
+      <div class="pl-3 border-left text-dark mb-5">
+        <p> Nacionalidad(es) <strong class="text-black text-dynamic">{% for p in info.nacionalidad %}{{ p.pais }} {% if not forloop.last %} , {% endif %}{% endfor %}</strong></p>
+        <p> País de nacimiento <strong class="text-black text-dynamic">{{ info.cat_pais |default_if_none:"----"}}</strong></p>
+        <p> Entidad federativa de nacimiento <strong class="text-black text-dynamic">{{ info.cat_entidades_federativas |default_if_none:"----"}}</strong></p>
+        <p> Estado civil o situación personal <strong class="text-black text-dynamic">{{ info.cat_estados_civiles |default_if_none:"----"}}</strong></p>
+        <p> Regimen matrimonial <strong class="text-black text-dynamic">{{ info.cat_regimenes_matrimoniales |default_if_none:"----"}}</strong></p>
+
+      </div>
+    </div>
+  </div>
+<div class="row row-md">
+        <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">ENTE PÚBLICO</th>
+                  <th scope="col">CARGO</th>
+                  <th scope="col">PLAZO DE REALIZACIÓN</th>
+                  <th scope="col">FECHA DE FIRMA</th>
+                  <th scope="col">INICIO DE CARGO</th>
+                  <th scope="col">FIN DE CARGO</th>
+                  <th scope="col">VER DECLRACIÓN</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for ds in declaraciones %}
+
+                {% for r in ds.encargos_set.all %}
+                <tr>
+                  <th scope="row">{{ r.cat_entes_publicos |default_if_none:"----"}}</th>
+                  <td>{{ r.empleo_cargo_comision |default_if_none:"----" }}</td>
+                  <td>{{ ds.fecha_recepcion |default_if_none:"----" }}</td>
+                  <td>{{ ds.fecha_declaracion |default_if_none:"----" }}</td>
+                  <td>{{ r.posesion_inicio |default_if_none:"----" }}</td>
+                  <td>{{ r.posesion_conclusion |default_if_none:"----" }}</td>
+                    <td><a href="{%  url 'declaracion:info-declaracion' ds.pk %}"> <img src="{% static 'src/img/contar2.svg' %}"></a></td>
+                </tr>
+              
+              {% endfor %}
+              {% endfor %}
+              </tbody>
+        </table>
+
+
+</div>
+
+</section>
+
+{% endblock %}
+{% include 'layout/footer.html' %}

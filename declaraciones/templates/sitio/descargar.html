@@ -1,0 +1,55 @@
+{% extends "easy_pdf/base.html" %}
+{% include './header.html' %}
+{% load static %}
+{% block layout_style %}
+    <style type="text/css">
+        .logo {
+          background-color: #31b700;
+        }
+        .navbar-brand {
+          width: 200px
+        }
+        .p_opciones dd, .p_opciones dt {
+            display: inline !important;
+        }
+        .text-black_opciones {
+            font-weight: 700;
+            color: #000;
+        }
+    </style>
+{% endblock %}
+{% block extra_style %}
+  <link rel="stylesheet" href="{% static 'app.css' %}">
+{% endblock %}
+{%block page_header%}
+<div class="logo">
+  <a class="navbar-brand text-align:">
+    <img src="{% static 'src/img/logo.png' %}" alt="Gobierno de la Ciudad de México">
+  </a>
+</div>
+{% endblock %}
+{% block content %}
+<div class="page-container">
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <div class="col-md-9 py-4 printable">
+        <h1>Fecha de declaración: {{ declaracion.fecha_declaracion|default_if_none:""}},
+          Fecha de recepción: {{ declaracion.fecha_recepcion|default_if_none:""}}</h1>
+        <h1 class="text-uppercase text-lg mb-25">1. Información general</h1>
+          {% include "declaracion/admin/frm_informacion_personal.html" with observaciones=observaciones_informacion_personal %}
+        <h1 class="text-uppercase text-lg mb-25">2. Intereses</h1>
+          {% include 'declaracion/admin/frm_intereses.html' with observaciones=observaciones_intereses %}
+        <h1 class="h6 text-uppercase">3. Ingresos</h1>
+          {% include 'declaracion/admin/frm_ingresos.html' with observaciones=observaciones_ingreso %}
+        <h1 class="h6 text-uppercase">4. Activos</h1>
+          {% include 'declaracion/admin/frm_activos.html' with observaciones=observaciones_activos %}
+        <h1 class="h6 text-uppercase">5. Pasivos </h1>
+          {% include 'declaracion/admin/frm_pasivos.html' with observaciones=observaciones_pasivos %}
+          <p><br><br><br><br></p>
+        <h6 class="h6 text-uppercase">Sello digital</h6>
+          <p>{{ declaracion.sello }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

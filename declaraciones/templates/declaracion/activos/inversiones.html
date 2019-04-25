@@ -1,0 +1,204 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        {% include 'layout/sidebar.html'%}
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Activos</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Inversiones, cuentas, valores</li>
+                </ol>
+            </nav>
+            <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+            <h2 class="h6 text-uppercase mb-3">4. Activos <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">IV. Inversiones, cuentas, valores</span></h2>
+            {% if agregar %}
+              <form action="{% url 'declaracion:inversiones-agregar' folio_declaracion %}" method="post" novalidate>
+            {% elif editar_id %}
+              <form action="{% url 'declaracion:inversiones-editar' folio_declaracion editar_id %}" method="post" novalidate>
+            {% else %}
+              <form action="{% url 'declaracion:inversiones' folio_declaracion %}" method="post" novalidate>
+            {% endif %}
+                {% csrf_token %}
+                <div class="row">
+                  {% include 'layout/no_aplica.html' %}
+                </div>
+                {% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Tipo de operación" titulo_dos="Forma de adquisición" titulo_tres="Titular" agregar=agregar editar_id=editar_id %}
+                <div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+                    <div class="col-12">
+                    <label class="label-secondary mb-2">Tipo de operación<span class="text-danger text-lg font-weight-bold">*</span></label>
+                    <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar tipo de operación de la inversión, cuenta, valor.">
+                        <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                    </button>
+
+                    {% include 'layout/radiobuttons.html' with field_select=form.fields.cat_tipos_operaciones  field_name=form.cat_tipos_operaciones otro_name=form.otra_operacion  col=2 col_o=6 %}
+
+
+                    </div>
+                    <div class="col-12">
+                        <label class="label-secondary mb-2">Tipo de inversión<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar tipo de inversión de la inversión, cuenta, valor.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                     {% include 'layout/radiobuttons.html' with field_select=form.fields.cat_tipos_inversiones  field_name=form.cat_tipos_inversiones otro_name=form.otra_inversion  col=2 col_o=6 %}
+
+                    </div>
+                    <div class="col-12">
+                        <label class="label-secondary mb-2">Tipo específico de la inversión<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Naturaleza jurídica de la inversión.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                    {% include 'layout/radiobuttons.html' with field_select=form.fields.cat_tipos_especificos_inversiones  field_name=form.cat_tipos_especificos_inversiones otro_name=form.otro_tipo_especifico  col=2 col_o=6 %}
+
+                    </div>
+                    <div class="col-12">
+                        <label class="label-secondary mb-2">Número de cuenta, contrato o identificador de la inversión<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Número de cuenta o contrato que identifique la inversión.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field form.num_cuenta  show_label=False%}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary ">Nacional o extranjero<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar el tipo de territorio.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/nacionalidad.html' with field=form.cat_paises %}
+                    </div>
+                    <div class="col-md-8">
+                        <label class="label-secondary mb-2">Nombre de la institución<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nombre de la institución donde se encuentra la inversión.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field info_personal_var_form.razon_social  show_label=False%}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2">RFC de la institución</label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <small class="text-help text-primary">(Si aplica)</small>
+                        {% bootstrap_field info_personal_var_form.rfc  field_class='valida_rfc'  show_label=False%}
+                    </div>
+                    <div class="col-12">
+                        <label class="label-secondary mb-2">Sector / industria<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar el sector al que pertenece la institución.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/radiobuttons.html' with field_select=info_personal_var_form.fields.cat_sectores_industria field_name=info_personal_var_form.cat_sectores_industria otro_name=info_personal_var_form.otro_sector %}
+                    </div>
+                    <div class="col-12">
+                        <label class="label-secondary mb-2">Domicilio de la institución</label>
+                    </div>
+                    {% include 'declaracion/direccion.html' with form=domicilio_form pais=True %}
+                    <div class="col-12">
+                        <label class="label-secondary mb-2">Forma de adquisición<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar la forma de adquisición de la inversión.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                    {% include 'layout/radiobuttons.html' with field_select=form.fields.cat_formas_adquisiciones  field_name=form.cat_formas_adquisiciones otro_name=form.otra_forma  col=2 col_o=4  %}
+
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2 ">Fecha de inicio<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Fecha en que se formalizo la inversión.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field form.fecha_inicio  show_label=False%}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2 ">Monto original<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Cantidad con la que el Declarante inicio la inversión.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field form.monto_original    show_label=False%}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2 ">Tipo de moneda<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Especificar la moneda con la que participo.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field form.cat_monedas field_class="moneda" show_label=False%}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2 ">Tasa de interés<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Convenida por el Declarante.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field form.tasa_interes    show_label=False%}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2 ">Saldo a la fecha<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Saldo total con la que cuenta la inversión.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field form.saldo_actual    show_label=False%}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2">Plazo</label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar la cantidad de tiempo.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field form.plazo  show_label=False%}
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center">
+                        <div class="row align-items-center w-100">
+                            <div class="col-auto">
+                                <label class="label-secondary">Unidad de medida del plazo<span class="text-danger text-lg font-weight-bold">*</span></label>
+                                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Marcar las unidades con las que se podría medir el plazo">
+                                    <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                </button>
+                                <small class="text-help text-primary">Seleccionar las unidades con que se podría medir el plazo</small>
+
+                                {% bootstrap_field form.cat_unidades_temporales  show_label=False%}
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="label-secondary mb-2">Titular<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indique el tipo de titular de la inversión.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                    {% include 'layout/radiobuttons.html' with field_select=form.fields.cat_tipos_titulares  field_name=form.cat_tipos_titulares otro_name=form.otro_tipo_titular %}
+
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary mb-2">Porcentaje de la inversión<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Porcentaje de la inversión.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field form.porcentaje_inversion  show_label=False%}
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="observaciones" class="label-secondary ">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Detallar información respecto a la inversión.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field  observaciones_form.observacion     show_label=False%}
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+                    <div class="col-9"></div>
+                    <div class="col-3 text-right">
+                        <button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-primary font-weight-semibold text-uppercase">
+                          Guardar y agregar otra inversión<img src="{% static 'src/img/plus.svg'%}" alt="agregar" class="svg">
+                        </button>
+                    </div>
+                </div>
+                {% include 'layout/guardar.html' %}
+                <div class="row"><div class="col-12"><br/></div></div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

@@ -1,0 +1,61 @@
+{% include 'layout/headertop.html' %}
+{% load bootstrap4 %}
+<section class="container-fluid container-offset-x my-md-7 py-7">
+  <h1 class="text-gray text-xl font-weight-medium text-uppercase line-height-md">Por favor ingresa la <br> información para <br> <span class="text-primary-light font-weight-semibold">crear tu cuenta</span></h1>
+  <p class="text-gray-darker font-weight-light">Todos lo campos son obligatorios</p>
+  <form action="{% if is_staff %}{% url 'declaracion:nuevo-usuario' %}{% else %}{% url 'declaracion:nuevo' %}{% endif %}" method="post" novalidate>
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-lg-10">
+        <div class="row">
+          <div class="col-md-6">
+            {% bootstrap_field form.nombres placeholder="Nombre(s)" field_class="solo_letras"  %}
+          </div>
+          <div class="col-md-6">
+              {% bootstrap_field form.apellido1 placeholder="Primer Apellido" field_class="solo_letras"  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.apellido2 placeholder="Segundo apellido" field_class="solo_letras" required=False  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.rfc placeholder="RFC con homoclave" field_class='valida_rfc'  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.curp placeholder="CURP"  field_class='valida_curp' %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.dependencia placeholder="Ente público"  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.puesto placeholder="Empleo, cargo o comisión" field_class="solo_letras" %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.fecha placeholder="16/01/2018"  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.entidad placeholder="Entidad Federativa" field_class="entidad"  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.pais placeholder="País de origen" field_class="pais"  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.contrasena1 placeholder="Contraseña"  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.telefono placeholder="Teléfono" field_class="valida_telefono"  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.contrasena2 placeholder="Confirmar Contraseña"  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.email placeholder="Correo electrónico" field_class='valida_email'  %}
+          </div>
+          <div class="col-12 text-right">
+            <button type="submit" class="btn btn-success-lighter text-uppercase mt-5">Crear cuenta</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>
+{% include 'layout/footer.html' %}

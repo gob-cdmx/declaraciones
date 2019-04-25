@@ -1,0 +1,122 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        {% include 'layout/sidebar.html'%}
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Activos</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Uso o beneficios en especie propiedad de un tercero</li>
+                </ol>
+            </nav>
+            <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+            <h2 class="h6 text-uppercase mb-3">4. Activos <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">IX. Uso o beneficios en especie propiedad de un tercero</span></h2>
+            {% if agregar %}
+              <form action="{% url 'declaracion:beneficios-especie-agregar' folio_declaracion %}" method="post" novalidate>
+            {% elif editar_id %}
+              <form action="{% url 'declaracion:beneficios-especie-editar' folio_declaracion editar_id %}" method="post" novalidate>
+            {% else %}
+              <form action="{% url 'declaracion:beneficios-especie' folio_declaracion %}" method="post" novalidate>
+            {% endif %}
+                {% csrf_token %}
+                <div class="row">
+                  {% include 'layout/no_aplica.html' %}
+                </div>
+                {% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Tipo de bien o servicio" titulo_dos="Relación con la persona a quien se adquirió" titulo_tres="Sector / industria" agregar=agregar editar_id=editar_id %}
+                <div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label for="tercero-tipo" class="label-secondary">Tipo de bien o servicio<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Indicar tipo de operación de los bienes intangibles.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field form.tipo_bien_servicio  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="tercero-valor" class="label-secondary">Valor de mercado aproximado<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Monto económico total del uso o goce del beneficio.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field form.valor_mercado    show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        {% include 'layout/persona.html' with form=info_personal_var_form title="Tipo de persona del tercero propietario" label=" del tercero propietario" tipo=True curp=True %}
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="tercero-rfc" class="label-secondary">RFC de la misma persona <small class="text-help text-primary">(Si aplica)</small><span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var_form.rfc  field_class='valida_rfc' show_label=False %}
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-2">
+                        <label class="label-secondary">Relación con la persona a quien se adquirió<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Indicar tipo de relación con el beneficiario.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+
+                        {% include 'layout/relaciones.html' with field_select=form.fields.cat_tipos_relaciones_personales field_name=form.cat_tipos_relaciones_personales otro_name=form.otra_relacion_familiar otrof_name=form.otra_relacion col=2 col_o=4  %}
+
+                    </div>
+                    <div class="col-12">
+                        <label class="label-secondary mb-2">Sector / industria <small class="text-help text-primary">(Si aplica)</small><span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Indicar el sector al que pertenece.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/radiobuttons.html' with field_select=form.fields.cat_sectores_industria field_other=form.otro_sector  field_name=form.cat_sectores_industria otro_name=form.otro_sector %}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="label-secondary">Fecha de inicio<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="dd/mm/aaaa">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <div class="form-row">
+                            {% bootstrap_field form.fecha_inicio  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="row"><div class="col-12"><label class="label-secondary">Domicilio de la persona</label></div></div>
+                        <div class="row">
+
+                            {% include 'declaracion/direccion.html' with form=domicilio_form  pais=True %}
+                        </div>
+
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="tercero-comentarios" class="label-secondary">Observaciones y comentarios <span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Detallar información respecto al uso o beneficio.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field observaciones_form.observacion placeholder="Observaciones y comentarios"     show_label=False%}
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right row-form" style="{% if checked %}display: none;{% endif %}">
+                    <button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-primary font-weight-semibold text-uppercase">
+                      Guardar y agregar otro uso o beneficio<img src="{% static 'src/img/plus.svg'%}" alt="agregar" class="svg">
+                    </button>
+                </div>
+                {% include 'layout/guardar.html' %}
+                <div class="row"><div class="col-12"><br/></div></div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

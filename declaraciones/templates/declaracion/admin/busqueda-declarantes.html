@@ -1,0 +1,120 @@
+{% include 'layout/headertop.html' %}
+{% load bootstrap4 %}
+{% load static %}
+{% block content %}
+    <form action="{% url 'declaracion:busqueda-declarantes' %}" method="post" id="form">
+<section class="container">
+  <div class="row row-md ">
+    <h1 class="text-gray text-xl font-weight-medium text-uppercase mt-5 line-height-md title-mobile text-mobile"><span class="text-primary-light font-weight-semibold">Declarantes</span> Búsqueda</h1>
+    <div class="d-flex justify-content-center align-items-center flex-column flex-sm-row bg-gray p-4 rounded">
+
+
+               {% csrf_token %}
+               {% bootstrap_field form.page  show_label=False%}
+               <div class="row">
+                   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                       {% bootstrap_field form.nombre  field_class="solo_letras"  %}
+                   </div>
+                   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                       {% bootstrap_field form.apellido1  field_class="solo_letras" %}
+                   </div>
+                   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                       {% bootstrap_field form.apellido2  field_class="solo_letras" %}
+                   </div>
+                   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                       {% bootstrap_field form.rfc  field_class="valida_rfc" %}
+                   </div>
+                   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                       <label > Ente público</label>
+                       {% bootstrap_field form.ente show_label=False %}
+                   </div>
+                   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                       {% bootstrap_field form.curp    field_class="valida_curp" %}
+                   </div>
+                   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                       {% bootstrap_field form.estatus  %}
+                   </div>
+                   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 ">
+                       <button class="btn btn-success-lighter text-uppercase font-weight-semibold mt-5"  type="submit">Buscar  <img src="{% static 'src/img/busqueda.svg' %}"/></button>
+                   </div>
+
+
+               </div>
+
+
+
+    </div>
+  </div>
+ {% if result %}
+  <div class="row row-md">
+
+        <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">NOMBRE</th>
+                  <th scope="col">PRIMER APELLIDO</th>
+                  <th scope="col">SEGUNDO APELLIDO</th>
+                  <th scope="col">RFC</th>
+                  <th scope="col">CURP</th>
+                  <th scope="col">ESTATUS</th>
+                  <th scope="col">VER DETALLE</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for r in result %}
+                <tr>
+                  <th scope="row">{{ r.nombres }}</th>
+                  <td>{{ r.apellido1 }}</td>
+                  <td>{{ r.apellido2 }}</td>
+                  <td>{{ r.rfc }}</td>
+                  <td>{{ r.curp }}</td>
+                  <td>{% if r.usuario.is_active %} <span class="text-primary-light">Activo</span> {% else %} Inactivo {% endif %} </td>
+                  <td><a href="{%  url 'declaracion:info-declarante' r.pk %}"> <img src="{% static 'src/img/reconocimiento-facial-2.svg' %}"></a></td>
+                </tr>
+              {% endfor %}
+              </tbody>
+        </table>
+
+
+
+
+
+  </div>
+
+<div class="row row-md text-center">
+<div class="col-12">
+ 	<nav aria-label="Páginas" class="nav d-flex justify-content-center">
+	  <ul class="pagination flex-wrap">
+		{% if result.has_previous %}
+		<li class="page-item"><a class="page-link"  onclick="$('#id_page').val({{ result.previous_page_number }});$('#form').submit()" href="#">«</a></li>
+		 {% endif %}
+
+						{%for p in paginas%}
+							{%ifequal p result.number %}
+								<li class="page-item"><a class="page-link bg-primary text-light" href="#">{{result.number}}</a></li>
+							{%else%}
+								<li class="page-item"><a class="page-link"  onclick="$('#id_page').val({{ p }});$('#form').submit()" href="#">{{p}}</a></li>
+							{%endifequal%}
+						{%endfor%}
+		 {% if result.has_next %}
+		<li class="page-item"><a class="page-link"  onclick="$('#id_page').val({{ result.next_page_number }});$('#form').submit()" href="#">»</a></li>
+		  {%endif%}
+
+	  </ul>
+	</nav>
+</div>
+
+    <!--<div class="col-12 text-center">
+  	    <span>Página {{ result.number }} de {{ result.paginator.num_pages }}.</span>
+    </div>-->
+
+
+
+</div>
+
+ {% endif %}
+
+</section>
+    </form>
+{% endblock %}
+{% include 'layout/footer.html' %}

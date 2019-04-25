@@ -1,0 +1,243 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+<div class="container-fluid h-100">
+	<div class="row h-100">
+		{% include 'layout/sidebar.html'%}
+		<div class="col-md-9">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+					<li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+					<li class="breadcrumb-item"><a href="#" class="text-reset">Activos</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Bienes inmuebles</li>
+				</ol>
+			</nav>
+			<h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+			<h2 class="h6 text-uppercase mb-3">4. Activos <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">I. Bienes inmuebles</span></h2>
+			{% if agregar %}
+			  <form action="{% url 'declaracion:bienes-inmuebles-agregar' folio_declaracion %}" method="post" novalidate>
+			{% elif editar_id %}
+			  <form action="{% url 'declaracion:bienes-inmuebles-editar' folio_declaracion editar_id %}" method="post" novalidate>
+			{% else %}
+			  <form action="{% url 'declaracion:bienes-inmuebles' folio_declaracion %}" method="post" novalidate>
+			{% endif %}
+				{% csrf_token %}
+				<div class="row">
+					{% include 'layout/no_aplica.html' %}
+				</div>
+				{% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Tipo de Operación" titulo_dos="Forma de adquisición" titulo_tres="Titular" agregar=agregar editar_id=editar_id %}
+				<div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+					<div class="col-12 my-2">
+						<label class="label-secondary">Tipo de Operación<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar tipo de operación realizada al bien inmueble.">
+                            <img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+						</button> {% include 'layout/radiobuttons.html' with field_select=bienes_inmuebles_form.fields.cat_tipos_operaciones field_name=bienes_inmuebles_form.cat_tipos_operaciones otro_name=bienes_inmuebles_form.otro_tipo_operacion col=2 col_o=4 %}
+					</div>
+					<div class="col-12 my-2">
+						<label class="label-secondary">Tipo de Bien</label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar tipo de bien inmueble que se declara.">
+                            <img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+                        </button>
+						<div class="form-row">
+							{% include 'layout/radiobuttons.html' with field_select=bienes_inmuebles_form.fields.cat_tipos_inmuebles field_name=bienes_inmuebles_form.cat_tipos_inmuebles otro_name=bienes_inmuebles_form.otro_tipo_inmueble col=2 col_o=4 %}
+
+						</div>
+					</div>
+
+
+					<div class="col-md-6">
+						<label class="label-secondary">Superficie del Terreno<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Superficie total en m2 del bien inmueble.">
+							<img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+						</button> {% bootstrap_field bienes_inmuebles_form.superficie_terreno show_label=False placeholder="Superficie del Terreno" %}
+					</div>
+					<div class="col-md-6">
+						<label class="label-secondary">Superficie de la construcción<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Superficie de construcción en m2 del bien inmueble.">
+							<img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+						</button> {% bootstrap_field bienes_inmuebles_form.superficie_construccion show_label=False placeholder="Superficie de la construcción" %}
+					</div>
+					<div class="col-12 my-2">
+						<label class="label-secondary">Titular<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indique el tipo de titular del inmueble.">
+                            <img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+						</button>
+
+						<div>
+							{% include 'layout/radiobuttons.html' with field_select=bienes_inmuebles_form.fields.cat_tipos_titulares field_name=bienes_inmuebles_form.cat_tipos_titulares otro_name=bienes_inmuebles_form.otro_titular col=3 col_o=4 %}
+
+						</div>
+
+					</div>
+					<div class="col-md-4">
+						<label class="label-secondary">Porcentaje de propiedad<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Porcentaje de participación en copropiedad.">
+							<img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+						</button> {% bootstrap_field bienes_personas_form.porcentaje show_label=False placeholder="Porcentaje de propiedad" %}
+					</div>
+					<div class="col-md-8">
+                        {% include 'layout/persona.html' with form=copropietario_form title="Tipo de persona del copropietario" label="del copropietario" tipo=True%}
+
+                        <div class="row">
+                         <div class="col-md-6">
+                            <label class="label-secondary">RFC del copropietario <small class="text-help text-primary">(si aplica)</small></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field  copropietario_form.rfc  field_class='valida_rfc'  show_label=False placeholder="RFC del copropietario" %}
+                        </div>
+                        </div>
+
+					</div>
+					<div class="col-md-12">
+						<h6>Identificación del bien</h6>
+					</div>
+
+					<div class="col-md-4">
+
+						<label class="label-secondary">Número de la escritura pública<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Número de escritura pública.">
+							<img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+						</button> {% bootstrap_field bienes_inmuebles_form.num_escritura_publica show_label=False placeholder="Número de la escritura pública" %}
+					</div>
+					<div class="col-md-4">
+						<label class="label-secondary">Número del registro público de propiedad <span class="text-danger text-lg font-weight-bold">*</span> </label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Número del registro público de propiedad.">
+							<img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+						</button> {% bootstrap_field bienes_inmuebles_form.num_registro_publico show_label=False placeholder="Número del registro público de propiedad" %}
+					</div>
+
+					<div class="col-md-4">
+
+						<label class="label-secondary">Folio real<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Folio real.">
+							<img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+						</button> {% bootstrap_field bienes_inmuebles_form.folio_real show_label=False placeholder="Folio real" %}
+					</div>
+
+					<div class="col-md-4">
+
+						<label class="label-secondary">Fecha de contrato de compra-venta privado<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Fecha de contrato.">
+							<img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+						</button> {% bootstrap_field bienes_inmuebles_form.fecha_contrato_compra show_label=False placeholder="Fecha de contrato de compra-venta privado" %}
+
+					</div>
+
+					<div class="col-md-12">
+						<h6>Dirección de la actividad o situación</h6>
+						<label class="label-secondary">Domicilio<span class="text-danger text-lg font-weight-bold">*</span></label>
+					</div>
+					{% include 'declaracion/direccion.html' with form=domicilio_form %}
+
+					<div class="col-12 my-2">
+						<label class="label-secondary">Forma de adquisición<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar la forma como se obtuvo el bien inmueble (compra, herencia, etc.)">
+							<img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+						</button>
+
+						<div>
+							{% include 'layout/radiobuttons.html' with field_select=bienes_inmuebles_form.fields.cat_formas_adquisiciones field_name=bienes_inmuebles_form.cat_formas_adquisiciones otro_name=bienes_inmuebles_form.otra_forma  col=2 col_o=4  %}
+						</div>
+
+
+
+					</div>
+					<div class="col-12 my-2">
+						<label class="label-secondary">Relación con la persona a quien adquirió el inmueble<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar la Relación con la persona a quien adquisió el inmueble">
+							<img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+						</button>
+						<div>
+							{% include 'layout/relaciones.html' with field_select=bienes_personas_form.fields.tipo_relacion field_name=bienes_personas_form.tipo_relacion otro_name=bienes_personas_form.otra_relacion_familiar otrof_name=bienes_personas_form.otra_relacion col=2 col_o=4  %}
+						</div>
+
+
+
+					</div>
+					<div class="col-12 my-2">
+						{% include 'layout/persona.html' with form=propietario_anterior_form  %}
+					</div>
+
+
+					<div class="col-md-6">
+						<label  class="label-secondary">RFC de quien se adquirió el inmueble</label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+							<img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+						</button> {% bootstrap_field propietario_anterior_form.rfc show_label=False placeholder="RFC de quien se adquirió el inmueble" %}
+					</div>
+
+
+					<div class="col-md-12">
+						<label class="label-secondary">Sector / Industria <small class="text-help text-primary">(Si aplica)</small><span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar el sector al que pertenece.">
+							<img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+                        </button> {% include 'layout/radiobuttons.html' with field_select=propietario_anterior_form.fields.cat_sectores_industria field_name=propietario_anterior_form.cat_sectores_industria otro_name=form.otro_sector %}
+
+					</div>
+
+					<div class="col-md-4">
+						<label class="label-secondary">Fecha de adquisición<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="dd/mm/aaaa">
+							<img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+						</button> {% bootstrap_field bienes_inmuebles_form.fecha_adquisicion show_label=False placeholder="Fecha de adquisición" %}
+					</div>
+					<div class="col-md-4">
+
+                        <div class="row">
+                            <div class="col-6 form-group">
+                                <label class="label-secondary">Precio de adquisición<span class="text-danger text-lg font-weight-bold">*</span></label>
+                                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Monto según la escritura.">
+                                    <img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+                                </button> {% bootstrap_field bienes_inmuebles_form.precio_adquisicion show_label=False placeholder="Precio de adquisición" %}
+                            </div>
+                            <div class="col-6 form-group">
+                                <label class="label-secondary">Moneda<span class="text-danger text-lg font-weight-bold">*</span></label> {% bootstrap_field bienes_inmuebles_form.cat_monedas show_label=False placeholder="Moneda" %}
+                            </div>
+                         </div>
+
+
+					</div>
+
+					<div class="col-md-4">
+						<label class="label-secondary">Valor catastral<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="El que señale el recibo del impuesto predial.">
+							<img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+						</button> {% bootstrap_field bienes_inmuebles_form.valor_catastral show_label=False placeholder="Valor catastral" %}
+					</div>
+					<div class="col-md-12">
+						<div class="form-group">
+							<label class="label-secondary" for="textForm">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+							<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Detallar información respecto al inmueble.">
+								<img src="{% static 'src/img/info.svg' %}" alt="info" class="svg">
+							</button> {% bootstrap_field observaciones_form.observacion show_label=False placeholder="Observaciones y comentarios" %}
+						</div>
+
+					</div>
+
+
+
+				</div>
+				<div class="row mt-6 row-form" style="{% if checked %}display: none;{% endif %}">
+					<div class="col-9"></div>
+					<div class="col-3 text-right">
+						<button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-primary font-weight-semibold text-uppercase">
+							Guardar y agregar otro bien inmueble<img src="{% static 'src/img/plus.svg'%}" alt="agregar" class="svg">
+                        </button>
+					</div>
+				</div>
+				{% include 'layout/guardar.html' %}
+				<div class="row">
+					<div class="col-12"><br/></div>
+				</div>
+			</form>
+
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

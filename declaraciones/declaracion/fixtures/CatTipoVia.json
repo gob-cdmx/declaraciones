@@ -1,0 +1,232 @@
+[{
+  "model": "declaracion.cattipovia",
+  "pk": 1,
+  "fields": {
+    "tipo_via": "Ampliación",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 2,
+  "fields": {
+    "tipo_via": "Andador",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 3,
+  "fields": {
+    "tipo_via": "Avenida",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 4,
+  "fields": {
+    "tipo_via": "Boulevard",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 5,
+  "fields": {
+    "tipo_via": "Calle",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 6,
+  "fields": {
+    "tipo_via": "Callejón",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 7,
+  "fields": {
+    "tipo_via": "Calzada",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 8,
+  "fields": {
+    "tipo_via": "Cerrada",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 9,
+  "fields": {
+    "tipo_via": "Circuito",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 10,
+  "fields": {
+    "tipo_via": "Circunvalación",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 11,
+  "fields": {
+    "tipo_via": "Continuación",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 12,
+  "fields": {
+    "tipo_via": "Corredor",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 13,
+  "fields": {
+    "tipo_via": "Diagonal",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 14,
+  "fields": {
+    "tipo_via": "Eje Vial",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 15,
+  "fields": {
+    "tipo_via": "Pasaje",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 16,
+  "fields": {
+    "tipo_via": "Peatonal",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 17,
+  "fields": {
+    "tipo_via": "Periférico",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 18,
+  "fields": {
+    "tipo_via": "Privada",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 19,
+  "fields": {
+    "tipo_via": "Prolongación",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 20,
+  "fields": {
+    "tipo_via": "Retorno",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}, {
+  "model": "declaracion.cattipovia",
+  "pk": 21,
+  "fields": {
+    "tipo_via": "Viaducto",
+    "created_at": "2019-04-04T23:27:57Z",
+    "updated_at": "2019-04-04T23:27:57Z",
+    "default": 0,
+    "orden": 1,
+    "codigo": ""
+  }
+}]

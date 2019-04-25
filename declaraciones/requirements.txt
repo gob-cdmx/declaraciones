@@ -1,0 +1,15 @@
+django>=2.1
+mysqlclient
+uwsgi
+celery
+redis
+flake8
+django-environ
+django-bootstrap4
+django-anymail
+django-mptt
+django-bootstrap-datepicker-plus
+django-debug-toolbar
+django-easy-pdf
+xhtml2pdf>=0.2b1
+requests

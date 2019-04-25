@@ -1,0 +1,146 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        {% include 'layout/sidebar.html'%}
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Intereses</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Membresías</li>
+                </ol>
+            </nav>
+            <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+            <h2 class="h6 mb-3 text-uppercase">2. INTERESES <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">II. Membresías</span></h2>
+            {% if agregar %}
+              <form action="{% url 'declaracion:membresias-agregar' folio_declaracion %}" method="post" novalidate>
+            {% elif editar_id %}
+              <form action="{% url 'declaracion:membresias-editar' folio_declaracion editar_id %}" method="post" novalidate>
+            {% else %}
+              <form action="{% url 'declaracion:membresias' folio_declaracion %}" method="post" novalidate>
+            {% endif %}
+                {% csrf_token %}
+                <div class="row">
+                  {% include 'layout/no_aplica.html' %}
+                </div>
+                {% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Nombre de la institución" titulo_dos="Tipo de institución" titulo_tres="Sector/Industria" agregar=agregar editar_id=editar_id %}
+                <div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+                  <div class="col-12">
+                      <div class="form-group">
+                          <label for="nombre-menbresia" class="label-secondary">Tipo de institución<span class="text-danger text-lg font-weight-bold">*</span> </label>
+                          <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Seleccione la naturaleza jurídica de la  institución.">
+                              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                          </button>
+                      </div>
+
+                  </div>
+                <div class="col-md-12">
+                          {% include 'layout/radiobuttons.html' with field_select=membresia_form.fields.cat_tipos_instituciones  field_name=membresia_form.cat_tipos_instituciones otro_name=membresia_form.otras_instituciones col=2 col_o=4 %}
+                </div>
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          <label for="nombre-institucion" class="label-secondary">Nombre de la institución<span class="text-danger text-lg font-weight-bold">*</span></label>
+                          <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Denominación o razón social de la institución.">
+                              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                          </button>
+                          {% bootstrap_field membresia_form.nombre_institucion show_label=False placeholder="Nombre de la institución" %}
+                      </div>
+                  </div>
+                  <div class="col-md-12">
+                      <div class="form-group">
+                          <label for="nombre-menbresia" class="label-secondary">Naturaleza de la membresía<span class="text-danger text-lg font-weight-bold">*</span></label>
+                          <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Membresía a la que pertenece la institución.">
+                              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                          </button>
+                          {% include 'layout/radiobuttons.html' with field_select=membresia_form.fields.cat_naturaleza_membresia  field_name=membresia_form.cat_naturaleza_membresia otro_name=membresia_form.otra_naturaleza col=2 col_o=4 %}
+                      </div>
+                  </div>
+                  <div class="col-md-12">
+                      <label class="label-secondary mb-2">Domicilio.</label>
+                      <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Domicilio.">
+                          <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                      </button>
+                  </div>
+                  {% include 'declaracion/direccion.html' with form=domicilio_form pais=True %}
+                  <div class="col-md-12">
+                      <label class="label-secondary mb-2">Sector/Industria<span class="text-danger text-lg font-weight-bold">*</span></label>
+                      <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Seleccionar el sector al que pertenece.">
+                          <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                      </button>
+                      {% include 'layout/radiobuttons.html' with field_select=membresia_form.fields.cat_sectores_industria  field_name=membresia_form.cat_sectores_industria otro_name=membresia_form.otro_sector col=4 col_o=4 %}
+                  </div>
+
+                  <div class="col-md-4">
+                      <div class="form-group">
+                          <label for="puesto-rol" class="label-secondary">Puesto/Rol<span class="text-danger text-lg font-weight-bold">*</span></label>
+                          <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Indicar cargo del Declarante.">
+                              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                          </button>
+                          {% bootstrap_field membresia_form.puesto_rol show_label=False placeholder="Puesto/Rol" %}
+                      </div>
+                  </div>
+                  <div class="col-md-4">
+                      <label class="label-secondary">Fecha de inicio<span class="text-danger text-lg font-weight-bold">*</span> </label>
+                      <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="dd/mm/aaaa">
+                          <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                      </button>
+                      <div class="form-row">
+                          {% bootstrap_field membresia_form.fecha_inicio show_label=False placeholder="Fecha de inicio" %}
+                      </div>
+                  </div>
+                  <div class="col-md-4">
+                      <label class="label-secondary">Pagado o no pagado<span class="text-danger text-lg font-weight-bold">*</span> </label>
+                      <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Recibe remuneración o no.">
+                          <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                      </button>
+                      <div class="row">
+                          <div class="col-auto col-3">
+                              <div class="custom-control custom-radio custom-control-inline radio-secondary">
+                                  <input type="radio" id="no-pagado" name="membresia-pagado" value="false" class="custom-control-input" {% if membresia_form.pagado.initial == 0 %} checked {% endif %} >
+                                  <label class="custom-control-label text-rg" for="no-pagado">No pagado</label>
+                              </div>
+                          </div>
+                          <div class="col-auto col-3">
+                              <div class="custom-control custom-radio custom-control-inline radio-secondary d-flex align-items-center">
+                                  <input type="radio" id="Pagado" name="membresia-pagado" value="true" class="custom-control-input" {% if membresia_form.pagado.initial == 1 %} checked {% endif %}>
+                                  <label class="custom-control-label text-rg" for="Pagado">Pagado</label>
+                              </div>
+                          </div>
+                          <div class="col-md-6">
+                            {% bootstrap_field membresia_form.monto show_label=False placeholder="Monto" %}
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-12">
+                      <div class="form-group">
+                          <label for="observaciones" class="label-secondary">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+                          <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  tabindex="9999" title="Detallar información de la Membresía.">
+                              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                          </button>
+                          {% bootstrap_field observaciones_form.observacion placeholder="Observaciones y comentarios" show_label=False %}
+                      </div>
+                  </div>
+                   </div>
+                        <div class="row mt-6 row-form" style="{% if checked %}display: none;{% endif %}">
+                            <div class="col-9"></div>
+                            <div class="col-3 text-right">
+                                 <button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-primary font-weight-semibold text-uppercase">
+                                   Guardar y agregar otra membresía
+                                <img src="{% static 'src/img/plus.svg'%}" alt="agregar" class="svg">
+                                </button>
+                            </div>
+                        </div>
+                    {% include 'layout/guardar.html' %}
+                <div class="row"><div class="col-12"><br/></div></div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

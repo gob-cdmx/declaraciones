@@ -1,0 +1,196 @@
+//
+// ────────────────────────────────────────────────────────────
+// Color
+// ────────────────────────────────────────────────────────────
+//
+$gray-100:         #f8f8f8;
+$gray-200:         #e8e8e8;
+$gray-300:         #f3f3f3;
+$gray-500:         #b0b0af;
+$gray-700:         #858489;
+$gray-800:         #727176;
+
+$primary:          #1bb600;
+$primary-light:    #37bf00;
+$secondary:        $gray-800;
+$success:          #417505;
+$success-light:    #35873b;
+$success-lighter:  #31b700;
+$warning:          #ff9914;
+$dark:             #4c4e4f;
+
+$help-color:       #acacac;
+$radio-color:      #767676;
+
+$body-color:       #5d5d5e;
+$border-color:     #aaaaaa;
+
+//
+// ────────────────────────────────────────────────────────────
+// Options
+// ────────────────────────────────────────────────────────────
+//
+$enable-shadows:         true;
+
+//
+// ────────────────────────────────────────────────────────────
+// Typography
+// ────────────────────────────────────────────────────────────
+//
+$font-weight-extralight:  100;
+$font-weight-light:       300;
+$font-weight-normal:      400;
+$font-weight-medium:      500;
+$font-weight-semibold:    600;
+$font-weight-bold:        700;
+
+$fonts:
+  "ExtraLight" $font-weight-extralight,
+  "Light"      $font-weight-light,
+  "Regular"    $font-weight-normal,
+  "Medium"     $font-weight-medium,
+  "SemiBold"   $font-weight-semibold,
+  "Bold"       $font-weight-bold;
+
+@each $weight in $fonts {
+
+  @font-face {
+    font-display: fallback;
+    font-family: "Metropolis";
+    font-style: normal;
+    font-weight: nth($weight, 2);
+    src: url("../fonts/metropolis/woff2/Metropolis-#{nth($weight, 1)}.woff2") format("woff2"),
+         url("../fonts/metropolis/woff/Metropolis-#{nth($weight, 1)}.woff") format("woff"),
+         url("../fonts/metropolis/truetype/Metropolis-#{nth($weight, 1)}.ttf") format("truetype");
+  }
+}
+
+$font-family-sans-serif:      "Metropolis", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$font-family-serif:           "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+
+$line-height-base:            1.4;
+
+$headings-font-weight:        $font-weight-semibold;
+
+$h6-font-size:                1.0625rem;
+
+$font-size-xxl:               2.25rem;
+$font-size-xl:                1.125rem;
+$font-size-rg:                0.8125rem;
+$font-size-xs:                0.75rem;
+$font-size-xxs:               0.6875rem;
+
+$text-muted:                  #777;
+
+//
+// ────────────────────────────────────────────────────────────
+// Spacing
+// ────────────────────────────────────────────────────────────
+//
+$spacer:      1rem;
+
+$spacers: (
+  5: ($spacer * 2),
+  6: ($spacer * 2.5),
+  7: ($spacer * 3)
+);
+
+//
+// ────────────────────────────────────────────────────────────
+// Forms
+// ────────────────────────────────────────────────────────────
+//
+$form-group-margin-bottom:                       ($spacer * 1.25);
+
+$input-border-color:                             $primary;
+$input-border-radius:                            5px;
+
+$custom-select-indicator-color:                  #65a13c;
+
+$custom-control-indicator-checked-color:         $primary;
+$custom-control-indicator-checked-bg:            white;
+$custom-control-indicator-checked-border-color:  $custom-control-indicator-checked-color;
+
+//
+// ────────────────────────────────────────────────────────────
+// Breadcrumb
+// ────────────────────────────────────────────────────────────
+//
+$breadcrumb-padding-y:              0.5rem;
+$breadcrumb-padding-x:              0;
+$breadcrumb-item-padding:           0.25rem;
+
+$breadcrumb-margin-bottom:          0;
+
+$breadcrumb-bg:                     transparent;
+$breadcrumb-divider-color:          black;
+$breadcrumb-active-color:           black;
+$breadcrumb-divider:                quote("|");
+
+$breadcrumb-border-radius:          0;
+
+//
+// ────────────────────────────────────────────────────────────
+// Progress
+// ────────────────────────────────────────────────────────────
+//
+$progress-bg:                  #d2d1d3;
+
+//
+// ────────────────────────────────────────────────────────────
+// Buttons
+// ────────────────────────────────────────────────────────────
+//
+$btn-box-shadow:              none;
+
+//
+// ────────────────────────────────────────────────────────────
+// Modals
+// ────────────────────────────────────────────────────────────
+//
+$modal-inner-padding:               1.5rem;
+$modal-content-bg:                  #f6f6f6;
+$modal-content-border-width:        0;
+$modal-content-border-radius:       8px;
+$modal-content-box-shadow-sm-up:    4px 4px 10px 0 rgba(black, 0.25), inset 0 1px 3px 0 rgba(black, 0.5);
+$modal-backdrop-opacity:            0.7;
+$modal-sm:                          400px;
+
+//
+// ────────────────────────────────────────────────────────────
+// Modals
+// ────────────────────────────────────────────────────────────
+//
+$navbar-padding-y:                  $spacer;
+$navbar-brand-padding-y:            0;
+
+//
+// ────────────────────────────────────────────────────────────
+// Dropdown
+// ────────────────────────────────────────────────────────────
+//
+$dropdown-min-width:                1px;
+$dropdown-border-width:             0;
+$dropdown-border-radius:            3px;
+$dropdown-box-shadow:               0 1px 15px 0 rgba(51, 51, 51, 0.1);
+
+//
+// ────────────────────────────────────────────────────────────
+// Navbar
+// ────────────────────────────────────────────────────────────
+//
+$navbar-dark-color:                 $gray-100;
+$navbar-dark-hover-color:           $navbar-dark-color;
+$navbar-dark-active-color:          $navbar-dark-hover-color;
+
+//
+// ────────────────────────────────────────────────────────────
+// Cards
+// ────────────────────────────────────────────────────────────
+//
+$card-border-width:                 2px;
+$card-border-radius:                0;
+$card-border-color:                 $gray-200;
+$card-inner-border-radius:          $card-border-radius;
+$card-cap-bg:                       $gray-200;
+$card-color:                        $secondary;

@@ -1,0 +1,55 @@
+{% extends 'layout/base.html' %}
+{% load static %}
+{% block content %}
+<section class="container">
+    <div class="row row-md my-7 py-7">
+      <div class="col-12 mb-5">
+          <h1 class="text-gray text-xl font-weight-medium text-uppercase line-height-md title-mobile text-mobile"><span class="text-primary-light font-weight-semibold hyphen-auto">{{ user.first_name|upper}}</span> selecciona el<br> tipo de <span class="text-primary-light font-weight-semibold">declaración</span><br> que deseas realizar</h1>
+      </div>
+      <div class="col-md-6 mb-5">
+        <a href="{% url 'declaracion:informacion-general' 1 %}" class="btn btn-secondary btn-block btn-lg font-weight-semibold">DECLARACIÓN INICIAL</a>
+        <p class="mt-2 text-primary-light text-md">Realízala si estas dentro de los 60 días naturales a tu ingreso o reingreso al servicio público.</p>
+      </div>
+      <div class="col-md-6 mb-5">
+        <a href="{% url 'declaracion:informacion-general' 2 %}" class="btn btn-secondary btn-block btn-lg font-weight-semibold">DECLARACIÓN ANUAL</a>
+        <p class="mt-2 text-primary-light text-md">Realízala durante el mes de mayo de cada año,siempre y cuando estes activo en el servicio público y ya hayas realizado una declaración inicial.</p>
+      </div>
+      <div class="col-md-6 mb-5">
+        <a href="{% url 'declaracion:informacion-general' 4 %}" class="btn btn-secondary btn-block btn-lg font-weight-semibold">DECLARACIÓN DE ACTUALIZACIÓN</a>
+        <p class="mt-2 text-primary-light text-md">Puedes realizarla en cualquier momento en que consideres oportuno actualizar un posible conflicto de interés, tu nivel académico o experiencia laboral.</p>
+      </div>
+      <div class="col-md-6 mb-5">
+        <a href="{% url 'declaracion:informacion-general' 3 %}" class="btn btn-secondary btn-block btn-lg font-weight-semibold">DECLARACIÓN DE CONCLUSIÓN</a>
+        <p class="mt-2 text-primary-light text-md">Realízala dentro de los siguientes 60 días naturales a la conclusión de tu encargo en el servicio público.</p>
+      </div>
+    </div>
+
+{% if declaracion is not None %}
+
+<div class="modal fade" id="modal-aviso-declaracion-activa" tabindex="-1" role="dialog" aria-hidden="true"  data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <a href="{% url 'declaracion:informacion-general' declaracion.folio %}">
+          <img src="{% static 'src/img/close.svg' %}" alt="Cerrar" class="svg">
+        </a><br/><br/>
+        <p class="text-lg w-75 mb-7 mx-auto">NO PUEDES INICIAR UNA NUEVA DECLARACIÓN PORQUE TIENES UNA EN CURSO.<br/><br/>
+            <a href="{% url 'declaracion:informacion-general' declaracion.folio %}"
+                 class="btn btn-success-lighter">
+                            <span class="texto-chico-boton">IR A LA DECLARACIÓN EN CURSO</span>
+            </a>
+
+        </p>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endif %}
+
+</section>
+{% endblock %}

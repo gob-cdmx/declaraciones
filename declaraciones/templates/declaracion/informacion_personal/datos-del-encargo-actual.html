@@ -1,0 +1,189 @@
+{% include '../../layout//headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        {% include '../../layout//sidebar.html' %}
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Información personal</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Datos del encargo actual</li>
+                </ol>
+            </nav>
+            <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+            <h2 class="h6 mb-3 text-uppercase">1. Información personal <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">III. Datos del encargo actual</span></h2>
+            <form action="{% url 'declaracion:datos-del-encargo-actual' folio_declaracion %}" method="post" novalidate>
+            {% csrf_token %}
+                <div class="row ">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="ente-publico" class="label-secondary">Ente público<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar el ente público en el que ejerce su cargo.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                               {% bootstrap_field datos_encargo_actual_form.cat_entes_publicos  show_label=False %}
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="nombre-cargo" class="label-secondary">Nombre del empleo, cargo o comisión<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nombre del empleo cargo o comisión.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field datos_encargo_actual_form.empleo_cargo_comision  show_label=False placeholder="Nombre del empleo, cargo o comisión" %}
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="nivel-gobierno" class="label-secondary">Nivel / orden de gobierno<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nivel de encargo asignado.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field datos_encargo_actual_form.cat_ordenes_gobierno  show_label=False %}
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <label class="label-secondary">Poder / Naturaleza jurídica del ente<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Elegir la naturaleza jurídica como: Ejecutivo, Legislativo, Judicial, órgano constitucional autónomo.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/radiobuttons.html' with field_select=datos_encargo_actual_form.fields.cat_poderes  field_name=datos_encargo_actual_form.cat_poderes otro_name=datos_encargo_actual_form.otro_naturalezas_juridicas %}
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="label-secondary">Contrato por honorarios <span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar si/no">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <div class="row">
+                            <div class="col-auto">
+                                <div class="custom-control custom-radio custom-control-inline radio-secondary">
+                                    <input type="radio" id="honorarios-si" name="datos_encargo_actual-honorarios" class="custom-control-input" value="true">
+                                    <label class="custom-control-label text-rg" for="honorarios-si">Sí</label>
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <div class="custom-control custom-radio custom-control-inline radio-secondary">
+                                    <input type="radio" id="honorarios-no" name="datos_encargo_actual-honorarios" class="custom-control-input" value="false">
+                                    <label class="custom-control-label text-rg" for="honorarios-no">No</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="nivel-cargo" class="label-secondary">Nivel de encargo<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nivel de encargo asignado.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field datos_encargo_actual_form.nivel_encargo  show_label=False placeholder="Nivel de encargo" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="area-adscripcion" class="label-secondary">Área de adscripción<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nombre de la unidad administrativa.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field datos_encargo_actual_form.area_adscripcion  show_label=False placeholder="Área de adscripción" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary">Fecha de toma de posesión / conclusión<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Fecha de inicio o conclusión.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field datos_encargo_actual_form.posesion_inicio  show_label=False placeholder="Fecha de toma de posesión / conclusión" %}
+
+                    </div>
+
+                    <div class="col-md-4">
+                      <label class="label-secondary">Lugar donde se ubica<span class="text-danger text-lg font-weight-bold">*</span></label>
+                      <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar lugar de ubicación.">
+                          <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                      </button>
+                      {%include  'layout/nacionalidad.html' with field=datos_encargo_actual_form.cat_paises show_label=False %}
+                    </div>
+                    <div class="col-12">
+                        <label class="label-secondary mb-0">Dirección en la que se presta el empleo o comisión</label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Dirección en la que se presta el empleo o comisión">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <p class="text-sm font-weight-light text-primary mb-2">Lugar en el que se encuentra</p>
+                    </div>
+                    {% include 'declaracion/direccion.html' with form=domicilio_form %}
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="cargo-tel" class="label-secondary">Teléfono laboral</label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Número teléfonico del encargo.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field datos_encargo_actual_form.telefono_laboral  show_label=False placeholder="Teléfono laboral"  field_class="valida_telefono"  %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="cargo-tel" class="label-secondary">Teléfono laboral extensión</label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Número exterior donde se ubica el encargo.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field datos_encargo_actual_form.telefono_extension  show_label=False placeholder="Teléfono laboral extensión" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="cargo-email" class="label-secondary">Correo electrónico laboral</label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Correo electrónico del encargo.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field datos_encargo_actual_form.email_laboral  field_class='valida_email'  show_label=False placeholder="Correo electrónico laboral" %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <label class="label-secondary mb-2">Sector / industria<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar el sector o Área al que pertenece.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+
+                      {% include 'layout/radiobuttons.html' with field_select=datos_encargo_actual_form.fields.cat_sectores_industria  field_name=datos_encargo_actual_form.cat_sectores_industria otro_name=datos_encargo_actual_form.otro_sector %}
+
+                    </div>
+                    <div class="col-12 mt-3">
+                        <label class="label-secondary mb-2">Funciones principales<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar funciones prinicipales.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                    {% include 'layout/radiobuttons.html' with field_select=datos_encargo_actual_form.fields.cat_funciones_principales  field_name=datos_encargo_actual_form.cat_funciones_principales otro_name=datos_encargo_actual_form.otra_funcion %}
+
+
+                    </div>
+                </div>
+                <div class="col-12" style="margin-top: 2rem; padding: 0px;">
+                        <div class="form-group">
+                          <label class="label-secondary mb-2">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+                          <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Observaciones y Comentarios">
+                              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                          </button>
+                          {% bootstrap_field observaciones_form.observacion    show_label=False placeholder="Observaciones y comentarios" %}
+
+                        </div>
+                    </div>
+                    {% include 'layout/guardar.html' %}
+                <div class="row"><div class="col-12"><br/></div></div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include '../../layout//footer.html' %}

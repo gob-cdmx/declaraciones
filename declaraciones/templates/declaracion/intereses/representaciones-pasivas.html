@@ -1,0 +1,193 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        {% include 'layout/sidebar.html'%}
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Intereses</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Representación Pasiva</li>
+                </ol>
+            </nav>
+            <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+            <h2 class="h6 mb-3 text-uppercase">2. INTERESES <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">V. Representación Pasiva</span></h2>
+            {% if agregar %}
+              <form action="{% url 'declaracion:representacion-pasiva-agregar' folio_declaracion %}" method="post" novalidate>
+            {% elif editar_id %}
+              <form action="{% url 'declaracion:representacion-pasiva-editar' folio_declaracion editar_id %}" method="post" novalidate>
+            {% else %}
+              <form action="{% url 'declaracion:representacion-pasiva' folio_declaracion %}" method="post" novalidate>
+            {% endif %}
+                {% csrf_token %}
+                <div class="row">
+                  {% include 'layout/no_aplica.html' %}
+                </div>
+                {% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Tipo de representación" titulo_dos="Sector/Industria" titulo_tres="Nombre o razón social de la parte representada" agregar=agregar editar_id=editar_id %}
+                <div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+                    <div class="col-12">
+                      <label for="" class="label-secondary">Tipo de representación<span class="text-danger text-lg font-weight-bold">*</span></label>
+                      <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Tipo de representación.">
+                          <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                      </button>
+                        {% include 'layout/radiobuttons.html' with field_select=representaciones_pasivas_form.fields.cat_tipos_representaciones  field_name=representaciones_pasivas_form.cat_tipos_representaciones otro_name=representaciones_pasivas_form.otra_representacion  col=3 col_o=6 %}
+                    </div>
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="label-secondary">Tipo de persona del representante<span class="text-danger text-lg font-weight-bold">*</span> </label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Tipo de persona del representante">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <div class="row">
+                            <div class="col-1">
+                                <div class="custom-control custom-radio custom-control-inline radio-secondary tipo_persona">
+                                    <input {% if not info_personal_var_form.es_fisica.initial %}checked{% endif %}  {% if info_personal_var_form.es_fisica.initial == True %}checked{% endif %} type="radio"  id="id-{{info_personal_var_form.es_fisica.html_name}}-f" value="true" name="{{ info_personal_var_form.es_fisica.html_name }}" class="custom-control-input pfisica" onchange="dui.radioTPersona(this.value,'{{ info_personal_var_form.es_fisica.html_name }}')">
+                                    <label class="custom-control-label text-rg" for="id-{{info_personal_var_form.es_fisica.html_name}}-f">Física</label>
+                                </div>
+                            </div>
+                            <div class="col-1">
+                                <div class="custom-control custom-radio custom-control-inline radio-secondary tipo_persona">
+                                    <input {% if info_personal_var_form.es_fisica.initial == False %}checked{% endif %} type="radio" id="id-{{ info_personal_var_form.es_fisica.html_name }}-m"  value="false" name="{{ info_personal_var_form.es_fisica.html_name }}" class="custom-control-input pmoral " onchange="dui.radioTPersona(this.value,'{{ info_personal_var_form.es_fisica.html_name }}')">
+                                    <label class="custom-control-label text-rg" for="id-{{ info_personal_var_form.es_fisica.html_name }}-m">Moral</label>
+                                </div>
+                            </div>
+                            <div class="col-12" >
+                                <div id="id_{{ info_personal_var_form.es_fisica.html_name }}_container_fisica" class="row">
+                                  <div class="col-md-4">
+                                      <div class="form-group">
+                                        <label for="nombre-representacion" class="label-secondary">Nombre del representante</label>
+                                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nombre o Nombres completos sin abreviaturas ni signos especiales.">
+                                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                        </button>
+                                          {% bootstrap_field info_personal_var_form.nombres show_label=False placeholder="Nombre" %}
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <div class="form-group">
+                                          <label for="nombre-representacion" class="label-secondary">Primer apellido del representante</label>
+                                          <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Primer apellido completo sin abreviaturas ni signos especiales.">
+                                              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                          </button>
+                                          {% bootstrap_field info_personal_var_form.apellido1 show_label=False placeholder="Primer apellido" %}
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <div class="form-group">
+                                          <label for="nombre-representacion" class="label-secondary">Segundo apellido del representante</label>
+                                          <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Segundo apellido completo sin abreviaturas ni signos especiales.">
+                                              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                          </button>
+                                          {% bootstrap_field info_personal_var_form.apellido2 show_label=False placeholder="Segundo apellido" %}
+                                      </div>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <div class="form-group">
+                                          <label for="curp-representada" class="label-secondary">CURP del representante <small class="text-help text-primary">(si aplica)</small></label>
+                                          <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 18 caracteres de la Clave Unica de Registro de Población.">
+                                              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                          </button>
+                                          {% bootstrap_field info_personal_var_form.curp field_class='valida_curp' show_label=False placeholder="CURP" %}
+                                      </div>
+                                  </div>
+                                  <div class="col-4">
+                                      <div class="form-group">
+                                          <label for="rfc-representada" class="label-secondary">Fecha de nacimiento del representante <span class="text-danger text-lg font-weight-bold">*</span></label>
+                                          <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Fecha de nacimiento del representante ">
+                                              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                          </button>
+                                           {% bootstrap_field info_personal_var_form.fecha_nacimiento show_label=False placeholder="Fecha de nacimiento del representante " %}
+                                      </div>
+                                  </div>
+                                </div>
+                                <div id="id_{{ info_personal_var_form.es_fisica.html_name }}_container_moral" class="row">
+                                  <div class="col-md-12">
+                                      <div class="form-group">
+                                          <label for="nombre2" class="label-secondary">Razón social</label>
+                                          <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Razón social sin abreviaturas ni signos especiales.">
+                                              <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                          </button>
+                                          {% bootstrap_field info_personal_var_form.razon_social show_label=False placeholder="Razón social" %}
+                                      </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label class="label-secondary">Fecha de inicio de la representación </label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Fecha de inicio de la representación">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                         {% bootstrap_field representaciones_pasivas_form.fecha_inicio  show_label=False placeholder="Fecha de inicio de la representación" %}
+                       </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="pais" class="label-secondary">Nacionalidad(es) del representante<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nacionalidad(es) del representante">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var_form.nacionalidades   field_class="pais multiples-nacionalidades"  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="rfc-representada" class="label-secondary">RFC del representante <small class="text-help text-primary">(si aplica)</small></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                             {% bootstrap_field info_personal_var_form.rfc  field_class='valida_rfc' show_label=False placeholder="RFC del representante" %}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="rfc-representada" class="label-secondary">Ocupación/Profesión<span class="text-danger text-lg font-weight-bold">*</span> </label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Ocupación/Profesión ">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                             {% bootstrap_field info_personal_var_form.ocupacion_girocomercial show_label=False placeholder="Ocupación/Profesión " %}
+                        </div>
+                    </div>
+                      <div class="col-12">
+                        <div class="form-group">
+                            <label for="tipo-representacion" class="label-secondary">Sector/Industria</label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar el sector al que pertenece.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% include 'layout/radiobuttons.html' with field_select=info_personal_var_form.fields.cat_sectores_industria  field_name=info_personal_var_form.cat_sectores_industria otro_name=info_personal_var_form.otro_sector col=4 col_o=4 %}
+                        </div>
+                    </div>
+                     <div class="col-12">
+                        <div class="form-group">
+                            <label for="observaciones" class="label-secondary">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Detallar información de la representación.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field observaciones_form.observacion show_label=False placeholder="Observaciones y comentarios" %}
+                        </div>
+                    </div>
+                   </div>
+                   <div class="col-12 text-right row-form"  style="{% if checked %}display: none;{% endif %}">
+                     <button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-success font-weight-semibold text-uppercase">
+                       Guardar y agregar otra representación pasiva
+                         <img src="/static/src/img/plus.svg" alt="agregar" class="svg">
+                     </button>
+                               </div>
+                    {% include 'layout/guardar.html' %}
+                <div class="row"><div class="col-12"><br/></div></div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

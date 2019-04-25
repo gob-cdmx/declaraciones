@@ -1,0 +1,603 @@
+{% load no_aplica %}
+<div class="row">
+  <div class="col-md-12">
+    <h2 class="h6 text-uppercase" style="color: #31b700;">I. BIENES INMUEBLES</h2>
+  </div>
+  {% no_aplica declaracion.folio 'bienes-inmuebles' as checked %}
+  {% if checked %}
+    {% include 'declaracion/admin/frm_no_aplica.html' %}
+  {% else %}
+  {% for inmueble in declaracion.bienesinmuebles_set.all %}
+  <div class="col-md-6">
+    <h2 class="h6 text-uppercase">BIEN INMUEBLE {{ forloop.counter }}</h2>
+    <dl class="p_opciones"><dt>Tipo de operacion </dt>
+      <dd class="text-black_opciones">{{ inmueble.tipo_operacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Tipo de bien </dt>
+      <dd class="text-black_opciones">{{ inmueble.tipo_inmueble }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Superficie del terreno </dt>
+      <dd class="text-black_opciones">{{ inmueble.superficie_terreno }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Superficie de construcción </dt>
+      <dd class="text-black_opciones">{{ inmueble.superficie_construccion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Titular </dt>
+      <dd class="text-black_opciones">{{ inmueble.titular }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Porcentaje de propiedad </dt>
+      <dd class="text-black_opciones">{{ inmueble.activos_bienes.bienespersonas_set.first.porcentaje }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Nombre del copropietario</dt>
+      <dd class="text-black_opciones">{{ inmueble.copropietario.otra_persona.nombre_completo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Número de la escritura pública </dt>
+      <dd class="text-black_opciones">{{ inmueble.num_escritura_publica }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Número del registro público de la propiedad</dt>
+      <dd class="text-black_opciones">{{ inmueble.num_registro_publico }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Folio real</dt>
+      <dd class="text-black_opciones">{{ inmueble.folio_real }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Fecha de contrato de compra-venta privado </dt>
+      <dd class="text-black_opciones">{{ inmueble.fecha_contrato_compra }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Forma de adquisición</dt>
+      <dd class="text-black_opciones">{{ inmueble.forma_adquisicion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Nombre, denominación o razón social de quien se adquirió el inmueble</dt>
+      <dd class="text-black_opciones">{{ inmueble.propierario_anterior.otra_persona.nombre_completo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>RFC de quien se adquirió el inmueble </dt>
+      <dd class="text-black_opciones">{{ inmueble.propierario_anterior.otra_persona.rfc }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>CURP de quien se adquirió el inmueble</dt>
+      <dd class="text-black_opciones">{{ inmueble.propierario_anterior.otra_persona.curp }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Relación con la persona a quien se adquirió en inmueble</dt>
+      <dd class="text-black_opciones">{{ inmueble.activos_bienes.bienespersonas_set.first.relacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Sector/industria</dt>
+      <dd class="text-black_opciones">{{ inmueble.propierario_anterior.otra_persona.sectores_industrias }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Fecha de adquisición</dt>
+      <dd class="text-black_opciones">{{ inmueble.fecha_adquisicion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Precio de adquisición</dt>
+      <dd class="text-black_opciones">{{ inmueble.precio_adquisicion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Valor catastral</dt>
+      <dd class="text-black_opciones">{{ inmueble.valor_catastral }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Observaciones y comentarios</dt>
+      <dd class="text-black_opciones">{{ inmueble.observaciones }}</dd>
+    </dl>
+
+  </div>
+  <div class="col-md-6">
+    {% include 'declaracion/admin/frm_domicilio.html' with domicilio=inmueble.domicilios %}
+  </div>
+  {% endfor %}
+  {% endif %}
+  <hr>
+  <div class="col-md-12">
+    <h2 class="h6 text-uppercase" style="color: #31b700;">II. BIENES MUEBLES</h2>
+  </div>
+  {% no_aplica declaracion.folio 'bienes-muebles' as checked %}
+  {% if checked %}
+    {% include 'declaracion/admin/frm_no_aplica.html' %}
+  {% else %}
+  {% for mueble in declaracion.bienesmuebles_set.all %}
+  <div class="col-md-6">
+    <h2 class="h6 text-uppercase">BIEN MUEBLE {{ forloop.counter }}</h2>
+    <dl class="p_opciones"><dt>Tipo de operacion</dt>
+      <dd class="text-black_opciones">{{ mueble.tipo_operacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Tipo de mueble</dt>
+      <dd class="text-black_opciones">{{ mueble.tipo_mueble }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Marca</dt>
+      <dd class="text-black_opciones">{{ mueble.marca }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Submarca, línea o tipo</dt>
+      <dd class="text-black_opciones">{{ mueble.submarca }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Modelo </dt>
+      <dd class="text-black_opciones">{{ mueble.modelo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Número de serie</dt>
+      <dd class="text-black_opciones">{{ mueble.num_serie }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Lugar de registro</dt>
+      <dd class="text-black_opciones">{{ mueble.cat_paises }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Titular</dt>
+      <dd class="text-black_opciones">{{ mueble.titular }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Porcentaje de propiedad del declarante </dt>
+      <dd class="text-black_opciones">{{ mueble.activos_bienes.bienespersonas_set.first.porcentaje }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Nombres de copropietarios</dt>
+      <dd class="text-black_opciones">{{ mueble.copropietario.otra_persona.nombre_completo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Número de registro vehicular</dt>
+      <dd class="text-black_opciones">{{ mueble.num_registro_vehicular }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Forma de adquisición</dt>
+      <dd class="text-black_opciones">{{ mueble.forma_adquisicion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Nombre/razón social de quien se adquirió el bien mueble</dt>
+      <dd class="text-black_opciones">{{ mueble.propierario_anterior.otra_persona.nombre_completo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>RFC de quien se adquirió el bien mueble</dt>
+      <dd class="text-black_opciones">{{ mueble.propierario_anterior.otra_persona.rfc }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Relación con la persona a quien se adquirió el mueble</dt>
+      <dd class="text-black_opciones">{{ mueble.activos_bienes.bienespersonas_set.first.relacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Sector/industria</dt>
+      <dd class="text-black_opciones">{{ mueble.copropietario.otra_persona.sectores_industrias }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Fecha de adquisición</dt>
+      <dd class="text-black_opciones">{{ mueble.fecha_adquisicion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Precio de adquisición</dt>
+      <dd class="text-black_opciones">{{ mueble.precio_adquisicion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Moneda</dt>
+      <dd class="text-black_opciones">{{ mueble.cat_monedas }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Observaciones y comentarios</dt>
+      <dd class="text-black_opciones">{{ mueble.observaciones }}</dd>
+    </dl>
+
+
+  </div>
+  <div class="col-md-6">
+
+  </div>
+  {% endfor %}
+  {% endif %}
+  <div class="col-md-12">
+    <h2 class="h6 text-uppercase" style="color: #31b700;">III. BIENES MUEBLES NO REGISTRABLES</h2>
+  </div>
+  {% no_aplica declaracion.folio 'muebles-noregistrables' as checked %}
+  {% if checked %}
+    {% include 'declaracion/admin/frm_no_aplica.html' %}
+  {% else %}
+  {% for noregistrable in declaracion.mueblesnoregistrables_set.all %}
+  <div class="col-md-6">
+    <h2 class="h6 text-uppercase">BIEN MUEBLE NO REGISTRABLE {{ forloop.counter }}</h2>
+    <dl class="p_opciones"><dt>Tipo de operacion</dt>
+      <dd class="text-black_opciones">{{ noregistrable.tipo_operacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Tipo de bien</dt>
+      <dd class="text-black_opciones">{{ noregistrable.tipo_mueble }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Descripción del bien</dt>
+      <dd class="text-black_opciones">{{ noregistrable.descripcion_bien }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Titular</dt>
+      <dd class="text-black_opciones">{{ noregistrable.titular }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Porcentaje de propiedad</dt>
+      <dd class="text-black_opciones">{{ noregistrable.activos_bienes.bienespersonas_set.first.porcentaje }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Nombres de copropietarios</dt>
+      <dd class="text-black_opciones">{{ noregistrable. }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Forma de adquisición</dt>
+      <dd class="text-black_opciones">{{ noregistrable.forma_adquisicion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Nombre o razón social de quien se adquirió el bien mueble </dt>
+      <dd class="text-black_opciones">{{ noregistrable.propierario_anterior.otra_persona.nombre_completo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Relación con la persona a quien se adquirió el mueble</dt>
+      <dd class="text-black_opciones">{{ noregistrable.activos_bienes.bienespersonas_set.first.relacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Fecha de adquisición</dt>
+      <dd class="text-black_opciones">{{ noregistrable.fecha_adquisicion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Precio de adquisición</dt>
+      <dd class="text-black_opciones">{{ noregistrable.precio_adquisicion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Observaciones y comentarios</dt>
+      <dd class="text-black_opciones">{{ noregistrable.observaciones }}</dd>
+    </dl>
+
+
+  </div>
+  <div class="col-md-6">
+
+  </div>
+  {% endfor %}
+  {% endif %}
+  <div class="col-md-12">
+    <h2 class="h6 text-uppercase" style="color: #31b700;">IV. INVERSIONES, CUENTAS, VALORES</h2>
+  </div>
+  {% no_aplica declaracion.folio 'inversiones' as checked %}
+  {% if checked %}
+    {% include 'declaracion/admin/frm_no_aplica.html' %}
+  {% else %}
+  {% for inversion in declaracion.inversiones_set.all %}
+  <div class="col-md-6">
+    <h2 class="h6 text-uppercase">INVERSIONES, CUENTAS, VALORES {{ forloop.counter }}</h2>
+    <dl class="p_opciones"><dt>Tipo de operacion</dt>
+      <dd class="text-black_opciones">{{ inversion.tipo_operacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Tipo de inversión</dt>
+      <dd class="text-black_opciones">{{ inversion.tipo_inversion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Tipo específico de la inversión</dt>
+      <dd class="text-black_opciones">{{ inversion.tipo_especifico }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Número de cuenta, contrato o identificador de la inversión</dt>
+      <dd class="text-black_opciones">{{ inversion.num_cuenta }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Nacional o extranjero</dt>
+      <dd class="text-black_opciones">{{ inversion.cat_pais }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Nombre de la institución</dt>
+      <dd class="text-black_opciones">{{ inversion.persona.nombre_completo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>RFC de la institución</dt>
+      <dd class="text-black_opciones">{{ inversion.persona.rfc }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Sector/Industria</dt>
+      <dd class="text-black_opciones">{{ inversion.persona.sectores_industrias }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Forma de adquisición</dt>
+      <dd class="text-black_opciones">{{ inversion.forma_adquisicion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Fecha de inicio</dt>
+      <dd class="text-black_opciones">{{ inversion.fecha_inicio }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Monto original</dt>
+      <dd class="text-black_opciones">{{ inversion.monto_original }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Tipo de moneda</dt>
+      <dd class="text-black_opciones">{{ inversion.cat_monedas }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Tasa de interés</dt>
+      <dd class="text-black_opciones">{{ inversion.tasa_interes }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Saldo al año que se reporta</dt>
+      <dd class="text-black_opciones">{{ inversion.saldo_actual }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Plazo</dt>
+      <dd class="text-black_opciones">{{ inversion.plazo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Unidad de medida del plazo</dt>
+      <dd class="text-black_opciones">{{ inversion.cat_unidades_temporales }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Titular</dt>
+      <dd class="text-black_opciones">{{ inversion.titular }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Porcentaje de la inversión </dt>
+      <dd class="text-black_opciones">{{ inversion.porcentaje_inversion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Observaciones y comentarios</dt>
+      <dd class="text-black_opciones">{{ inversion.observaciones }}</dd>
+    </dl>
+
+
+  </div>
+  <div class="col-md-6">
+    {% include 'declaracion/admin/frm_domicilio.html' with domicilio=inversion.persona.domicilios %}
+  </div>
+  {% endfor %}
+  {% endif %}
+  <div class="col-md-12">
+    <h2 class="h6 text-uppercase" style="color: #31b700;">V. EFECTIVO Y METALES</h2>
+  </div>
+  {% no_aplica declaracion.folio 'efectivo-metales' as checked %}
+  {% if checked %}
+    {% include 'declaracion/admin/frm_no_aplica.html' %}
+  {% else %}
+  {% for efectivo in declaracion.efectivometales_set.all %}
+  <div class="col-md-6">
+    <h2 class="h6 text-uppercase">EFECTIVO O METAL {{ forloop.counter }}</h2>
+    <dl class="p_opciones"><dt>Tipo de operacion</dt>
+      <dd class="text-black_opciones">{{ efectivo.tipo_operacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Tipo de moneda</dt>
+      <dd class="text-black_opciones">{{ efectivo.cat_monedas }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Monto</dt>
+      <dd class="text-black_opciones">{{ efectivo.monto_efectivo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Tipo de metal</dt>
+      <dd class="text-black_opciones">{{ efectivo.tipo_metal }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Unidades</dt>
+      <dd class="text-black_opciones">{{ efectivo.unidades }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Monto</dt>
+      <dd class="text-black_opciones">{{ efectivo.monto_metales }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Forma de adquisición</dt>
+      <dd class="text-black_opciones">{{ efectivo.forma_adquisicion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Observaciones y comentarios</dt>
+      <dd class="text-black_opciones">{{ efectivo.observaciones }}</dd>
+    </dl>
+  </div>
+  <div class="col-md-6">
+
+  </div>
+  {% endfor %}
+  {% endif %}
+  <div class="col-md-12">
+    <h2 class="h6 text-uppercase" style="color: #31b700;">VI. FIDEICOMISOS</h2>
+  </div>
+  {% no_aplica declaracion.folio 'fideicomisos' as checked %}
+  {% if checked %}
+    {% include 'declaracion/admin/frm_no_aplica.html' %}
+  {% else %}
+  {% for fideicomiso in declaracion.fideicomisos_set.all %}
+  <div class="col-md-6">
+    <h2 class="h6 text-uppercase">FIDEICOMISO {{ forloop.counter }}</h2>
+    <dl class="p_opciones"><dt>Tipo de operacion</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.tipo_operacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Nombre o identificador del fideicomiso</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.nombre_fideicomiso }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Tipo de fideicomiso</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.tipo_fideicomiso }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Objetivo del fideicomiso</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.objetivo_fideicomiso }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Número de registro o identificador</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.num_registro }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Fecha de creación del fideicomiso</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.fecha_creacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Vigencia del fideicomiso </dt>
+      <dd class="text-black_opciones">{{ fideicomiso.plazo_vigencia }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Residencia del fideicomiso</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.cat_paises }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Valor del fideicomiso</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.valor_fideicomiso }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Moneda del fideicomiso</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.cat_monedas }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Porcentaje propiedad/derechos fiduciarios</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.porcentaje }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Ingreso monetario que obtiene del fideicomiso</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.ingreso_monetario }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Institución fiduciaria</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.institucion_fiduciaria }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Nombre, denominación o razón social del fideicomitente</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.fideicomitente.otra_persona.nombre_completo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Nombre, denominación o razón social del fideicomisario</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.fideicomisario.otra_persona.nombre_completo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Nombre, denominación o razón social del fiduciario</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.fiduciario.otra_persona.nombre_completo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>RFC del fideicomitente</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.fideicomitente.otra_persona.rfc }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>RFC del fideicomisario</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.fideicomisario.otra_persona.rfc }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>RFC del fiduciario</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.fiduciario.otra_persona.rfc }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>CURP del fideicomitente </dt>
+      <dd class="text-black_opciones">{{ fideicomiso.fideicomitente.otra_persona.curp }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>CURP del fideicomisario </dt>
+      <dd class="text-black_opciones">{{ fideicomiso.fideicomisario.otra_persona.curp }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>CURP del fiduciario</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.fiduciario.otra_persona.curp }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Fecha de nacimiento o de constitución del fideicomitente</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.fideicomitente.otra_persona.fecha_nacimiento }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Fecha de nacimiento o de constitución del fideicomisario</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.fideicomisario.otra_persona.fecha_nacimiento }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Fecha de nacimiento o de constitución del fiduciario</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.fiduciario.otra_persona.fecha_nacimiento }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Marca</dt>
+      <dd class="text-black_opciones"></dd>
+    </dl>
+    <dl class="p_opciones"><dt>Observaciones y comentarios</dt>
+      <dd class="text-black_opciones">{{ fideicomiso.observaciones }}</dd>
+    </dl>
+  </div>
+  <div class="col-md-6">
+    <h2></h2>
+    <br>
+    <p class="p_opciones_subtitle">Domicilio del fideicomitente</p>
+      {% include 'declaracion/admin/frm_domicilio.html' with domicilio=fideicomiso.fideicomitente.otra_persona.domicilios %}
+    <br>
+    <p class="p_opciones_subtitle">Domicilio del fideicomisario</p>
+      {% include 'declaracion/admin/frm_domicilio.html' with domicilio=fideicomiso.fideicomisario.otra_persona.domicilios %}
+    <br>
+    <p class="p_opciones_subtitle">Domicilio del fiduciario</p>
+      {% include 'declaracion/admin/frm_domicilio.html' with domicilio=fideicomiso.fiduciario.otra_persona.domicilios %}
+  </div>
+  {% endfor %}
+  {% endif %}
+  <div class="col-md-12">
+    <h2 class="h6 text-uppercase" style="color: #31b700;">VII. BIENES INTANGIBLES</h2>
+  </div>
+  {% no_aplica declaracion.folio 'bienes-intangibles' as checked %}
+  {% if checked %}
+    {% include 'declaracion/admin/frm_no_aplica.html' %}
+  {% else %}
+  {% for bienes in declaracion.bienesintangibles_set.all %}
+  <div class="col-md-6">
+    <h2 class="h6 text-uppercase">BIEN INTANGIBLE {{ forloop.counter }}</h2>
+    <dl class="p_opciones"><dt>Tipo de operacion</dt>
+      <dd class="text-black_opciones">{{ bienes.tipo_operacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Propietario registrado</dt>
+      <dd class="text-black_opciones">
+        {% for persona in bienes.activos_bienes.bienespersonas_set.all %}
+          {% if persona.es_propietario %}
+            {{persona.otra_persona.nombres}}
+          {% endif %}
+        {% endfor %}
+      </dd>
+    </dl>
+    <dl class="p_opciones"><dt>Descripción</dt>
+      <dd class="text-black_opciones">{{ bienes.descripcion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Ente público encargado del registro </dt>
+      <dd class="text-black_opciones">{{ bienes.otra_dependencia }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Número de registro</dt>
+      <dd class="text-black_opciones">{{ bienes.num_registro }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Fecha de registro</dt>
+      <dd class="text-black_opciones">{{ bienes.fecha_registro }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Sector/Industria</dt>
+      <dd class="text-black_opciones">{{ bienes.sectores_industrias }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Precio de adquisición</dt>
+      <dd class="text-black_opciones">{{ bienes.precio_adquisicion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Forma de adquisición</dt>
+      <dd class="text-black_opciones">{{ bienes.forma_adquisicion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Fecha de vencimiento</dt>
+      <dd class="text-black_opciones">{{ bienes.fecha_vencimiento }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Porcentaje de propiedad</dt>
+      <dd class="text-black_opciones"></dd>
+    </dl>
+    <dl class="p_opciones"><dt>Precio total de adquisición</dt>
+      <dd class="text-black_opciones">{{ bienes.precio_total_adquisicion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Moneda</dt>
+      <dd class="text-black_opciones">{{ bienes.cat_monedas }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Nombre, denominación o razón social del copropietario</dt>
+      <dd class="text-black_opciones">{{ bienes.copropietario.otra_persona.nombre_completo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Porcentaje de propiedad del copropietario</dt>
+      <dd class="text-black_opciones">{{ bienes.copropietario.porcentaje }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Observaciones y comentarios</dt>
+      <dd class="text-black_opciones">{{ bienes.observaciones }}</dd>
+    </dl>
+  </div>
+  <div class="col-md-6">
+
+  </div>
+  {% endfor %}
+  {% endif %}
+  <div class="col-md-12">
+    <h2 class="h6 text-uppercase" style="color: #31b700;">VIII. CUENTAS POR COBRAR</h2>
+  </div>
+  {% no_aplica declaracion.folio 'cuentas-por-cobrar' as checked %}
+  {% if checked %}
+    {% include 'declaracion/admin/frm_no_aplica.html' %}
+  {% else %}
+  {% for cuenta in declaracion.cuentasporcobrar_set.all %}
+  <div class="col-md-6">
+    <h2 class="h6 text-uppercase">CUENTA POR COBRAR {{ forloop.counter }}</h2>
+    <dl class="p_opciones"><dt>Nombre de prestatario </dt>
+      <dd class="text-black_opciones">{{ cuenta.prestatario.otra_persona.nombre_completo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Número de registro</dt>
+      <dd class="text-black_opciones">{{ cuenta.num_registro }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Sector/Industria</dt>
+      <dd class="text-black_opciones">{{ cuenta.prestatario.otra_persona.sectores_industrias }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Fecha del préstamo</dt>
+      <dd class="text-black_opciones">{{ cuenta.fecha_prestamo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Monto original del préstamo </dt>
+      <dd class="text-black_opciones">{{ cuenta.monto_original }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Tasa de interés</dt>
+      <dd class="text-black_opciones">{{ cuenta.tasa_interes }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Saldo pendiente</dt>
+      <dd class="text-black_opciones">{{ cuenta.saldo_pendiente }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Fecha de vencimiento</dt>
+      <dd class="text-black_opciones">{{ cuenta.fecha_vencimiento }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Porcentaje de propiedad</dt>
+      <dd class="text-black_opciones">{{ cuenta.prestatario.porcentaje }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Observaciones y comentarios</dt>
+      <dd class="text-black_opciones">{{ cuenta.observaciones }}</dd>
+    </dl>
+  </div>
+  <div class="col-md-6">
+
+  </div>
+  {% endfor %}
+  {% endif %}
+  <div class="col-md-12">
+    <h2 class="h6 text-uppercase" style="color: #31b700;">IX. USO O BENEFICIOS EN ESPECIE PROPIEDAD DE UN TERCERO</h2>
+  </div>
+  {% no_aplica declaracion.folio 'beneficios-especie' as checked %}
+  {% if checked %}
+    {% include 'declaracion/admin/frm_no_aplica.html' %}
+  {% else %}
+  {% for beneficio in declaracion.beneficiosespecie_set.all %}
+  <div class="col-md-6">
+    <h2 class="h6 text-uppercase">USO O BENEFICIO EN ESPECIE PROPIEDAD DE UN TERCERO {{ forloop.counter }}</h2>
+    <dl class="p_opciones"><dt>Tipo de bien o servicio </dt>
+      <dd class="text-black_opciones">{{ beneficio.tipo_bien_servicio }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Valor de mercado aproximado </dt>
+      <dd class="text-black_opciones">{{ beneficio.valor_mercado }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Nombre denominación o razón social</dt>
+      <dd class="text-black_opciones">{{ beneficio.info_personal_var.nombre_completo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>RFC de la misma persona</dt>
+      <dd class="text-black_opciones">{{ beneficio.info_personal_var.rfc }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>CURP de la misma persona</dt>
+      <dd class="text-black_opciones">{{ beneficio.info_personal_var.curp }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Relación con la persona</dt>
+      <dd class="text-black_opciones">{{ beneficio.tipo_relacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Sector/Industria</dt>
+      <dd class="text-black_opciones">{{ beneficio.sectores_industrias }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Fecha de inicio</dt>
+      <dd class="text-black_opciones">{{ beneficio.fecha_inicio }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt>Observaciones y comentarios</dt>
+      <dd class="text-black_opciones">{{ beneficio.observaciones }}</dd>
+    </dl>
+  </div>
+  <div class="col-md-6">
+    {% include 'declaracion/admin/frm_domicilio.html' with domicilio=beneficio.domicilios %}
+  </div>
+  {% endfor %}
+  {% endif %}
+  <div class="col-md-12">
+    <h2 class="h6 text-uppercase" style="color: #31b700;">OBSERVACIONES DE TUS ACTIVOS</h2>
+  </div>
+  <div class="col-md-12">
+    <p class="text-black_opciones mx-1">{{ observaciones|linebreaks|default_if_none:"" }}</p>
+  </div>
+
+</div>

@@ -1,0 +1,180 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        {% include 'layout/sidebar.html'%}
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Activos</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Cuentas por cobrar</li>
+                </ol>
+            </nav>
+            <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+            <h2 class="h6 text-uppercase">4. Activos <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">VIII. Cuentas por cobrar</span></h2>
+            <p class="text-sm font-italic text-muted font-weight-extralight">Préstamos realizados incluyendo fondos prestados para invertir en negocios lucrativos.</p>
+            {% if agregar %}
+              <form action="{% url 'declaracion:cuentas-por-cobrar-agregar' folio_declaracion %}" method="post" novalidate>
+            {% elif editar_id %}
+              <form action="{% url 'declaracion:cuentas-por-cobrar-editar' folio_declaracion editar_id %}" method="post" novalidate>
+            {% else %}
+              <form action="{% url 'declaracion:cuentas-por-cobrar' folio_declaracion %}" method="post" novalidate>
+            {% endif %}
+                {% csrf_token %}
+                <div class="row">
+                  {% include 'layout/no_aplica.html' %}
+                </div>
+                {% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Nombre, denominación o razón social de quien se adquirió el inmueble" titulo_dos="Monto original del préstamo" titulo_tres="Saldo pendiente" agregar=agregar editar_id=editar_id %}
+                <div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+                    <div class="col-md-12">
+                        {% include 'layout/persona.html' with form=prestatario_form tipo=True %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="rfc-dueño" class="label-secondary mb-2 ">RFC del prestatario</label>
+                                    <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                                        <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                    </button>
+                                    <small class="text-help text-primary">(Si aplica)</small>
+                                    {% bootstrap_field prestatario_form.rfc  show_label=False  field_class='valida_rfc' %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="cobros-registro" class="label-secondary">Número de registro<span class="text-danger text-lg font-weight-bold">*</span></label>
+                                    <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Número de cuenta o contrato que identifique la cuenta por cobrar.">
+                                        <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                    </button>
+                                    {% bootstrap_field cuentas_porcobrar_form.num_registro    show_label=False%}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-2">
+                        <label class="label-secondary">Domicilio de prestatario</label>
+                        <p class="text-sm font-weight-light text-primary mb-2">(Si aplica)</p>
+                    </div>
+
+                    {% include 'declaracion/direccion.html' with form=domicilio_form pais=True %}
+
+                    <div class="col-12 mb-2">
+                        <label class="label-secondary mb-2">Sector / industria <small class="text-help text-primary">(Si aplica)</small><span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar el sector al que pertenece.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+
+                       {% include 'layout/radiobuttons.html' with field_select=prestatario_form.fields.cat_sectores_industria  field_name=prestatario_form.cat_sectores_industria otro_name=prestatario_form.otro_sector %}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary">Fecha del préstamo<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="dd/mm/aaaa">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <div class="form-row">
+                            <div class="col form-group">
+                                {% bootstrap_field cuentas_porcobrar_form.fecha_prestamo    show_label=False%}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="cobros-monto" class="label-secondary">Monto original del préstamo<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Cantidad inicial con la que se origino el instrumento.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field cuentas_porcobrar_form.monto_original    show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-4" style="display: none">
+                        <div class="form-group">
+                            <label for="cobros-monto" class="label-secondary">Moneda</label>
+                            {% bootstrap_field cuentas_porcobrar_form.cat_monedas field_class="moneda" show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="cobros-tasa" class="label-secondary">Tasa de interés<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Tasa de interés convenida por el Declarante y la Institución financiera.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field cuentas_porcobrar_form.tasa_interes     show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="cobros-saldo" class="label-secondary">Saldo pendiente<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Saldo total de la cuenta por cobrar pendiente a la fecha.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field cuentas_porcobrar_form.saldo_pendiente    show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary">Fecha de vencimiento<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="dd/mm/aaaa">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <div class="form-row">
+                            <div class="col form-group">
+                                {% bootstrap_field cuentas_porcobrar_form.fecha_vencimiento    show_label=False%}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="cobros-porcentaje-copropietario" class="label-secondary">Porcentaje de propiedad en caso de copropiedad <span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Porcentaje de la participación real del Declarante.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            <small class="text-help text-primary">(Si aplica)</small>
+                            {% bootstrap_field bienes_personas_form.porcentaje show_label=False placeholder="" %}
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        {% include 'layout/persona.html' with form=copropietario_form title="Tipo de persona del copropietario" label=" del copropietario" %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="rfc-prestatario" class="label-secondary mb-2 ">RFC del copropietario</label>
+                                    <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                                        <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                    </button>
+                                    <small class="text-help text-primary">(Si aplica)</small>
+                                    {% bootstrap_field copropietario_form.rfc  show_label=False  field_class='valida_rfc'  %}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="cobros-comentarios" class="label-secondary">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Detallar información respecto al instrumento.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field observaciones_form.observacion placeholder="Observaciones y comentarios" show_label=False%}
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right row-form" style="{% if checked %}display: none;{% endif %}">
+                    <button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-primary font-weight-semibold text-uppercase">
+                      Guardar y agregar otra cuenta por cobrar<img src="{% static 'src/img/plus.svg'%}" alt="agregar" class="svg">
+                    </button>
+                </div>
+                {% include 'layout/guardar.html' %}
+                <div class="row"><div class="col-12"><br/></div></div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

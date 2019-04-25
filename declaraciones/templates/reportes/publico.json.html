@@ -1,0 +1,2093 @@
+[
+{% for d in declaraciones %}
+  {
+    "id": "{{d.folio}}",
+    "metadata": {
+      "actualizacion": "2019-03-26T17:32:28Z",
+      "institucion": "ADIP",
+      "contacto": "adip@cdmx.gob.mx",
+      "persona_contacto": "Jorge Noricumbo",
+      "diccionario": "https://diccionario.mx/archivo.csv"
+    },
+    "informacion_personal": {
+      "informacion_general": {
+        "nombres": "{{ d.infopersonalvar_set.first.nombres }} {{ d.infopersonalvar_set.0 }} ",
+        "primer_apellido": "{{  d.infopersonalvar_set.first.apellido1  }}",
+        "segundo_apellido": "{{  d.infopersonalvar_set.first.apellido2 }}",
+        "nacionalidades": [
+          {% for n in d.infopersonalvar_set.first.nacionalidades_set.all%}
+            {
+              "valor": "{{ n.cat_pais.pais }}",
+              "codigo": "{{ n.cat_pais.codigo }}"
+            }
+            {% if not forloop.last %} , {% endif %}
+          {% endfor %}
+        ],
+        "pais_nacimiento": {
+          "valor": "{{ d.infopersonalvar_set.first.cat_pais.pais }}",
+          "codigo": "{{ d.infopersonalvar_set.first.cat_pais.codigo }}"
+        },
+        "entidad_federativa_nacimiento": {
+          "nom_ent": "{{ d.infopersonalvar_set.first.cat_entidades_federativas.entidad_federativa }}",
+          "cve_ent": "{{ d.infopersonalvar_set.first.cat_entidades_federativas.id }}"
+        },
+        "curp": "{{ d.infopersonalvar_set.first.curp }}",
+        "rfc": "{{ d.infopersonalvar_set.first.rfc }}",
+        "fecha_nacimiento": "{{ d.infopersonalvar_set.first.fecha_nacimiento|date:"Y-m-d"}}",
+        "numero_identificacion_oficial": "{{ d.infopersonalvar_set.first.num_id_identificacion }}",
+        "correo_electronico": {
+          "personal": "{{  d.infopersonalvar_set.first.email_personal }}",
+          "laboral": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+        },
+        "telefono": {
+          "particular": "{{  d.infopersonalvar_set.first.tel_particular }}",
+          "celular": "{{  d.infopersonalvar_set.first.tel_movil }}"
+        },
+        "domicilio": {
+          "pais": {
+            "valor": "{{  d.infopersonalvar_set.first.domicilios.cat_pais }}",
+            "codigo": "{{  d.infopersonalvar_set.first.domicilios.cat_pais.codigo }}"
+          },
+          "entidad_federativa": {
+            "nom_ent": "{{  d.infopersonalvar_set.first.domicilios.cat_entidades_federativas.entidad_federativa }}",
+            "cve_ent": "{{  d.infopersonalvar_set.first.domicilios.cat_entidades_federativas.id}}"
+          },
+          "municipio": {
+            "nom_mun": "{{ d.infopersonalvar_set.first.domicilios.municipio}}",
+            "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+          },
+          "cp": "{{ d.infopersonalvar_set.first.domicilios.cp}}",
+          "localidad": {
+            "nom_loc": "{{  d.infopersonalvar_set.first.domicilios.colonia}}",
+            "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+          },
+          "asentamiento": {
+            "cve_asen": "",
+            "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+            "cve_tipo_asen": ""
+          },
+          "vialidad": {
+            "tipo_vial": "{{ d.infopersonalvar_set.first.domicilios.cat_tipo_via.tipo_via}}",
+            "nom_vial": "{{ d.infopersonalvar_set.first.domicilios.nombre_via }}"
+          },
+          "numExt": "{{  d.infopersonalvar_set.first.domicilios.num_exterior}}",
+          "numInt": "{{  d.infopersonalvar_set.first.domicilios.num_interior}}"
+        },
+        "estado_civil": {
+          "codigo": "{{ d.infopersonalvar_set.first.cat_estados_civiles.codigo }}",
+          "valor": "{{ d.infopersonalvar_set.first.cat_estados_civiles.estado_civil }}"
+        },
+        "regimen_matrimonial": {
+          "codigo": "{{ d.infopersonalvar_set.first.cat_regimenes_matrimoniales.codigo }}",
+          "valor": "{{ d.infopersonalvar_set.first.cat_regimenes_matrimoniales.regimen_matrimonial }}"
+        },
+        "fecha_declaracion":"{{ d.fecha_declaracion|date:"Y-m-d" }}"
+      },
+      "datos_curriculares": {
+
+        "grado_maximo_escolaridad": "{{ d.datoscurriculares_set.first.cat_grados_academicos.grado_academico }}",
+        "grados_academicos": [
+          {% for g in   d.datoscurriculares_set.all%}
+
+          {
+            "grado_obtenido": "{{ g.cat_grados_academicos.grado_academico }}",
+            "institucion_educativa": "{{ g.institucion_educativa }}",
+            "lugar_institucion_educativa": {
+              "pais": {
+                "valor": "{{ g.cat_pais.pais }}",
+                "codigo": "{{ g.cat_pais.codigo }}"
+              },
+              "entidad_federativa": {
+                "nom_ent": "{{ g.cat_entidades_federativas.entidad_federativa }}",
+                "cve_ent": "{{ g.cat_entidades_federativas.id }}"
+              },
+              "municipio": {
+                "nom_mun": "{{ g.municipio }}",
+                "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              }
+            },
+            "carrera": "{{ g.carrera_o_area }}",
+            "estatus": {
+              "codigo": "{{ g.cat_estatus_estudios.codigo }}",
+              "valor": "{{ g.cat_estatus_estudios.estatus_estudios}}"
+            },
+            "ano_conclusion": "{{ g.conclusion }}",
+            "documento_obtenido": {
+              "codigo": "{{ g.cat_documentos_obtenidos.codigo }}",
+              "valor": "{{ g.cat_documentos_obtenidos.documento_obtenido }}"
+            },
+            "cedula_profesional": "{{ g.cedula_profesional }}"
+          }{% if not forloop.last %} , {% endif %}
+          {% endfor %}
+        ]
+      },
+      "datos_encargo_actual": [
+        {% for g in d.encargos_set.all%}
+
+        {
+          "ente_publico": "{{ g.area_adscripcion }}",
+          "empleo_cargo_comision": "{{ g.empleo_cargo_comision }}",
+          "nivel_gobierno": {
+            "codigo": "{{ g.cat_ordenes_gobierno.codigo }}",
+            "valor": "{{ g.cat_ordenes_gobierno.orden_gobierno }}"
+          },
+          "poder_juridico": {
+            "codigo": "{{ g.cat_naturalezas_juridicas.codigo }}",
+            "valor": "{{ g.cat_naturalezas_juridicas.naturaleza_juridica }}"
+          },
+          "contratado_honorarios": {% if g.honorarios%}true{% else %}false{% endif %},
+          "nivel_encargo": "{{ g.nivel_encargo }}",
+          "area_adscripcion": "{{ g.area_adscripcion }}",
+          "fecha_posesion": "{{ g.posesion_inicio |date:"Y-m-d" }}",
+          "lugar_ubicacion": {
+            "pais": {
+              "valor": "{{ g.cat_paises.pais }}",
+              "codigo": "{{ g.cat_paises.codigo }}"
+            },
+                  "entidad": {
+              "nom_ent": "{{ g.domicilios.cat_entidades_federativas }}",
+              "cve_ent": "{{ g.domicilios.cat_entidades_federativas.clave }}"
+            }
+          },
+          "direccion_encargo": {
+            "pais": {
+              "valor": "{{ g.domicilios.cat_paises.pais }}",
+              "codigo": "{{ g.domicilios.cat_paises.codigo }}"
+            },
+            "entidad_federativa": {
+              "nom_ent": "{{ g.domicilios.cat_entidades_federativas.entidad_federativa }}",
+              "cve_ent": "{{ g.domicilios.cat_entidades_federativas.clave }}"
+            },
+            "municipio": {
+              "nom_mun": "{{ g.domicilios.municipio }}",
+              "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "cp": "{{g.domicilios.cp}}",
+            "localidad": {
+              "nom_loc": "{{ g.domicilios.colonia }}",
+              "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "asentamiento": {
+              "cve_asen": "",
+              "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+              "cve_tipo_asen": ""
+            },
+            "vialidad": {
+              "tipo_vial": "{{ g.domicilios.cat_tipo_via.tipo_via }}",
+              "nom_vial": "{{ g.domicilios.nombre_via }}"
+            },
+            "numExt": "{{ g.domicilios.num_exterior }}",
+            "numInt": "{{ g.domicilios.num_interior }}"
+          },
+          "telefono_laboral": {
+            "numero": "{{ g.telefono_laboral }}",
+            "extension": "{{ g.telefono_extension }}"
+          },
+          "sector_industria": {
+            "codigo": "{{ g.cat_sectores_industria.codigo }}",
+            "valor": "{{ g.cat_sectores_industria.sector_industria }}"
+          },
+          "funciones_principales": [
+            {
+              "codigo": "{{ g.cat_funciones_principales.codigo }}",
+              "valor": "{{ g.cat_funciones_principales.funcion}}"
+            }
+          ]
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "experiencia_laboral": [
+      {% for g in d.experiencialaboral_set.all%}
+
+      {
+          "ambito": {
+            "codigo": "{{ g.cat_ambitos_laborales.codigo }}",
+            "valor": "{{ g.cat_ambitos_laborales.ambito_laboral }}"
+          },
+          "nivel_gobierno": {
+            "codigo": "{{ g.cat_ordenes_gobierno.codigo }}",
+            "valor": "{{ g.cat_ordenes_gobierno.orden_gobierno }}"
+          },
+          "poder_ente": {
+            "codigo": "{{ g.cat_poderes.codigo }}",
+            "valor": "{{ g.cat_poderes.poder }}"
+          },
+          "nombre_institucion": "{{ g.nombre_institucion }}",
+          "unidad_administrativa": "{{ g.unidad_area_administrativa }}",
+          "direccion": {
+            "pais": {
+              "valor": "{{ g.domicilios.cat_pais.pais }}",
+              "codigo": "{{ g.domicilios.cat_pais.codigo }}"
+            },
+            "entidad_federativa": {
+              "nom_ent": "{{ g.domicilios.cat_entidad_federativa.entidad_federativa }}",
+              "cve_ent": "{{ g.domicilios.cat_entidad_federativa.id }}"
+            },
+            "municipio": {
+              "nom_mun": "{{ g.domicilios.municipio }}",
+              "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "cp": "{{ g.domicilios.cp }}",
+            "localidad": {
+              "nom_loc": "{{ g.domicilios.colonia }}",
+              "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "asentamiento": {
+              "cve_asen": "",
+              "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+              "cve_tipo_asen": ""
+            },
+            "vialidad": {
+              "tipo_vial": "{{ g.domicilios.cat_tipo_via.tipo_via }}",
+              "nom_vial": "{{ g.domicilios.nombre_via }}"
+            },
+            "numExt": "{{ g.domicilios.num_exterior }}",
+            "numInt": "{{ g.domicilios.num_interior }}"
+          },
+          "sector_industria": {
+            "codigo": "{{ g.cat_sectores_industria.codigo }}",
+            "valor": "{{ g.cat_sectores_industria.sector_industria }}"
+          },
+          "jerarquia_rango": "{{ g.jerarquia_rango }}",
+          "cargo_puesto": "{{ g.cargo_puesto }}",
+          "fecha_ingreso": "{{ g.fecha_ingreso|date:"Y-m-d" }}",
+          "fecha_salida": "{{ g.fecha_salida|date:"Y-m-d" }}",
+          "funciones_principales": [
+            {
+              "codigo": "{{ g.cat_funciones_principales.codigo }}",
+              "valor": "{{ g.cat_funciones_principales.funcion }}"
+            }
+          ]
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "dependientes_economicos": [
+      {% for g in d.conyugedependientes_set.all%}
+
+        {
+          "nombre_personal": {
+            "nombres": "{{ g.dependiente_infopersonalvar.nombres }}",
+            "primer_apellido": "{{ g.dependiente_infopersonalvar.apellido1 }}",
+            "segundo_apellido": "{{ g.dependiente_infopersonalvar.apellido2 }}"
+          },
+          "tipo_relacion": {
+            "codigo": "{{ g.cat_tipos_relaciones_personales.codigo }}",
+            "valor": "{{ g.cat_tipos_relaciones_personales.tipo_relacion }}"
+          },
+          "nacionalidades": [
+            {% for n in g.dependiente_infopersonalvar.nacionalidades_set.all%}
+              {
+                "valor": "{{ n.cat_pais.pais }}",
+                "codigo": "{{ n.cat_pais.codigo }}"
+              }
+              {% if not forloop.last %} , {% endif %}
+            {% endfor %}
+          ],
+          "curp": "{{ g.dependiente_infopersonalvar.curp }}",
+          "rfc": "{{ g.dependiente_infopersonalvar.rfc }}",
+          "fecha_nacimiento": "{{ g.dependiente_infopersonalvar.fecha_nacimiento|date:"Y-m-d" }}",
+          "numero_identificacion_nacional": "{{ g.dependiente_infopersonalvar.num_id_identificacion }}",
+          "habita_domicilio_declarante": {% if g.habita_domicilio%}true{% else %}false{% endif %},
+          "domicilio": {
+            "pais": {
+              "valor": "{{ g.dependiente_infopersonalvar.domicilios.cat_pais.pais }}",
+              "codigo": "{{ g.dependiente_infopersonalvar.domicilios.cat_pais.codigo }}"
+            },
+            "entidad_federativa": {
+              "nom_ent":"{{ g.dependiente_infopersonalvar.domicilios.cat_entidad_federativa.entidad_federativa }}",
+              "cve_ent": "{{ g.dependiente_infopersonalvar.domicilios.cat_entidad_federativa.id }}"
+            },
+            "municipio": {
+              "nom_mun": "{{ g.dependiente_infopersonalvar.domicilios.municipio }}",
+              "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "cp": "{{ g.dependiente_infopersonalvar.domicilios.cp }}",
+            "localidad": {
+              "nom_loc": "{{ g.dependiente_infopersonalvar.domicilios.colonia }}",
+              "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "asentamiento": {
+              "cve_asen": "",
+              "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+              "cve_tipo_asen": ""
+            },
+            "vialidad": {
+              "tipo_vial": "{{ g.dependiente_infopersonalvar.domicilios.cat_tipo_via.tipo_via }}",
+              "nom_vial": "{{ g.dependiente_infopersonalvar.domicilios.nombre_via }}"
+            },
+            "numExt": "{{ g.dependiente_infopersonalvar.domicilios.num_exterior }}",
+            "numInt": "{{ g.dependiente_infopersonalvar.domicilios.num_interior }}"
+          },
+          "medio_contacto": "{{ g.medio_contacto }}",
+          "ingresos_propios": {% if g.ingresos_propios %}true{% else %}false{% endif %},
+          "ocupacion_profesion": "{{ g.ocupacion_profesion }}",
+          "sector_industria": {
+            "codigo": "{{ g.dependiente_infopersonalvar.cat_sectores_industria.codigo }}",
+            "valor": "{{ g.dependiente_infopersonalvar.cat_sectores_industria.sector_industria }}"
+          },
+          "proveedor_contratista_gobierno": {% if g.proveedor_contratista %}true{% else %}false{% endif %},
+          "tiene_intereses_mismo_sector_declarante": true,
+          "desarrolla_cabildeo_sector_declarante": {
+            "respuesta": {% if g.cabildeo_sector %}true{% else %}false{% endif %},
+            "observaciones": "{{ g.observaciones.observacion }}"
+          },
+          "beneficiario_programa_publico": [
+            {% for n in g.apoyos_set.all%}
+            {
+              "nombre_programa": "{{ n.nombre_programa }}",
+              "institucion_otorga_apoyo": "{{ n.institucion_otorgante }}",
+              "tipo_apoyo": {
+                "codigo": "{{ n.cat_tipos_apoyos.codigo }}",
+                "valor": "{{ n.cat_tipos_apoyos.tipo_apoyo }}"
+              },
+              "valor_apoyo": {{ n.valor_anual }}
+            }
+            {% if not forloop.last %} , {% endif %}
+            {% endfor %}
+          ],
+          "observaciones": "{{ n.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ]
+    },
+    "intereses": {
+      "empresas_sociedades_asociaciones": [
+        {% for g in d.empresassociedades_set.all%}
+
+        {
+          "id": {{ g.id }},
+          "nombre_empresa_sociedad_asociacion": "{{ g.empresa_infopersonalvar.id }}",
+          "pais_registro": {
+            "valor": "{{ g.empresa_infopersonalvar.cat_pais.pais }}",
+            "codigo": "{{ g.empresa_infopersonalvar.cat_pais.codigo }}"
+          },
+          "fecha_constitucion": "{{ g.empresa_infopersonalvar.fecha_nacimiento|date:"Y-m-d" }}",
+          "numero_registro": "{{ g.empresa_infopersonalvar.num_id_identificacion }}",
+          "rfc": "{{ g.empresa_infopersonalvar.rfc }}",
+          "domicilio": {
+            "pais": {
+              "valor": "{{ g.empresa_infopersonalvar.domicilios.cat_pais.pais }}",
+              "codigo": "{{ g.empresa_infopersonalvar.domicilios.cat_pais.codigo }}"
+            },
+            "entidad_federativa": {
+              "nom_ent":"{{ g.empresa_infopersonalvar.domicilios.cat_entidad_federativa.entidad_federativa }}",
+              "cve_ent": "{{ g.empresa_infopersonalvar.domicilios.cat_entidad_federativa.id }}"
+            },
+            "municipio": {
+              "nom_mun": "{{ g.empresa_infopersonalvar.domicilios.municipio }}",
+              "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "cp": "{{ g.empresa_infopersonalvar.domicilios.cp }}",
+            "localidad": {
+              "nom_loc": "{{ g.empresa_infopersonalvar.domicilios.colonia }}",
+              "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "asentamiento": {
+              "cve_asen": "",
+              "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+              "cve_tipo_asen": ""
+            },
+            "vialidad": {
+              "tipo_vial": "{{ g.empresa_infopersonalvar.domicilios.cat_tipo_via.tipo_via }}",
+              "nom_vial": "{{ g.empresa_infopersonalvar.domicilios.nombre_via }}"
+            },
+            "numExt": "{{ g.empresa_infopersonalvar.domicilios.num_exterior }}",
+            "numInt": "{{ g.empresa_infopersonalvar.domicilios.num_interior }}"
+          },
+          "rol": "{{ g.rol_empresa }}",
+          "actividad_economica": {% if g.proveedor_contratista %}true{% else %}false{% endif %},
+          "sector_industria": {
+            "codigo": "{{ g.empresa_infopersonalvar.cat_sectores_industria.codigo }}",
+            "valor": "{{ g.empresa_infopersonalvar.cat_sectores_industria.sector_industria }}"
+          },
+          "porcentaje_participacion": "{{ g.porcentaje_participacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "membresias": [
+        {% for g in d.membresias_set.all%}
+
+        {
+          "id": {{ g.id }},
+          "tipo_institucion": {
+            "codigo": "{{ g.cat_tipos_instituciones.codigo }}",
+            "valor": "{{ g.cat_tipos_instituciones.tipo_institucion }}"
+          },
+          "nombre_institucion": "{{ g.nombre_institucion }}",
+          "naturaleza_membresia": {
+            "codigo": "{{ g.cat_naturaleza_membresia.codigo }}",
+            "valor": "{{ g.cat_naturaleza_membresia.naturaleza_membresia }}"
+          },
+          "domicilio": {
+              "pais": {
+                "valor": "{{ g.domicilios.cat_paises.pais }}",
+                "codigo": "{{ g.domicilios.cat_paises.codigo }}"
+              },
+              "entidad_federativa": {
+                "nom_ent": "{{ g.domicilios.cat_entidades_federativas.entidad_federativa }}",
+                "cve_ent": "{{ g.domicilios.cat_entidades_federativas.clave }}"
+              },
+              "municipio": {
+                "nom_mun": "{{ g.domicilios.municipio }}",
+                "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "cp": "{{g.domicilios.cp}}",
+              "localidad": {
+                "nom_loc": "{{ g.domicilios.colonia }}",
+                "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "asentamiento": {
+                "cve_asen": "",
+                "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+                "cve_tipo_asen": ""
+              },
+              "vialidad": {
+                "tipo_vial": "{{ g.domicilios.cat_tipo_via.tipo_via }}",
+                "nom_vial": "{{ g.domicilios.nombre_via }}"
+              },
+              "numExt": "{{ g.domicilios.num_exterior }}",
+              "numInt": "{{ g.domicilios.num_interior }}"
+            },
+          "sector_industria": {
+            "codigo": "{{ g.cat_sectores_industria.codigo }}",
+            "valor": "{{ g.cat_sectores_industria.sector_industria }}"
+          },
+          "puesto_rol": "{{ g.puesto_rol }}",
+          "fecha_inicio": "{{ g.fecha_inicio|date:"Y-m-d" }}",
+          "pagado": {% if g.proveedor_contratista %}true{% else %}false{% endif %},
+          "observaciones": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "apoyos_beneficios_publicos": [
+        {% for g in d.infopersonalvar_set.first.apoyos_set.all%}
+
+          {
+          "id": {{ g.id }},
+          "es_beneficiario": true,
+          "programa": "{{ g.nombre_programa }}",
+          "institucion_otorgante": "{{ g.institucion_otorgante }}",
+          "nivel_orden_gobierno": {
+            "codigo": "{{ g.cat_ordenes_gobierno.codigo }}",
+            "valor": "{{ g.cat_ordenes_gobierno.orden_gobierno }}"
+          },
+          "tipo_apoyo": {
+            "codigo": "{{ g.cat_tipos_apoyos.codigo }}",
+            "valor": "{{ g.cat_tipos_apoyos.tipo_apoyo }}"
+          },
+          "valor_anual_apoyo": "{{ g.valor_anual }}",
+          "observaciones": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "representacion_activa": [
+        {% for g in d.representaciones_set.all%}
+          {% if es_representacion_activa %}
+            {
+              "id": {{ g.id }},
+              "tipo_representacion": {
+                "codigo": "{{ g.cat_tipos_representaciones.codigo }}",
+                "valor": "{{ g.cat_tipos_representaciones.tipo_representacion }}"
+              },
+              "nombre_parte_representada": "{{ g.info_personal_var.nombres }}",
+              "curp_parte": "{{ g.info_personal_var.curp }}",
+              "rfc_parte": "{{ g.info_personal_var.rfc }}",
+              "fecha_nacimiento_parte": "{{ g.info_personal_var.fecha_nacimiento|date:"Y-m-d" }}",
+              "sector_industria": {
+                "codigo": "{{ g.info_personal_var.cat_sectores_industria.codigo }}",
+                "valor": "{{ g.info_personal_var.cat_sectores_industria.sector_industria }}"
+                  },
+              "fecha_inicio": "{{ g.fecha_inicio|date:"Y-m-d" }}",
+              "pagado": {% if g.pagado %}true{% else %}false{% endif %},
+              "observaciones": "g.observaciones.observacion"
+            }
+          {% endif %}
+        {% endfor %}
+      ],
+      "representacion_pasiva": [
+        {% for g in d.representaciones_set.all%}
+          {% if not g.es_representacion_activa %}
+            {
+              "id": {{ g.id }},
+              "tipo_representacion": {
+                "codigo": "{{ g.cat_tipos_representaciones.codigo }}",
+                "valor": "{{ g.cat_tipos_representaciones.tipo_representacion }}"
+              },
+              "nombre": "{{ g.info_personal_var.nombres }}",
+              "fecha_inicio_representacion": "{{ g.fecha_inicio|date:"Y-m-d" }}",
+              "nacionalidades": [
+              {% for n in g.info_personal_var.nacionalidades_set.all%}
+                {
+                  "valor": "{{ n.cat_pais.pais }}",
+                  "codigo": "{{ n.cat_pais.codigo }}"
+                }
+              {% if not forloop.last %} , {% endif %}
+              {% endfor %}
+              ],
+              "curp": "{{ g.info_personal_var.curp }}",
+              "rfc": "{{ g.info_personal_var.rfc }}",
+              "fecha_nacimiento": "{{ g.info_personal_var.fecha_nacimiento|date:"Y-m-d" }}",
+              "tiene_intereses": {% if g.pagado %}true{% else %}false{% endif %},
+              "ocupacion_profesion": "{{ g.info_personal_var.ocupacion_girocomercial }}",
+              "sector_industria": {
+                "codigo": "{{ g.info_personal_var.cat_sectores_industria.codigo }}",
+                "valor": "{{ g.info_personal_var.cat_sectores_industria.sector_industria }}"
+              },
+              "observaciones": "{{ g.observaciones.observacion }}"
+            } {% if not forloop.last %} , {% endif %}
+          {% endif %}
+
+        {% endfor %}
+      ],
+      "socios_comerciales": [
+        {% for g in d.socioscomerciales_set.all%}
+
+        {
+          "id": {{ g.id }},
+          "nombre_actividad": "{{ g.actividad_vinculante }}",
+          "tipo_vinculo": "{{ g.tipo_vinculo }}",
+          "antiguedad_vinculo": "{{ g.antiguedad_vinculo }}",
+          "rfc_entidad": "{{ g.rfc_entidad_vinculante }}",
+          "nombre": "{{ g.socio_infopersonalvar.nombres }}",
+          "curp": "{{ g.socio_infopersonalvar.curp }}",
+          "rfc": "{{ g.socio_infopersonalvar.rfc }}",
+          "lugar_nacimiento": {
+            "pais": {
+              "valor": "{{ g.socio_infopersonalvar.cat_paises.pais }}",
+              "codigo": "{{ g.socio_infopersonalvar.cat_paises.codigo }}"
+            },
+            "entidad": {
+              "nom_ent": "{{ g.socio_infopersonalvar.cat_entidades_federativas.entidad_federativa }}",
+              "cve_ent": "{{ g.socio_infopersonalvar.cat_entidades_federativas.clave }}"
+          }
+          },
+          "fecha_nacimiento": "{{ g.socio_infopersonalvar.fecha_nacimiento|date:"Y-m-d" }}",
+          "porcentaje_participacion": "{{ g.porcentaje_participacion }}",
+          "sector_industria": {
+            "codigo": "{{ g.socio_infopersonalvar.cat_sectores_industria.codigo }}",
+            "valor": "{{ g.socio_infopersonalvar.cat_sectores_industria.sector_industria }}"
+      },
+          "observaciones": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "clientes_principales": [
+      {% for g in d.clientesprincipales_set.all%}
+
+        {
+          "id": {{ g.id }},
+          "nombre_negocio": "{{ g.info_personal_var.razon_social }}",
+          "numero_registro": "{{ g.info_personal_var.num_id_identificacion }}",
+          "dueno_encargado": "{{ g.nombre_encargado }}",
+          "nombre": "{{ g.info_personal_var.nombres }}",
+          "rfc": "{{ g.info_personal_var.rfc }}",
+          "domicilio": {
+            "pais": {
+              "valor": "{{ g.info_personal_var.domicilios.cat_paises.pais }}",
+              "codigo": "{{ g.info_personal_var.domicilios.cat_paises.codigo }}"
+            },
+            "entidad_federativa": {
+              "nom_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.entidad_federativa }}",
+              "cve_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.clave }}"
+            },
+            "municipio": {
+              "nom_mun": "{{ g.info_personal_var.domicilios.municipio }}",
+              "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "cp": "{{g.info_personal_var.domicilios.cp}}",
+            "localidad": {
+              "nom_loc": "{{ g.info_personal_var.domicilios.colonia }}",
+              "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "asentamiento": {
+              "cve_asen": "",
+              "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+              "cve_tipo_asen": ""
+            },
+            "vialidad": {
+              "tipo_vial": "{{ g.info_personal_var.domicilios.cat_tipo_via.tipo_via }}",
+              "nom_vial": "{{ g.info_personal_var.domicilios.nombre_via }}"
+            },
+            "numExt": "{{ g.info_personal_var.domicilios.num_exterior }}",
+            "numInt": "{{ g.info_personal_var.domicilios.num_interior }}"
+        },
+          "sector_industria": {
+            "codigo": "{{ g.info_personal_var.cat_sectores_industria.codigo }}",
+            "valor": "{{ g.info_personal_var.cat_sectores_industria.sector_industria }}"
+          },
+          "porcentaje_participacion": "{{ g.porcentaje_facturacion_cliente }}",
+          "observaciones": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "otras_partes": [
+      {% for g in d.otraspartes_set.all%}
+
+        {
+          "id": {{ g.id }},
+          "tipo_relacion": {
+            "codigo": "{{ g.cat_titular_tipos_relaciones.codigo }}",
+            "valor": "{{ g.cat_titular_tipos_relaciones.tipo_relacion }}"
+          },
+          "nombre_denominacion_parte": "{{ g.otraspartes_infopersonalvar.nombres }}",
+          "fecha_inicio_relacion": "{{ g.fecha_inicio_relacion|date:"Y-m-d" }}",
+          "nacionalidades": [
+          {% for n in g.info_personal_var.nacionalidades_set.all%}
+            {
+              "valor": "{{ n.cat_pais.pais }}",
+              "codigo": "{{ n.cat_pais.codigo }}"
+            }
+            {% if not forloop.last %} , {% endif %}
+          {% endfor %}
+          ],
+          "curp": "{{ g.otraspartes_infopersonalvar.curp }}",
+          "rfc": "{{ g.otraspartes_infopersonalvar.rfc }}",
+          "fecha_nacimiento": "{{ g.otraspartes_infopersonalvar.fecha_nacimiento|date:"Y-m-d" }}",
+          "ocupacion": "{{ g.ocupacion_profesion }}",
+          "tiene_interes": {% if g.pagado %}true{% else %}false{% endif %},
+          "sector_industria": {
+            "codigo": "{{ g.otraspartes_infopersonalvar.cat_sectores_industria.codigo }}",
+            "valor": "{{ g.otraspartes_infopersonalvar.cat_sectores_industria.sector_industria }}"
+          },
+          "observaciones": "{{ g.observaciones.observacion }}"
+        }
+            {% if not forloop.last %} , {% endif %}
+          {% endfor %}
+      ],
+      "beneficios_gratuitos": [
+      {% for g in d.beneficiosgratuitos_set.all%}
+     
+        {
+          "id": {{ g.id }},
+          "tipo_beneficio": "{{ g.cat_tipos_beneficios.tipo_beneficio }}",
+          "origen_beneficio": "{{ g.origen_beneficio }}",
+          "sector_industria": {
+            "codigo": "{{ g.cat_sectores_industria.codigo }}",
+            "valor": "{{ g.cat_sectores_industria.sector_industria }}"
+          },
+          "valor_beneficio": "{{ g.valor_beneficio }}",
+          "observaciones": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+      {% endfor %}
+      ]
+    },
+    "ingresos": {
+      "sueldos_salarios_publicos": [
+      {% for g in d.sueldospublicos_set.all%}
+
+        {
+          "id": {{ g.id }},
+          "ente_publico": {
+            "valor": "{{ g.cat_entes_publicos.ente_publico }}",
+            "codigo": "{{ g.cat_entes_publicos.codigo }}"
+          },
+          "rfc": "{{ g.rfc }}",
+          "ingreso_bruto_anual": {
+            "valor": "{{ g.ingreso_bruto_anual }}",
+            "moneda": {
+              "codigo": "{{ g.cat_monedas.codigo }}",
+              "moneda": "{{ g.cat_monedas.moneda }}"
+            },
+            "unidad_temporal": {
+              "codigo": "No utilizamos el catálogo",
+              "valor": "Los valores pueden venir simultáneamente en varias unidades."
+            },
+            "duracion_frecuencia": "",
+            "fecha_transaccion": "{{ g.fecha_transaccion|date:"Y-m-d" }}"
+          },
+          "observaciones": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+      {% endfor %}
+      ],
+      "sueldos_salarios_otros_empleos": [
+        {% for g in d.ingresosvarios_set.all%}
+          {% if g.cat_tipos_ingresos_varios.id == 1 %}
+            {
+              "id": {{ g.id }},
+              "nombre_denominacion_razon_social": "{%if g.info_personal_var.es_fisica  %}{{ g.info_personal_var.nombres}}  {% else %} {{g.info_personal_var.razon_social }}{% endif %}",
+              "rfc": "{{ g.info_personal_var.rfc }}",
+              "curp": "{{ g.info_personal_var.curp }}",
+              "sector_industria": {
+                "codigo": "{{ g.info_personal_var.cat_sectores_industria.codigo }}",
+                "valor": "{{ g.info_personal_var.cat_sectores_industria.sector_industria }}"
+              },
+              "tipo_actividad_servicio": {
+                "codigo": "{{ g.cat_tipos_actividad.codigo }}",
+                "valor": "{{ g.cat_tipos_actividad.tipo_actividad }}"
+              },
+              "descripcion_actividad_servicio": "{{ g.descripcion_actividad }}",
+              "domicilio_persona_paga": {
+                "pais": {
+                  "valor": "{{ g.info_personal_var.domicilios.cat_pais.pais }}",
+                  "codigo": "{{ g.info_personal_var.domicilios.cat_pais.codigo }}"
+                },
+                "entidad_federativa": {
+                  "nom_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.entidad_federativa }}",
+                  "cve_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.clave }}"
+                },
+                "municipio": {
+                  "nom_mun": "{{ g.info_personal_var.domicilios.municipio }}",
+                  "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+                },
+                "cp": "{{ g.info_personal_var.domicilios.cp }}",
+                "localidad": {
+                  "nom_loc": "{{ g.info_personal_var.domicilios.colonia }}",
+                  "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+                },
+                "asentamiento": {
+                  "cve_asen": "",
+                  "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+                  "cve_tipo_asen": ""
+                },
+                "vialidad": {
+                  "tipo_vial": "{{ g.info_personal_var.domicilios.cat_tipo_via.tipo_via }}",
+                  "nom_vial": "{{ g.info_personal_var.domicilios.nombre_via }}"
+                },
+                "numExt": "{{ g.info_personal_var.domicilios.num_exterior }}",
+                "numInt": "{{ g.info_personal_var.domicilios.num_interior }}"
+              },
+              "ingreso_bruto_anual": {
+                "valor": "{{ g.ingreso_bruto_anual }}",
+                "moneda": {
+                  "codigo": "{{ g.cat_monedas.codigo }}",
+                  "moneda": "{{ g.cat_monedas.moneda }}"
+                },
+                "unidad_temporal": {
+                  "codigo": "No utilizamos el catálogo",
+                  "valor": "Los valores pueden venir simultáneamente en varias unidades."
+                },
+                "duracion_frecuencia": "",
+                "fecha_transaccion": "{{ g.fecha_transaccion|date:"Y-m-d" }}"
+              },
+              "observaciones": "{{ g.observaciones.observacion }}"
+            }{% if not forloop.last %} , {% endif %}
+          {% endif %}
+        {% endfor %}
+      ],
+      "actividad_profesional": [
+      {% for g in d.ingresosvarios_set.all%}
+        {% if g.cat_tipos_ingresos_varios.id == 2 %}
+
+          {
+            "id": {{ g.id }},
+            "nombre_denominacion_razon_social": "{%if g.info_personal_var.es_fisica  %}{{ g.info_personal_var.nombres}}  {% else %} {{g.info_personal_var.razon_social }}{% endif %}",
+            "rfc": "{{ g.info_personal_var.rfc }}",
+            "curp": "info_personal_var.curp",
+            "sector_industria": {
+              "codigo": "{{ g.info_personal_var.cat_sectores_industria.codigo }}",
+              "valor": "{{ g.info_personal_var.cat_sectores_industria.sector_industria }}"
+            },
+            "tipo_actividad_servicio": {
+              "codigo": "{{ g.cat_tipos_actividad.codigo }}",
+              "valor": "{{ g.cat_tipos_actividad.tipo_actividad }}"
+            },
+            "descripcion_actividad_servicio": "{{ g.descripcion_actividad }}",
+            "domicilio_persona_paga": {
+              "pais": {
+                "valor": "{{ g.info_personal_var.domicilios.cat_pais.pais }}",
+                "codigo": "{{ g.info_personal_var.domicilios.cat_pais.codigo }}"
+              },
+              "entidad_federativa": {
+                "nom_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.entidad_federativa }}",
+                "cve_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.clave }}"
+              },
+              "municipio": {
+                "nom_mun": "{{ g.info_personal_var.domicilios.municipio }}",
+                "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "cp": "{{ g.info_personal_var.domicilios.cp }}",
+              "localidad": {
+                "nom_loc": "{{ g.info_personal_var.domicilios.colonia }}",
+                "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "asentamiento": {
+                "cve_asen": "",
+                "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+                "cve_tipo_asen": ""
+              },
+              "vialidad": {
+                "tipo_vial": "{{ g.info_personal_var.domicilios.cat_tipo_via.tipo_via }}",
+                "nom_vial": "{{ g.info_personal_var.domicilios.nombre_via }}"
+              },
+              "numExt": "{{ g.info_personal_var.domicilios.num_exterior }}",
+              "numInt": "{{ g.info_personal_var.domicilios.num_interior }}"
+            },
+            "ingreso_bruto_anual": {
+              "valor": "{{ g.ingreso_bruto_anual }}",
+              "moneda": {
+                "codigo": "{{ g.cat_monedas.codigo }}",
+                "moneda": "{{ g.cat_monedas.moneda }}"
+              },
+              "unidad_temporal": {
+                "codigo": "No utilizamos el catálogo",
+                "valor": "Los valores pueden venir simultáneamente en varias unidades."
+              },
+              "duracion_frecuencia": "",
+              "fecha_transaccion": "{{ g.fecha_transaccion|date:"Y-m-d" }}"
+            },
+            "observaciones": "{{ g.observaciones.observacion }}"
+          }{% if not forloop.last %} ,{% endif %}
+        {% endif %}
+      {% endfor %}
+      ],
+      "actividad_empresarial": [
+      {% for g in d.ingresosvarios_set.all%}
+        {% if g.cat_tipos_ingresos_varios.id == 3 %}
+
+
+          {
+            "id": {{ g.id }},
+            "nombre_denominacion_razon_social": "{%if g.info_personal_var.es_fisica  %}{{ g.info_personal_var.nombres}}  {% else %} {{g.info_personal_var.razon_social }}{% endif %}",
+            "rfc": "{{ g.info_personal_var.rfc }}",
+            "curp": "info_personal_var.curp",
+            "sector_industria": {
+              "codigo": "{{ g.info_personal_var.cat_sectores_industria.codigo }}",
+              "valor": "{{ g.info_personal_var.cat_sectores_industria.sector_industria }}"
+            },
+            "tipo_actividad_servicio": {
+              "codigo": "{{ g.cat_tipos_actividad.codigo }}",
+              "valor": "{{ g.cat_tipos_actividad.tipo_actividad}}"
+            },
+            "descripcion_actividad_servicio": "{{ g.descripcion_actividad }}",
+            "domicilio_persona_paga": {
+              "pais": {
+                "valor": "{{ g.info_personal_var.domicilios.cat_pais.pais }}",
+                "codigo": "{{ g.info_personal_var.domicilios.cat_pais.codigo }}"
+              },
+              "entidad_federativa": {
+                "nom_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.entidad_federativa }}",
+                "cve_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.clave }}"
+              },
+              "municipio": {
+                "nom_mun": "{{ g.info_personal_var.domicilios.municipio }}",
+                "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "cp": "{{ g.info_personal_var.domicilios.cp }}",
+              "localidad": {
+                "nom_loc": "{{ g.info_personal_var.domicilios.colonia }}",
+                "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "asentamiento": {
+                "cve_asen": "",
+                "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+                "cve_tipo_asen": ""
+              },
+              "vialidad": {
+                "tipo_vial": "{{ g.info_personal_var.domicilios.cat_tipo_via.tipo_via }}",
+                "nom_vial": "{{ g.info_personal_var.domicilios.nombre_via }}"
+              },
+              "numExt": "{{ g.info_personal_var.domicilios.num_exterior }}",
+              "numInt": "{{ g.info_personal_var.domicilios.num_interior }}"
+            },
+            "ingreso_bruto_anual": {
+              "valor": "{{ g.ingreso_bruto_anual }}",
+              "moneda": {
+                "codigo": "{{ g.cat_monedas.codigo }}",
+                "moneda": "{{ g.cat_monedas.moneda }}"
+              },
+              "unidad_temporal": {
+                "codigo": "No utilizamos el catálogo",
+                "valor": "Los valores pueden venir simultáneamente en varias unidades."
+              },
+              "duracion_frecuencia": "",
+              "fecha_transaccion": "{{ g.fecha_transaccion|date:"Y-m-d" }}"
+            },
+            "observaciones": "{{ g.observaciones.observacion }}"
+          }{% if not forloop.last %} ,{% endif %}
+        {% endif %}
+      {% endfor %}
+      ],
+      "actividad_economica_menor": [
+      {% for g in d.ingresosvarios_set.all%}
+        {% if g.cat_tipos_ingresos_varios.id == 4 %}
+
+          {
+            "id": {{ g.id }},
+            "nombre_denominacion_razon_social": "{%if g.info_personal_var.es_fisica  %}{{ g.info_personal_var.nombres}}  {% else %} {{g.info_personal_var.razon_social }}{% endif %}",
+            "rfc": "{{ g.info_personal_var.rfc }}",
+            "curp": "info_personal_var.curp",
+            "sector_industria": {
+              "codigo": "{{ g.info_personal_var.cat_sectores_industria.codigo }}",
+              "valor": "{{ g.info_personal_var.cat_sectores_industria.sector_industria }}"
+            },
+            "tipo_actividad_servicio": {
+              "codigo": "{{ g.cat_tipos_actividad.codigo }}",
+              "valor": "{{ g.cat_tipos_actividad.tipo_actividad }}"
+            },
+            "descripcion_actividad_servicio": "{{ g.descripcion_actividad }}",
+            "domicilio_persona_paga": {
+              "pais": {
+                "valor": "{{ g.info_personal_var.domicilios.cat_pais.pais }}",
+                "codigo": "{{ g.info_personal_var.domicilios.cat_pais.codigo }}"
+              },
+              "entidad_federativa": {
+                "nom_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.entidad_federativa }}",
+                "cve_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.clave }}"
+              },
+              "municipio": {
+                "nom_mun": "{{ g.info_personal_var.domicilios.municipio }}",
+                "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "cp": "{{ g.info_personal_var.domicilios.cp }}",
+              "localidad": {
+                "nom_loc": "{{ g.info_personal_var.domicilios.colonia }}",
+                "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "asentamiento": {
+                "cve_asen": "",
+                "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+                "cve_tipo_asen": ""
+              },
+              "vialidad": {
+                "tipo_vial": "{{ g.info_personal_var.domicilios.cat_tipo_via.tipo_via }}",
+                "nom_vial": "{{ g.info_personal_var.domicilios.nombre_via }}"
+              },
+              "numExt": "{{ g.info_personal_var.domicilios.num_exterior }}",
+              "numInt": "{{ g.info_personal_var.domicilios.num_interior }}"
+            },
+            "ingreso_bruto_anual": {
+              "valor": "{{ g.ingreso_bruto_anual }}",
+              "moneda": {
+                "codigo": "{{ g.cat_monedas.codigo }}",
+                "moneda": "{{ g.cat_monedas.moneda }}"
+              },
+              "unidad_temporal": {
+                "codigo": "No utilizamos el catálogo",
+                "valor": "Los valores pueden venir simultáneamente en varias unidades."
+              },
+              "duracion_frecuencia": "",
+              "fecha_transaccion": "{{ g.fecha_transaccion|date:"Y-m-d" }}"
+            },
+            "observaciones": "{{ g.observaciones.observacion }}"
+          }{% if not forloop.last %} ,{% endif %}
+        {% endif %}
+      {% endfor %}
+      ],
+      "arrendamiento": [
+      {% for g in d.ingresosvarios_set.all%}
+        {% if g.cat_tipos_ingresos_varios.id == 5 %}
+          {
+            "id": {{ g.id }},
+            "nombre_denominacion_razon_social": "{%if g.info_personal_var.es_fisica  %}{{ g.info_personal_var.nombres}}  {% else %} {{g.info_personal_var.razon_social }}{% endif %}",
+            "rfc": "{{ g.info_personal_var.rfc }}",
+            "curp": "info_personal_var.curp",
+            "sector_industria": {
+              "codigo": "{{ g.info_personal_var.cat_sectores_industria.codigo }}",
+              "valor": "{{ g.info_personal_var.cat_sectores_industria.sector_industria }}"
+            },
+            "tipo_actividad_servicio": {
+              "codigo": "{{ g.cat_tipos_actividad.codigo }}",
+              "valor": "{{ g.cat_tipos_actividad.tipo_actividad }}"
+            },
+            "descripcion_actividad_servicio": "{{ g.descripcion_actividad }}",
+            "domicilio_persona_paga": {
+              "pais": {
+                "valor": "{{ g.info_personal_var.domicilios.cat_pais.pais }}",
+                "codigo": "{{ g.info_personal_var.domicilios.cat_pais.codigo }}"
+              },
+              "entidad_federativa": {
+                "nom_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.entidad_federativa }}",
+                "cve_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.clave }}"
+              },
+              "municipio": {
+                "nom_mun": "{{ g.info_personal_var.domicilios.municipio }}",
+                "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "cp": "{{ g.info_personal_var.domicilios.cp }}",
+              "localidad": {
+                "nom_loc": "{{ g.info_personal_var.domicilios.colonia }}",
+                "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "asentamiento": {
+                "cve_asen": "",
+                "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+                "cve_tipo_asen": ""
+              },
+              "vialidad": {
+                "tipo_vial": "{{ g.info_personal_var.domicilios.cat_tipo_via.tipo_via }}",
+                "nom_vial": "{{ g.info_personal_var.domicilios.nombre_via }}"
+              },
+              "numExt": "{{ g.info_personal_var.domicilios.num_exterior }}",
+              "numInt": "{{ g.info_personal_var.domicilios.num_interior }}"
+            },
+            "ingreso_bruto_anual": {
+              "valor": "{{ g.ingreso_bruto_anual }}",
+              "moneda": {
+                "codigo": "{{ g.cat_monedas.codigo }}",
+                "moneda": "{{ g.cat_monedas.moneda }}"
+              },
+              "unidad_temporal": {
+                "codigo": "No utilizamos el catálogo",
+                "valor": "Los valores pueden venir simultáneamente en varias unidades."
+              },
+              "duracion_frecuencia": "",
+              "fecha_transaccion": "{{ g.fecha_transaccion|date:"Y-m-d" }}"
+            },
+            "observaciones": "{{ g.observaciones.observacion }}"
+          } {% if not forloop.last %} ,{% endif %}
+        {% endif %}
+      {% endfor %}
+      ],
+      "intereses": [
+      {% for g in d.ingresosvarios_set.all%}
+        {% if g.cat_tipos_ingresos_varios.id == 6 %}
+          {
+            "id": {{ g.id }},
+            "nombre_denominacion_razon_social": "{%  if g.info_personal_var.es_fisica %} {{g.info_personal_var.nombres}} {% else %} {{ g.info_personal_var.razon_social }}{% endif %}",
+            "rfc": "{{ g.info_personal_var.rfc }}",
+            "curp": "info_personal_var.curp",
+            "sector_industria": {
+              "codigo": "{{ g.info_personal_var.cat_sectores_industria.codigo }}",
+              "valor": "{{ g.info_personal_var.cat_sectores_industria.sector_industria }}"
+            },
+            "tipo_actividad_servicio": {
+              "codigo": "{{ g.cat_tipos_actividad.codigo }}",
+              "valor": "{{ g.cat_tipos_actividad.tipo_actividad }}"
+            },
+            "descripcion_actividad_servicio": "{{ g.descripcion_actividad }}",
+            "domicilio_persona_paga": {
+              "pais": {
+                "valor": "{{ g.info_personal_var.domicilios.cat_pais.pais }}",
+                "codigo": "{{ g.info_personal_var.domicilios.cat_pais.codigo }}"
+              },
+              "entidad_federativa": {
+                "nom_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.entidad_federativa }}",
+                "cve_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.clave }}"
+              },
+              "municipio": {
+                "nom_mun": "{{ g.info_personal_var.domicilios.municipio }}",
+                "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "cp": "{{ g.info_personal_var.domicilios.cp }}",
+              "localidad": {
+                "nom_loc": "{{ g.info_personal_var.domicilios.colonia }}",
+                "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "asentamiento": {
+                "cve_asen": "",
+                "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+                "cve_tipo_asen": ""
+              },
+              "vialidad": {
+                "tipo_vial": "{{ g.info_personal_var.domicilios.cat_tipo_via.tipo_via }}",
+                "nom_vial": "{{ g.info_personal_var.domicilios.nombre_via }}"
+              },
+              "numExt": "{{ g.info_personal_var.domicilios.num_exterior }}",
+              "numInt": "{{ g.info_personal_var.domicilios.num_interior }}"
+            },
+            "ingreso_bruto_anual": {
+              "valor": "{{ g.ingreso_bruto_anual }}",
+              "moneda": {
+                "codigo": "{{ g.cat_monedas.codigo }}",
+                "moneda": "{{ g.cat_monedas.moneda }}"
+              },
+              "unidad_temporal": {
+                "codigo": "No utilizamos el catálogo",
+                "valor": "Los valores pueden venir simultáneamente en varias unidades."
+              },
+              "duracion_frecuencia": "",
+              "fecha_transaccion": "{{ g.fecha_transaccion|date:"Y-m-d" }}"
+            },
+            "observaciones": "{{ g.observaciones.observacion }}"
+          } {% if not forloop.last %} ,{% endif %}
+        {% endif %}
+      {% endfor %}
+      ],
+      "premios": [
+      {% for g in d.ingresosvarios_set.all%}
+        {% if g.cat_tipos_ingresos_varios.id == 7 %}
+          {
+            "id": {{ g.id }},
+            "nombre_denominacion_razon_social": "{%if g.info_personal_var.es_fisica  %}{{ g.info_personal_var.nombres}}  {% else %} {{g.info_personal_var.razon_social }}{% endif %}",
+            "rfc": "{{ g.info_personal_var.rfc }}",
+            "curp": "info_personal_var.curp",
+            "sector_industria": {
+              "codigo": "{{ g.info_personal_var.cat_sectores_industria.codigo }}",
+              "valor": "{{ g.info_personal_var.cat_sectores_industria.sector_industria }}"
+            },
+            "tipo_actividad_servicio": {
+              "codigo": "{{ g.cat_tipos_actividad.codigo }}",
+              "valor": "{{ g.cat_tipos_actividad.tipo_actividad}}"
+            },
+            "descripcion_actividad_servicio": "{{ g.descripcion_actividad }}",
+            "domicilio_persona_paga": {
+              "pais": {
+                "valor": "{{ g.info_personal_var.domicilios.cat_pais.pais }}",
+                "codigo": "{{ g.info_personal_var.domicilios.cat_pais.codigo }}"
+              },
+              "entidad_federativa": {
+                "nom_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.entidad_federativa }}",
+                "cve_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.clave }}"
+              },
+              "municipio": {
+                "nom_mun": "{{ g.info_personal_var.domicilios.municipio }}",
+                "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "cp": "{{ g.info_personal_var.domicilios.cp }}",
+              "localidad": {
+                "nom_loc": "{{ g.info_personal_var.domicilios.colonia }}",
+                "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "asentamiento": {
+                "cve_asen": "",
+                "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+                "cve_tipo_asen": ""
+              },
+              "vialidad": {
+                "tipo_vial": "{{ g.info_personal_var.domicilios.cat_tipo_via.tipo_via }}",
+                "nom_vial": "{{ g.info_personal_var.domicilios.nombre_via }}"
+              },
+              "numExt": "{{ g.info_personal_var.domicilios.num_exterior }}",
+              "numInt": "{{ g.info_personal_var.domicilios.num_interior }}"
+            },
+            "ingreso_bruto_anual": {
+              "valor": "{{ g.ingreso_bruto_anual }}",
+              "moneda": {
+                "codigo": "{{ g.cat_monedas.codigo }}",
+                "moneda": "{{ g.cat_monedas.moneda }}"
+              },
+              "unidad_temporal": {
+                "codigo": "No utilizamos el catálogo",
+                "valor": "Los valores pueden venir simultáneamente en varias unidades."
+              },
+              "duracion_frecuencia": "",
+              "fecha_transaccion": "{{ g.fecha_transaccion|date:"Y-m-d" }}"
+            },
+            "observaciones": "{{ g.observaciones.observacion }}"
+          } {% if not forloop.last %} ,{% endif %}
+        {% endif %}
+      {% endfor %}
+      ],
+      "enajenacion_bienes": [
+      {% for g in d.ingresosvarios_set.all%}
+        {% if g.cat_tipos_ingresos_varios.id == 8 %}
+
+          {
+            "id": {{ g.id }},
+            "nombre_denominacion_razon_social": "{%if g.info_personal_var.es_fisica  %}{{ g.info_personal_var.nombres}}  {% else %} {{g.info_personal_var.razon_social }}{% endif %}",
+            "rfc": "{{ g.info_personal_var.rfc }}",
+            "curp": "info_personal_var.curp",
+            "tipo_bien": {
+              "codigo": "{{ g.cat_tipos_muebles.codigo }}",
+              "valor": "{{ g.cat_tipos_muebles.tipo_mueble }}"
+            },
+            "sector_industria": {
+              "codigo": "{{ g.info_personal_var.cat_sectores_industria.codigo }}",
+              "valor": "{{ g.info_personal_var.cat_sectores_industria.sector_industria }}"
+            },
+            "tipo_actividad_servicio": {
+              "codigo": "{{ g.cat_tipos_actividad.codigo }}",
+              "valor": "{{ g.cat_tipos_actividad.tipo_actividad}}"
+            },
+            "descripcion_bien": "{{ g.descripcion_actividad }}",
+            "domicilio_bien_enajenado": {
+              "pais": {
+                "valor": "{{ g.info_personal_var.domicilios.cat_pais.pais }}",
+                "codigo": "{{ g.info_personal_var.domicilios.cat_pais.codigo }}"
+              },
+              "entidad_federativa": {
+                "nom_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.entidad_federativa }}",
+                "cve_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.clave }}"
+              },
+              "municipio": {
+                "nom_mun": "{{ g.info_personal_var.domicilios.municipio }}",
+                "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "cp": "{{ g.info_personal_var.domicilios.cp }}",
+              "localidad": {
+                "nom_loc": "{{ g.info_personal_var.domicilios.colonia }}",
+                "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "asentamiento": {
+                "cve_asen": "",
+                "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+                "cve_tipo_asen": ""
+              },
+              "vialidad": {
+                "tipo_vial": "{{ g.info_personal_var.domicilios.cat_tipo_via.tipo_via }}",
+                "nom_vial": "{{ g.info_personal_var.domicilios.nombre_via }}"
+              },
+              "numExt": "{{ g.info_personal_var.domicilios.num_exterior }}",
+              "numInt": "{{ g.info_personal_var.domicilios.num_interior }}"
+            },
+            "ingreso_bruto_anual": {
+              "valor": "{{ g.ingreso_bruto_anual }}",
+              "moneda": {
+                "codigo": "{{ g.cat_monedas.codigo }}",
+                "moneda": "{{ g.cat_monedas.moneda }}"
+              },
+              "unidad_temporal": {
+                "codigo": "No utilizamos el catálogo",
+                "valor": "Los valores pueden venir simultáneamente en varias unidades."
+              },
+              "duracion_frecuencia": "",
+              "fecha_transaccion": "{{ g.fecha_transaccion|date:"Y-m-d" }}"
+            },
+            "observaciones": "{{ g.observaciones.observacion }}"
+          } {% if not forloop.last %} ,{% endif %}
+        {% endif %}
+      {% endfor %}
+      ],
+      "otros_ingresos": [
+      {% for g in d.ingresosvarios_set.all%}
+        {% if g.cat_tipos_ingresos_varios.id == 9 %}
+          {
+            "id": {{ g.id }},
+            "nombre_denominacion_razon_social": "{% if g.info_personal_var.es_fisica %}{{g.info_personal_var.nombres }}{% else %} g.info_personal_var.razon_social }}{% endif %}",
+            "rfc": "{{ g.info_personal_var.rfc }}",
+            "curp": "info_personal_var.curp",
+            "sector_industria": {
+              "codigo": "{{ g.info_personal_var.cat_sectores_industria.codigo }}",
+              "valor": "{{ g.info_personal_var.cat_sectores_industria.sector_industria }}"
+            },
+            "tipo_actividad_servicio": {
+              "codigo": "{{ g.cat_tipos_actividad.codigo }}",
+              "valor": "{{ g.cat_tipos_actividad.tipo_actividad}}"
+            },
+            "descripcion_actividad_servicio": "{{ g.descripcion_actividad }}",
+            "domicilio_persona_paga": {
+              "pais": {
+                "valor": "{{ g.info_personal_var.domicilios.cat_pais.pais }}",
+                "codigo": "{{ g.info_personal_var.domicilios.cat_pais.codigo }}"
+              },
+              "entidad_federativa": {
+                "nom_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.entidad_federativa }}",
+                "cve_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.clave }}"
+              },
+              "municipio": {
+                "nom_mun": "{{ g.info_personal_var.domicilios.municipio }}",
+                "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "cp": "{{ g.info_personal_var.domicilios.cp }}",
+              "localidad": {
+                "nom_loc": "{{ g.info_personal_var.domicilios.colonia }}",
+                "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+              },
+              "asentamiento": {
+                "cve_asen": "",
+                "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+                "cve_tipo_asen": ""
+              },
+              "vialidad": {
+                "tipo_vial": "{{ g.info_personal_var.domicilios.cat_tipo_via.tipo_via }}",
+                "nom_vial": "{{ g.info_personal_var.domicilios.nombre_via }}"
+              },
+              "numExt": "{{ g.info_personal_var.domicilios.num_exterior }}",
+              "numInt": "{{ g.info_personal_var.domicilios.num_interior }}"
+            },
+            "ingreso_bruto_anual": {
+              "valor": "{{ g.ingreso_bruto_anual }}",
+              "moneda": {
+                "codigo": "{{ g.cat_monedas.codigo }}",
+                "moneda": "{{ g.cat_monedas.moneda }}"
+              },
+              "unidad_temporal": {
+                "codigo": "No utilizamos el catálogo",
+                "valor": "Los valores pueden venir simultáneamente en varias unidades."
+              },
+              "duracion_frecuencia": "",
+              "fecha_transaccion": "{{ g.fecha_transaccion|date:"Y-m-d" }}"
+            },
+            "observaciones": "{{ g.observaciones.observacion }}"
+          } {% if not forloop.last %} ,{% endif %}
+        {% endif %}
+      {% endfor %}
+      ]
+    },
+    "activos": {
+      "bienes_inmuebles": [
+      {% for g in d.bienesinmuebles_set.all%}
+
+        {
+          "id": {{ g.id }},
+          "tipo_operacion": {
+            "codigo": "{{ g.cat_tipos_operaciones.codigo }}",
+            "valor": "{{ g.cat_tipos_operaciones.tipo_operacion }}"
+          },
+          "tipo_bien": {
+            "codigo": "{{ g.cat_tipos_inmuebles.codigo }}",
+            "valor": "{{ g.cat_tipos_inmuebles.tipo_inmueble }}"
+          },
+          "superficie_terreno": "{{ g.superficie_terreno }}",
+          "superficie_construccion": "{{ g.superficie_construcción }}",
+          "titular": {
+            "codigo": "{{ g.cat_tipos_titulares.codigo }}",
+            "valor": "{{ g.cat_tipos_titulares.tipo_titular }}"
+          },
+          "nombre_copropietario": {
+            "nombres": "{{ c.otra_persona.nombres }}",
+            "primer_apellido": "{{ c.otra_persona.apellido1 }}",
+            "segundo_apellido": "{{ c.otra_persona.apellido2 }}"
+          },
+          "identificacion_bien": {
+            "numero_escritura_publica": "{{ g.num_escritura_publica }}",
+            "numero_registro_publico": "{{ g.num_registro_publico }}",
+            "folio_real": "{{ g.folio_real }}",
+            "fecha_contrato": "{{ g.fecha_contrato_compra|date:"Y-m-d" }}"
+          },
+          "domicilio_bien": {
+            "pais": {
+              "valor": "{{ g.domicilios.cat_paises.pais }}",
+              "codigo": "{{ g.domicilios.cat_paises.codigo }}"
+            },
+            "entidad_federativa": {
+              "nom_ent": "{{ g.domicilios.cat_entidades_federativas.entidad_federativa }}",
+              "cve_ent": "{{ g.domicilios.cat_entidades_federativas.clave }}"
+            },
+            "municipio": {
+              "nom_mun": "{{ g.domicilios.municipio }}",
+              "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "cp": "{{g.domicilios.cp}}",
+            "localidad": {
+              "nom_loc": "{{ g.domicilios.colonia }}",
+              "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "asentamiento": {
+              "cve_asen": "",
+              "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+              "cve_tipo_asen": ""
+            },
+            "vialidad": {
+              "tipo_vial": "{{ g.domicilios.cat_tipo_via.tipo_via }}",
+              "nom_vial": "{{ g.domicilios.nombre_via }}"
+            },
+            "numExt": "{{ g.domicilios.num_exterior }}",
+            "numInt": "{{ g.domicilios.num_interior }}"
+          },
+          "forma_adquisicion": {
+            "codigo": "{{ g.cat_formas_adquisiciones.codigo }}",
+            "valor": "{{ g.cat_formas_adquisiciones.forma_adquisicion }}"
+          },
+          "nombre_denominacion_quien_adquirio": "{{ c.otra_persona.nombres}} {{c.otra_persona.apellido1}} {{c.otra_persona.apellido2}}",
+          "rfc_quien_adquirio": "{{ c.otra_persona.rfc }}",
+          "curp_quien_adquirio": "{{ c.otra_persona.curp }}",
+          "relacion_persona_adquirio": {
+            "codigo": "{{ c.tipo_relacion.codigo }}",
+            "valor": "{{ c.tipo_relacion.tipo_relacion }}"
+          },
+          "sector_industria": {
+            "codigo": "{{ c.otra_persona.cat_sectores_industria.codigo }}",
+            "valor": "{{ c.otra_persona.cat_sectores_industria.sector_industria }}"
+          },
+          "fecha_adquisicion": "{{ g.fecha_adquisicion|date:"Y-m-d" }}",
+          "precio_adquisicion": {
+            "valor": "{{ g.precio_adquisicion }}",
+            "moneda": {
+              "codigo": "{{ g.cat_monedas.codigo }}",
+              "moneda": "{{ g.cat_monedas.moneda }}"
+            }
+          },
+          "valor_catastral": "{{ g.valor_catastral }}",
+          "observaciones": "g.observaciones.observacion"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "bienes_muebles_registrables": [
+      {% for g in d.bienesmuebles_set.all%}
+     
+        {
+          "id": {{ g.id }},
+          "tipo_operacion": {
+            "codigo": "{{ g.cat_tipos_operaciones.codigo }}",
+            "valor": "{{ g.cat_tipos_operaciones.tipo_operacion }}"
+          },
+          "tipo_bien_mueble": {
+            "codigo": "{{ g.cat_tipos_muebles.codigo }}",
+            "valor": "{{ g.cat_tipos_muebles.tipo_mueble }}"
+          },
+          "marca": "{{ g.marca }}",
+          "submarca": "{{ g.submarca }}",
+          "modelo": "{{ g.modelo }}",
+          "numero_serie": "{{ g.num_serie }}",
+          "lugar_registro": {
+            "pais": {
+              "valor": "{{ g.cat_paises.pais }}",
+              "codigo": "{{ g.cat_paises.codigo }}"
+            },
+            "entidad": {
+              "nom_ent": "{{ g.cat_entidades_federativas.entidad_federativa }}",
+              "cve_ent": "{{ g.cat_entidades_federativas.id }}"
+            }
+          },
+          "titular_bien": {
+            "codigo": "{{ g.cat_tipos_titulares.codigo }}",
+            "valor": "{{ g.cat_tipos_titulares.tipo_titular }}"
+          },
+
+          "porcentaje_propiedad": "{{ g.porcentaje }}",
+          "nombres_copropietarios": [
+          {% for c in g.activos_bienes.bienespersonas_set.all %}
+          {
+            "nombres": "{{ c.info_personal_var.nombres }}",
+            "primer_apellido": "{{ c.info_personal_var.apellido1 }}",
+            "segundo_apellido": "{{ c.info_personal_var.apellido2 }}"
+          }{% if not forloop.last %} , {% endif %}
+          {% endfor %}
+          ],
+          "numero_registro_vehicular":"{{ g.num_registro_vehicular }}",
+          "forma_adquisicion": {
+            "codigo": "{{ g.cat_formas_adquisiciones.codigo }}",
+            "valor": "{{ g.cat_formas_adquisiciones.forma_adquisicion }}"
+          },
+          "nombre_denominacion_quien_adquirio": "{{ c.otra_persona.nombres}} {{c.otra_persona.apellido1}} {{c.otra_persona.apellido2}}",
+          "rfc_quien_adquirio": "{{ c.otra_persona.rfc }}",
+          "relacion_persona_quien_adquirio": {
+            "codigo": "{{ c.tipo_relacion.codigo }}",
+            "valor": "{{ c.tipo_relacion.tipo_relacion }}"
+          },
+          "sector_industria": {
+            "codigo": "{{ c.otra_persona.cat_sectores_industria.codigo }}",
+            "valor": "{{ c.otra_persona.cat_sectores_industria.sector_industria }}"
+          },
+          "fecha_adquisicion": "{{ g.fecha_adquisicion|date:"Y-m-d" }}",
+          "precio_adquisicion": {
+            "valor": "{{ g.precio_adquisicion }}",
+            "moneda": {
+              "codigo": "{{ g.cat_monedas.codigo }}",
+              "moneda": "{{ g.cat_monedas.moneda }}"
+            }
+          },
+          "observaciones": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "bienes_muebles_no_registrables": [
+      {% for g in d.mueblesnoregistrables_set.all%}
+
+        {
+          "id": {{ g.id }},
+          "tipo_operacion": {
+            "codigo": "{{ g.cat_tipos_operaciones.codigo }}",
+            "valor": "{{ g.cat_tipos_operaciones.tipo_operacion }}"
+          },
+          "tipo_bien": {
+            "codigo": "{{ g.cat_tipos_muebles.codigo }}",
+            "valor": "{{ g.cat_tipos_muebles.tipo_mueble }}"
+          },
+          "descripcion": "{{ g.descripcion_bien }}",
+          "titular_bien": {
+            "codigo": "{{ g.cat_tipos_titulares.codigo }}",
+            "valor": "{{ g.cat_tipos_titulares.tipo_titular }}"
+          },
+          "porcentaje_propiedad": "{{ g.porcentaje }}",
+          "nombres_copropietarios": [
+          {% for c in g.activos_bienes.bienespersonas_set.all %}
+          {
+            "nombres": "{{ c.info_personal_var.nombres }}",
+            "primer_apellido": "{{ c.info_personal_var.apellido1 }}",
+            "segundo_apellido": "{{ c.info_personal_var.apellido2 }}"
+          }{% if not forloop.last %} , {% endif %}
+          {% endfor %}
+          ],
+          "forma_adquisicion": {
+            "codigo": "{{ g.cat_formas_adquisiciones.codigo }}",
+            "valor": "{{ g.cat_formas_adquisiciones.forma_adquisicion }}"
+          },
+          "nombre_denominacion_adquirio": "Tesl Mtr Inc",
+          "relacion_quien_adquirio": {
+            "codigo": "{{ c.tipo_relacion.codigo }}",
+            "valor": "{{ c.tipo_relacion.tipo_relacion }}"
+          },
+          "fecha_adquisicion": "{{ g.fecha_adquisicion|date:"Y-m-d" }}",
+          "precio_adquisicion": {
+            "valor": {{ g.precio_adquisicion }},
+            "moneda": {
+              "codigo": "{{ g.cat_monedas.codigo }}",
+              "moneda": "{{ g.cat_monedas.moneda }}"
+            }
+          },
+          "observaciones": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "inversiones_cuentas_valores": [
+      {% for g in d.inversiones_set.all%}
+
+        {
+          "id": {{ g.id }},
+          "tipo_operacion": {
+            "codigo": "{{ g.cat_tipos_operaciones.codigo }}",
+            "valor": "{{ g.cat_tipos_operaciones.tipo_operacion }}"
+          },
+          "tipo_inversion": {
+            "codigo": "{{ g.cat_tipos_inversiones.codigo }}",
+            "valor": "{{ g.cat_tipos_inversiones.tipo_inversion }}"
+          },
+          "tipo_especifico_inversion": {
+            "codigo": "{{ g.cat_tipos_especificos_inversiones.codigo }}",
+            "valor": "{{ g.cat_tipos_especificos_inversiones.tipo_inversion }}"
+          },
+          "numero_cuenta": "GFHRTY788778",
+          "nacional_extranjero": {
+            "valor": "{{ g.cat_paises.pais }}",
+            "codigo": "{{ g.cat_paises.codigo }}"
+        },
+          "nombre_institucion": "{{ g.info_personal_var.razon_social }}",
+          "rfc_institucion": "{{ g.info_personal_var.rfc }}",
+          "sector_industria": {
+            "codigo": "{{ g.info_personal_var.cat_sectores_industria.codigo }}",
+            "valor": "{{ g.info_personal_var.cat_sectores_industria.sector_industria }}"
+          },
+          "domicilio_institucion": {
+            "pais": {
+              "valor": "{{ g.info_personal_var.domicilios.cat_paises.pais }}",
+              "codigo": "{{ g.info_personal_var.domicilios.cat_paises.codigo }}"
+            },
+            "entidad_federativa": {
+              "nom_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.entidad_federativa }}",
+              "cve_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.clave }}"
+            },
+            "municipio": {
+              "nom_mun": "{{ g.info_personal_var.domicilios.municipio }}",
+              "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "cp": "{{g.info_personal_var.domicilios.cp}}",
+            "localidad": {
+              "nom_loc": "{{ g.info_personal_var.domicilios.colonia }}",
+              "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "asentamiento": {
+              "cve_asen": "",
+              "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+              "cve_tipo_asen": ""
+            },
+            "vialidad": {
+              "tipo_vial": "{{ g.info_personal_var.domicilios.cat_tipo_via.tipo_via }}",
+              "nom_vial": "{{ g.info_personal_var.domicilios.nombre_via }}"
+            },
+            "numExt": "{{ g.info_personal_var.domicilios.num_exterior }}",
+            "numInt": "{{ g.info_personal_var.domicilios.num_interior }}"
+          },
+          "forma_adquisicion": {
+            "codigo": "{{ g.cat_formas_adquisiciones.codigo }}",
+            "valor": "{{ g.cat_formas_adquisiciones.forma_adquisicion }}"
+          },
+          "fecha_inicio": "{{ g.fecha_inicio|date:"Y-m-d" }}",
+          "monto_original": "{{ g.monto_original }}",
+          "moneda": {
+            "codigo": "{{ g.cat_monedas.codigo }}",
+            "moneda": "{{ g.cat_monedas.moneda }}"
+          },
+          "tasa_interes": "{{ g.tasa_interes }}",
+          "saldo_anual": "{{ g.saldo_actual }}",
+          "plazo": 6,
+          "unidad_medida_plazo": {
+            "codigo": "{{ g.cat_unidades_temporales.codigo }}",
+            "valor": "{{ g.cat_unidades_temporales.unidad_temporal }}"
+          },
+          "titular_bien": {
+            "codigo": "{{ g.cat_tipos_titulares.codigo }}",
+            "valor": "{{ g.cat_tipos_titulares.tipos_titulares }}"
+          },
+          "porcentaje_inversion": "{{ g.porcentaje_inversion }}",
+          "observaciones": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "efectivo_metales": [
+      {% for g in d.efectivometales_set.all%}
+
+        {
+          "id": {{ g.id }},
+          "tipo_operacion": {
+            "codigo": "{{ g.cat_tipos_operaciones.codigo }}",
+            "valor": "{{ g.cat_tipos_operaciones.tipo_operacion }}"
+          },
+          "tipo_moneda": {
+            "codigo": "{{ g.cat_monedas.codigo }}",
+            "moneda": "{{ g.cat_monedas.moneda }}"
+          },
+          "monto_moneda": "{{ g.monto_efectivo }}",
+          "tipo_metal": {
+            "codigo": "{{ g.cat_tipos_metales.codigo }}",
+            "moneda": "{{ g.cat_tipos_metales.tipo_metal }}"
+          },
+          "unidades": "{{ g.unidades }}",
+          "monto_metal": "{{ g.monto_metales }}",
+          "forma_adquisicion": {
+            "codigo": "{{ g.cat_formas_adquisiciones.codigo }}",
+            "valor": "{{ g.cat_formas_adquisiciones.forma_adquisicion }}"
+          },
+          "observaciones_comentarios": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "fideicomisos": [
+      {% for g in d.fideicomisos_set.all%}
+
+        {
+          "id": {{ g.id }},
+          "tipo_operacion": {
+            "codigo": "{{ g.cat_tipos_operaciones.codigo }}",
+            "valor": "{{ g.cat_tipos_operaciones.tipo_operacion }}"
+          },
+          "identificador_fideicomiso": "{{ g.nombre_fideicomiso }}",
+          "tipo_fideicomiso": {
+            "codigo": "{{ g.cat_tipos_fideicomisos.codigo }}",
+            "valor": "{{ g.cat_tipos_fideicomisos.tipo_fideicomiso }}"
+          },
+          "objetivo": "{{ g.objetivo_fideicomiso }}",
+          "numero_registro": "{{ g.num_registro }}",
+          "fecha_creacion": "{{ g.fecha_creacion|date:"Y-m-d" }}",
+          "vigencia": "{{ g.plazo_vigencia }}",
+          "residencia": {
+            "valor": "{{ g.cat_paises.pais }}",
+            "codigo": "{{ g.cat_paises.codigo }}"
+        },
+          "valor": "{{ g.valor_fideicomiso }}",
+          "moneda": {
+            "codigo": "{{ g.cat_monedas.codigo }}",
+            "moneda": "{{ g.cat_monedas.moneda }}"
+          },
+          "porcentaje_propiedad_derechos_fiduciarios": "{{ g.activos_bienes.bienes_personas.first.porcentaje }}",
+          "ingreso_monetario_obtenido": "{{ g.ingreso_monetario }}",
+          "institucion_fiduciaria": "{{ g.institucion_fiduciaria }}",
+          "fideicomitente": {
+          {% with c=g.fideicomitente %}
+            "nombre": "{{c.otra_persona.nombre_completo}}",
+            "rfc": "{{ c.otra_persona.rfc }}",
+            "curp": "{{ c.otra_persona.curp }}",
+            "domicilio": {
+            "pais": {
+              "valor": "{{ c.otra_persona.domicilios.cat_paises.pais }}",
+              "codigo": "{{ c.otra_persona.domicilios.cat_paises.codigo }}"
+            },
+            "entidad_federativa": {
+              "nom_ent": "{{ c.otra_persona.domicilios.cat_entidades_federativas.entidad_federativa }}",
+              "cve_ent": "{{ c.otra_persona.domicilios.cat_entidades_federativas.clave }}"
+            },
+            "municipio": {
+              "nom_mun": "{{ c.otra_persona.domicilios.municipio }}",
+              "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "cp": "{{c.otra_persona.domicilios.cp}}",
+            "localidad": {
+              "nom_loc": "{{ c.otra_persona.domicilios.colonia }}",
+              "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "asentamiento": {
+              "cve_asen": "",
+              "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+              "cve_tipo_asen": ""
+            },
+            "vialidad": {
+              "tipo_vial": "{{ c.otra_persona.domicilios.cat_tipo_via.tipo_via }}",
+              "nom_vial": "{{ c.otra_persona.domicilios.nombre_via }}"
+            },
+            "numExt": "{{ c.otra_persona.domicilios.num_exterior }}",
+            "numInt": "{{ c.otra_persona.domicilios.num_interior }}"
+            },
+            "fecha_constitucion": "{{ c.otra_persona.fecha.nacimiento|date:"Y-m-d" }}"
+          {% endwith %}
+          },
+          "fideicomisario": {
+          {% with c=g.fideicomisario %}
+            "nombre": "{{c.otra_persona.nombre_completo}}",
+            "rfc": "{{ c.otra_persona.rfc }}",
+            "curp": "{{ c.otra_persona.curp }}",
+            "domicilio": {
+            "pais": {
+              "valor": "{{ c.otra_persona.domicilios.cat_paises.pais }}",
+              "codigo": "{{ c.otra_persona.domicilios.cat_paises.codigo }}"
+            },
+            "entidad_federativa": {
+              "nom_ent": "{{ c.otra_persona.domicilios.cat_entidades_federativas.entidad_federativa }}",
+              "cve_ent": "{{ c.otra_persona.domicilios.cat_entidades_federativas.clave }}"
+            },
+            "municipio": {
+              "nom_mun": "{{ c.otra_persona.domicilios.municipio }}",
+              "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "cp": "{{c.otra_persona.domicilios.cp}}",
+            "localidad": {
+              "nom_loc": "{{ c.otra_persona.domicilios.colonia }}",
+              "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "asentamiento": {
+              "cve_asen": "",
+              "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+              "cve_tipo_asen": ""
+            },
+            "vialidad": {
+              "tipo_vial": "{{ c.otra_persona.domicilios.cat_tipo_via.tipo_via }}",
+              "nom_vial": "{{ c.otra_persona.domicilios.nombre_via }}"
+            },
+            "numExt": "{{ c.otra_persona.domicilios.num_exterior }}",
+            "numInt": "{{ c.otra_persona.domicilios.num_interior }}"
+            },
+            "fecha_constitucion": "{{ c.otra_persona.fecha.nacimiento|date:"Y-m-d" }}"
+          {% endwith %}
+          },
+          "fiduciario": {
+          {% with c=g.fiduciario %}
+            "nombre": "{{c.nombre_completo}}",
+            "rfc": "{{ c.otra_persona.rfc }}",
+            "curp": "{{ c.otra_persona.curp }}",
+            "domicilio": {
+            "pais": {
+              "valor": "{{ c.otra_persona.domicilios.cat_paises.pais }}",
+              "codigo": "{{ c.otra_persona.domicilios.cat_paises.codigo }}"
+            },
+            "entidad_federativa": {
+              "nom_ent": "{{ c.otra_persona.domicilios.cat_entidades_federativas.entidad_federativa }}",
+              "cve_ent": "{{ c.otra_persona.domicilios.cat_entidades_federativas.clave }}"
+            },
+            "municipio": {
+              "nom_mun": "{{ c.otra_persona.domicilios.municipio }}",
+              "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "cp": "{{c.otra_persona.domicilios.cp}}",
+            "localidad": {
+              "nom_loc": "{{ c.otra_persona.domicilios.colonia }}",
+              "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "asentamiento": {
+              "cve_asen": "",
+              "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+              "cve_tipo_asen": ""
+            },
+            "vialidad": {
+              "tipo_vial": "{{ c.otra_persona.domicilios.cat_tipo_via.tipo_via }}",
+              "nom_vial": "{{ c.otra_persona.domicilios.nombre_via }}"
+            },
+            "numExt": "{{ c.otra_persona.domicilios.num_exterior }}",
+            "numInt": "{{ c.otra_persona.domicilios.num_interior }}"
+            },
+            "fecha_constitucion": "{{ c.otra_persona.fecha.nacimiento|date:"Y-m-d" }}"
+          {% endwith %}
+          },
+          "observaciones_comentarios": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "bienes_intangibles": [
+      {% for g in d.bienesintangibles_set.all%}
+
+        {
+          "id": {{ g.id }},
+          "tipo_operacion": {
+            "codigo": "{{ g.cat_tipos_operaciones.codigo }}",
+            "valor": "{{ g.cat_tipos_operaciones.tipo_operacion }}"
+          },
+          "propietario_registrado": [
+            "{{c.nombre_completo}}"
+          ],
+          "descripcion": "{{ g.descripcion }}",
+          "ente_publico_encargado": "{{ g.cat_entes_publicos.ente_publico }}",
+          "numero_registro": "{{ g.num_registro }}",
+          "fecha_registro": "{{ g.fecha_registro|date:"Y-m-d" }}",
+          "sector_industria": {
+            "codigo": "{{ g.cat_sectores_industria.codigo }}",
+            "valor": "{{ g.cat_sectores_industria.sector_industria }}"
+          },
+          "precio_adquisicion": {
+            "valor": "{{ g.precio_adquisicion }}",
+            "moneda": {
+              "codigo": "{{ g.cat_monedas.codigo }}",
+              "moneda": "{{ g.cat_monedas.moneda }}"
+              }
+          },
+          "forma_adquisicion": {
+            "codigo": "{{ g.cat_formas_adquisiciones.codigo }}",
+            "valor": "{{ g.cat_formas_adquisiciones.forma_adquisicion }}"
+          },
+          "fecha_vencimiento": "{{ g.fecha_vencimiento|date:"Y-m-d" }}",
+          "porcentaje_copropiedad": "{{ c.porcentaje }}",
+          "precio_total_copropiedad": {
+            "valor": "{{  g.precio_total_adquisicion}}",
+            "moneda": {
+              "codigo": "{{ g.cat_monedas.codigo }}",
+              "moneda": "{{ g.cat_monedas.moneda }}"
+            }
+          },
+          "nombre_copropietario": "{{c.nombre_completo}}",
+          "porcentaje_propiedad_copropietario": "{{ c.porcentaje }}",
+          "observaciones_comentarios": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "cuentas_por_cobrar": [
+      {% for g in d.bienesintangibles_set.all%}
+
+        {
+          "id": {{ g.id }},
+          "nombre_prestatario": "{{c.nombre_completo}}",
+          "numero_registro": "{{ g.numero_registro }}",
+          "domicilio_prestatarios": {
+            "pais": {
+              "valor": "{{ c.otra_persona.domicilios.cat_paises.pais }}",
+              "codigo": "{{ c.otra_persona.domicilios.cat_paises.codigo }}"
+            },
+            "entidad_federativa": {
+              "nom_ent": "{{ c.otra_persona.domicilios.cat_entidades_federativas.entidad_federativa }}",
+              "cve_ent": "{{ c.otra_persona.domicilios.cat_entidades_federativas.clave }}"
+            },
+            "municipio": {
+              "nom_mun": "{{ c.otra_persona.domicilios.municipio }}",
+              "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "cp": "{{c.otra_persona.domicilios.cp}}",
+            "localidad": {
+              "nom_loc": "{{ c.otra_persona.domicilios.colonia }}",
+              "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "asentamiento": {
+              "cve_asen": "",
+              "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+              "cve_tipo_asen": ""
+            },
+            "vialidad": {
+              "tipo_vial": "{{ c.otra_persona.domicilios.cat_tipo_via.tipo_via }}",
+              "nom_vial": "{{ c.otra_persona.domicilios.nombre_via }}"
+            },
+            "numExt": "{{ c.otra_persona.domicilios.num_exterior }}",
+            "numInt": "{{ c.otra_persona.domicilios.num_interior }}"
+          },
+          "sector_industria": {
+            "codigo": "{{ c.otra_persona.cat_sectores_industria.codigo }}",
+            "valor": "{{ c.otra_persona.cat_sectores_industria.sector_industria }}"
+          },
+          "fecha_prestamo": "{{ g.fecha_prestamo|date:"Y-m-d" }}",
+          "monto_original_prestamo": "{{ g.monto_original }}",
+          "tasa_interes": "{{ g.tasa_interes }}",
+          "saldo_pendiente": "{{ g.saldo_pendiente }}",
+          "fecha_vencimiento": "{{ g.fecha_vencimiento|date:"Y-m-d" }}",
+          "porcentaje_copropiedad": "{{ g.porcentaje }}",
+          "nombre_copropietario": "{{c.nombre_completo}}",
+          "observaciones_comentarios": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "uso_especie_propiedad_tercero": [
+      {% for g in d.bienesintangibles_set.all%}
+        {
+          "id": {{ g.id }},
+          "tipo_bien": "{{ g.tipo_bien_servicio }}",
+          "valor_mercado": {
+            "valor": "{{ g.valor_mercado }}",
+            "moneda": {
+              "codigo": "{{ g.cat_monedas.codigo }}",
+              "moneda": "{{ g.cat_monedas.moneda }}"
+            }
+          },
+          "nombre_tercero_propietario": "{{ g.info_personal_var.nombres}} {{g.info_personal_var.apellido1}} {{g.info_personal_var.apellido2}}  {{g.info_personal_var.razon_social }}",
+          "rfc_tercero_propietario": "{{ g.info_personal_var.rfc }}",
+          "curp_tercero_propietario": "{{ g.info_personal_var.curp }}",
+          "relacion_persona": {
+            "codigo": "{{ g.cat_tipos_relaciones_personales.codigo }}",
+            "valor": "{{ g.cat_tipos_relaciones_personales.tipo_relacion }}"
+          },
+          "sector_industria": {
+            "codigo": "{{ g.info_personal_var.cat_sectores_industria.codigo }}",
+            "valor": "{{ g.info_personal_var.cat_sectores_industria.sector_industria }}"
+          },
+          "fecha_inicio": "{{ g.fecha_inicio|date:"Y-m-d" }}",
+          "pais": {
+            "valor": "{{ g.info_personal_var.domicilios.cat_paises.pais }}",
+            "codigo": "{{ g.info_personal_var.domicilios.cat_paises.codigo }}"
+          },
+          "entidad_federativa": {
+            "nom_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.entidad_federativa }}",
+            "cve_ent": "{{ g.info_personal_var.domicilios.cat_entidades_federativas.clave }}"
+          },
+          "municipio": {
+            "nom_mun": "{{ g.info_personal_var.domicilios.municipio }}",
+            "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+          },
+          "cp": "{{g.info_personal_var.domicilios.cp}}",
+          "localidad": {
+            "nom_loc": "{{ g.info_personal_var.domicilios.colonia }}",
+            "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+          },
+          "asentamiento": {
+            "cve_asen": "",
+            "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+            "cve_tipo_asen": ""
+          },
+          "vialidad": {
+            "tipo_vial": "{{ g.info_personal_var.domicilios.cat_tipo_via.tipo_via }}",
+            "nom_vial": "{{ g.info_personal_var.domicilios.nombre_via }}"
+          },
+          "numExt": "{{ g.info_personal_var.domicilios.num_exterior }}",
+          "numInt": "{{ g.info_personal_var.domicilios.num_interior }}",
+          "observaciones": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+      {% endfor %}
+        ]
+    },
+    "pasivos": {
+      "deudas": [
+      {% for g in d.deudasotros_set.all%}
+        {
+          "id": {{ g.id }},
+          "tipo_operacion": {
+            "codigo": "{{ g.cat_tipos_operaciones.codigo }}",
+            "valor": "{{ g.cat_tipos_operaciones.tipo_operacion }}"
+          },
+          "tipo_acreedor": {
+            "codigo": "{{ g.cat_tipos_acreedores.codigo }}",
+            "valor": "{{ g.cat_tipos_acreedores.tipo_operacion }}"
+          },
+          "tipo_adeudo": {
+            "codigo": "{{ g.cat_tipos_adeudos.codigo }}",
+            "valor": "{{ g.cat_tipos_adeudos.tipo_operacion }}"
+          },
+          "identificador_deuda": "CONT12354",
+          "nacional_extranjero": {
+            "valor": "{{ g.cat_paises.pais }}",
+            "codigo": "{{ g.cat_paises.codigo }}"
+          },
+          "nombre_acreedor": "{{ g.acreedor_infopersonalvar.nombres}} {{g.acreedor_infopersonalvar.apellido1}} {{g.acreedor_infopersonalvar.apellido2}} {{g.acreedor_infopersonalvar.razon_social }}",
+          "rfc_acreedor": "{{ g.acreedor_infopersonalvar.rfc }}",
+          "sector_industria": {
+            "codigo": "{{ g.acreedor_infopersonalvar.sectores_industria.codigo }}",
+            "valor": "{{ g.acreedor_infopersonalvar.sectores_industria.valor }}"
+          },
+          "domicilio_acreedor": {
+            "pais": {
+              "valor": "{{  g.acreedor_infopersonalvar.domicilios.cat_pais }}",
+              "codigo": "{{  g.acreedor_infopersonalvar.domicilios.cat_pais.codigo }}"
+            },
+            "entidad_federativa": {
+              "nom_ent": "{{  g.acreedor_infopersonalvar.domicilios.cat_entidades_federativas.entidad_federativa }}",
+              "cve_ent": "{{  g.acreedor_infopersonalvar.domicilios.cat_entidades_federativas.id}}"
+            },
+            "municipio": {
+              "nom_mun": "{{ g.acreedor_infopersonalvar.domicilios.municipio}}",
+              "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "cp": "{{ g.acreedor_infopersonalvar.domicilios.cp}}",
+            "localidad": {
+              "nom_loc": "{{  g.acreedor_infopersonalvar.domicilios.colonia}}",
+              "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "asentamiento": {
+              "cve_asen": "",
+              "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+              "cve_tipo_asen": ""
+            },
+            "vialidad": {
+              "tipo_vial": "{{ g.acreedor_infopersonalvar.domicilios.cat_tipo_via.tipo_via}}",
+              "nom_vial": "{{ g.acreedor_infopersonalvar.domicilios.nombre_via }}"
+            },
+            "numExt": "{{  g.acreedor_infopersonalvar.domicilios.num_exterior}}",
+            "numInt": "{{  g.acreedor_infopersonalvar.domicilios.num_interior}}"
+            },
+          "fecha_adeudo": "{{ g.fecha_generacion|date:"Y-m-d" }}",
+          "monto_original": "{{ g.monto_original }}",
+          "tipo_moneda": {
+            "codigo": "{{ g.cat_monedas.codigo }}",
+            "moneda": "{{ g.cat_monedas.moneda }}"
+        },
+          "tasa_interes": "{{ g.tasa_interes }}",
+          "saldo_pendiente": "{{ g.saldo_pendiente }}",
+          "montos_abonados": [
+            "{{ g.monto_abonado }}"
+          ],
+          "plazo_obligacion": "{{ g.plazo }}",
+          "unidad_medida_adeudo": {
+            "codigo": "{{ g.cat_unidades_temporales.codigo }}",
+            "valor": "{{ g.cat_unidades_temporales.unidad_temporal }}"
+          },
+          "titularidad_deuda": {
+            "codigo": "{{ g.cat_tipos_titulares.codigo }}",
+            "valor": "{{ g.cat_tipos_titulares.tipo_titular }}"
+          },
+          "porcentaje_adeudo_titular": "{{ g.porcentaje_adeudo }}",
+          "garantia": "{{ g.garantia }}",
+          "nombre_garante": "{{ g.nombre_garante }}",
+          "observaciones": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ],
+      "otras_obligaciones": [
+      {% for g in d.deudasotros_set.all%}
+        {
+          "id": {{ g.id }},
+          "tipo_operacion": {
+            "codigo": "{{ g.cat_tipos_operaciones.codigo }}",
+            "valor": "{{ g.cat_tipos_operaciones.tipo_operacion }}"
+          },
+          "tipo_acreedor": {
+            "codigo": "{{ g.cat_tipos_acreedores.codigo }}",
+            "valor": "{{ g.cat_tipos_acreedores.tipo_operacion }}"
+          },
+          "tipo_obligacion": {
+            "codigo": "{{ g.cat_tipos_adeudos.codigo }}",
+            "valor": "{{ g.otro_tipo_adeudo }}"
+          },
+          "identificador_obligacion": "FONAET8945",
+          "nacional_extranjero": {
+            "valor": "{{ g.cat_paises.pais }}",
+            "codigo": "{{ g.cat_paises.codigo }}"
+          },
+          "nombre_acreedor": "{{ g.acreedor_infopersonalvar.nombres}} {{g.acreedor_infopersonalvar.apellido1}} {{g.acreedor_infopersonalvar.apellido2}} {{g.acreedor_infopersonalvar.razon_social }}",
+          "rfc_acreedor": "{{ g.acreedor_infopersonalvar.rfc }}",
+          "sector_industria": {
+            "codigo": "{{ g.acreedor_infopersonalvar.sectores_industria.codigo }}",
+            "valor": "{{ g.acreedor_infopersonalvar.sectores_industria.valor }}"
+          },
+          "domicilio_acreedor": {
+            "pais": {
+              "valor": "{{  g.acreedor_infopersonalvar.domicilios.cat_pais }}",
+              "codigo": "{{  g.acreedor_infopersonalvar.domicilios.cat_pais.codigo }}"
+            },
+            "entidad_federativa": {
+              "nom_ent": "{{  g.acreedor_infopersonalvar.domicilios.cat_entidades_federativas.entidad_federativa }}",
+              "cve_ent": "{{  g.acreedor_infopersonalvar.domicilios.cat_entidades_federativas.id}}"
+            },
+            "municipio": {
+              "nom_mun": "{{ g.acreedor_infopersonalvar.domicilios.municipio}}",
+              "cve_mun": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "cp": "{{ g.acreedor_infopersonalvar.domicilios.cp}}",
+            "localidad": {
+              "nom_loc": "{{  g.acreedor_infopersonalvar.domicilios.colonia}}",
+              "cve_loc": "Dato no incluído en el acuerdo del DOF: 16/11/2018"
+            },
+            "asentamiento": {
+              "cve_asen": "",
+              "nom_asen": "Dato no incluído en el acuerdo del DOF: 16/11/2018",
+              "cve_tipo_asen": ""
+            },
+            "vialidad": {
+              "tipo_vial": "{{ g.acreedor_infopersonalvar.domicilios.cat_tipo_via.tipo_via}}",
+              "nom_vial": "{{ g.acreedor_infopersonalvar.domicilios.nombre_via }}"
+            },
+            "numExt": "{{  g.acreedor_infopersonalvar.domicilios.num_exterior}}",
+            "numInt": "{{  g.acreedor_infopersonalvar.domicilios.num_interior}}"
+          },
+          "fecha_obligacion": "{{ g.fecha_generacion|date:"Y-m-d" }}",
+          "monto_original": "{{ g.monto_original }}",
+          "tipo_moneda": {
+            "codigo": "{{ g.cat_monedas.codigo }}",
+            "moneda": "{{ g.cat_monedas.moneda }}"
+          },
+          "tasa_interes": "{{ g.monto_tasa_interes }}",
+          "saldo_pendiente": "{{ g.saldo_pendiente }}",
+          "montos_abonados": [
+            "{{ g.monto_abonado }}"
+          ],
+          "plazo_obligacion": "{{ g.plazo }}",
+          "unidad_medida_plazo": {
+            "codigo": "{{ g.cat_unidades_temporales.codigo }}",
+            "valor": "{{ g.cat_unidades_temporales.unidad_temporal }}"
+          },
+          "titularidad_obligacion": {
+            "codigo": "{{ g.cat_tipos_titulares.codigo }}",
+            "valor": "{{ g.cat_tipos_titulares.tipo_titular }}"
+          },
+          "porcentaje_obligacion_titular": "{{ g.porcentaje_adeudo }}",
+          "garantia": "{{ g.garantia }}",
+          "nombre_garante": "{{ g.nombre_garante }}",
+          "observaciones": "{{ g.observaciones.observacion }}"
+        }{% if not forloop.last %} , {% endif %}
+        {% endfor %}
+      ]
+    }
+  }
+
+{% if not forloop.last %} ,{% endif %}
+{% endfor %}
+]

@@ -1,0 +1,72 @@
+{% include 'layout/headertop.html' %}
+{% load bootstrap4 %}
+{% load static %}
+<section class="container-fluid container-offset-x my-md-7 py-7">
+
+  <div class="row row-md ">
+     <div class="col-sm-12 col-md-8">
+         {% if not editar %}
+        <h1 class="text-gray text-xl font-weight-medium text-uppercase mt-5 line-height-md title-mobile text-mobile"><span class="text-primary-light font-weight-semibold">Crear usuario</span> </h1>
+             {% else %}
+        <h1 class="text-gray text-xl font-weight-medium text-uppercase mt-5 line-height-md title-mobile text-mobile"><span class="text-primary-light font-weight-semibold">Editar usuario</span> </h1>
+
+         {% endif %}
+     </div>
+     <div class="col-sm-12 col-md-4 mt-4">
+        <a href="{% url 'declaracion:busqueda-usuarios' %}" class="btn btn-warning btn-block btn-lg font-weight-semibold text-light"> Regresar <img src="{% static 'src/img/regresar.png' %}"></a>
+     </div>
+  </div>
+  <p class="text-gray-darker font-weight-light">Todos lo campos son obligatorios</p>
+{% if not editar %}
+  <form action="{% if is_staff %}{% url 'declaracion:nuevo-usuario' %}{% else %}{% url 'declaracion:nuevo' %}{% endif %}" method="post" novalidate>
+    {% else %}
+  <form action="{% if is_staff %}{% url 'declaracion:editar-usuario' form.id.value %}{% else %}{% url 'declaracion:nuevo' %}{% endif %}" method="post" novalidate>
+  {% endif %}
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="row">
+          <div class="col-md-6">
+            {% bootstrap_field form.nombres placeholder="Nombre(s)" field_class="solo_letras"  %}
+          </div>
+          <div class="col-md-6">
+              {% bootstrap_field form.apellido1 placeholder="Primer Apellido" field_class="solo_letras"  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.apellido2 placeholder="Segundo apellido" field_class="solo_letras" required=False  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.rfc placeholder="RFC con homoclave" field_class='valida_rfc'  %}
+          </div>
+
+          <div class="col-md-6">
+            {% bootstrap_field form.dependencia placeholder="Ente público"  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.puesto placeholder="Empleo, cargo o comisión" field_class="solo_letras" %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.telefono placeholder="Teléfono" field_class="valida_telefono"  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.email placeholder="Correo electrónico" field_class='valida_email'  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.estatus placeholder="Estatus"  %}
+          </div>
+          <div class="col-md-6">
+            {% bootstrap_field form.rol placeholder="Rol" %}
+          </div>
+            {% if editar %}
+            {{ form.id }}
+            {% endif %}
+
+          <div class="col-12 text-right">
+            <button type="submit" class="btn btn-success-lighter text-uppercase mt-5">{% if editar %}Guardar cambios {% else %}Crear usuario{% endif %}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>
+{% include 'layout/footer.html' %}

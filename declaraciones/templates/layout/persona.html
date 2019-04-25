@@ -1,0 +1,76 @@
+{% load bootstrap4 %}
+{% load static %}
+<label for="cargo-municipio" class="label-secondary">{%if title %}{{title}}{% else %}Especifique Tipo de persona{%endif%} {% if tipo %}<span class="text-danger text-lg font-weight-bold">*</span>:{% endif %}</label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="{{ title }}">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+    <div class="row">
+        <div class="col-1">
+            <div class="custom-control custom-radio custom-control-inline radio-secondary tipo_persona">
+                <input {% if not form.es_fisica.initial %}checked{% endif %}  {% if form.es_fisica.initial == True %}checked{% endif %} type="radio"  id="id-{{form.es_fisica.html_name}}-f" value="true" name="{{ form.es_fisica.html_name }}" class="custom-control-input pfisica" onchange="dui.radioTPersona(this.value,'{{ form.es_fisica.html_name }}')">
+                <label class="custom-control-label text-rg" for="id-{{form.es_fisica.html_name}}-f">Física</label>
+            </div>
+        </div>
+        <div class="col-1">
+            <div class="custom-control custom-radio custom-control-inline radio-secondary tipo_persona">
+                <input {% if form.es_fisica.initial == False %}checked{% endif %} type="radio" id="id-{{ form.es_fisica.html_name }}-m"  value="false" name="{{ form.es_fisica.html_name }}" class="custom-control-input pmoral " onchange="dui.radioTPersona(this.value,'{{ form.es_fisica.html_name }}')">
+                <label class="custom-control-label text-rg" for="id-{{ form.es_fisica.html_name }}-m">Moral</label>
+            </div>
+        </div>
+        <div class="col-12" >
+
+            <div id="id_{{ form.es_fisica.html_name }}_container_fisica" class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nombre2" class="label-secondary">Nombre(s) {% if label %}{{ label }}{% else %}de quien se adquirió el inmueble{% endif %} {% if nombre %}<span class="text-danger text-lg font-weight-bold">*</span>{% endif %}:</label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nombre o nombres sin abreviatiuras ni signos especiales.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field form.nombres    show_label=False %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="apellido1_2" class="label-secondary">Primer apellido {% if label %}{{ label }}{% else %}de quien se adquirió el inmueble{% endif %} {% if nombre %}<span class="text-danger text-lg font-weight-bold">*</span>{% endif %}:</label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Apellido materno sin abreviaturas ni signos especiales {% if label %}{{ label }}{% else %}de quien se adquirió el inmueble{% endif %}.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field form.apellido1    show_label=False placeholder="Primer Apellido"%}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="apellido2_2" class="label-secondary">Segundo apellido {% if label %}{{ label }}{% else %}de quien se adquirió el inmueble{% endif %}:</label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Apellido paterno sin abreviaturas ni signos especiales {% if label %}{{ label }}{% else %}de quien se adquirió el inmueble{% endif %}.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field form.apellido2    show_label=False placeholder="Segundo apellido"%}
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="curp" class="label-secondary">CURP {% if label %}{{ label }}{% else %}de quien se adquirió el inmueble{% endif %} {% if curp %}<span class="text-danger text-lg font-weight-bold">*</span>{% endif %}: <small class="text-help text-primary">(si aplica)</small></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 18 caracteres de la Clave Única de Registro de Población {% if label %}{{ label }}{% else %}de quien se adquirió el inmueble{% endif %}.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field form.curp  field_class='valida_curp' show_label=False placeholder="CURP"%}
+                        </div>
+                    </div>
+
+            </div>
+            <div id="id_{{ form.es_fisica.html_name }}_container_moral" class="row">
+                    <div class="col-md-{% if rfc %}8{% else %}12{% endif %}">
+                        <div class="form-group">
+                            <label for="nombre2" class="label-secondary">Nombre, denominación o razón social {% if label %}{{ label }}{% else %}de quien se adquirió el inmueble{% endif %} {% if razon_social %}<span class="text-danger text-lg font-weight-bold">*</span>{% endif %}</label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="NNombre, denominación o razón social {% if label %}{{ label }}{% else %}de quien se adquirió el inmueble{% endif %}">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field form.razon_social    show_label=False%}
+                        </div>
+                    </div>
+            </div>
+
+
+        </div>
+    </div>

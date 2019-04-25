@@ -1,0 +1,97 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        {% include 'layout/sidebar.html' %}
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Intereses</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Apoyos o beneficios públicos en especie o monetarios</li>
+                </ol>
+            </nav>
+            <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+            <h2 class="h6 mb-3 text-uppercase">2. INTERESES <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">III. Apoyos o beneficios públicos en especie o monetarios</span></h2>
+            {% if agregar %}
+              <form action="{% url 'declaracion:apoyos-agregar' folio_declaracion %}" method="post" novalidate>
+            {% elif editar_id %}
+              <form action="{% url 'declaracion:apoyos-editar' folio_declaracion editar_id %}" method="post" novalidate>
+            {% else %}
+              <form action="{% url 'declaracion:apoyos' folio_declaracion %}" method="post" novalidate>
+            {% endif %}
+              {% csrf_token %}
+                <div class="row">
+                  {% include 'layout/no_aplica.html' %}
+                </div>
+                {% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="" titulo_dos="" titulo_tres="" agregar=agregar editar_id=editar_id %}
+                <div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="nombre-programa" class="label-secondary">Nombre del <span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nombre del programa al que es beneficiario.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field apoyos_form.nombre_programa show_label=False placeholder="Nombre del programa" %}
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="institucion-apoyo" class="text-muted text-sm mb-0">Institución que otorga el apoyo<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Institución que brinda el apoyo.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field apoyos_form.institucion_otorgante  show_label=False placeholder="Institución que otorga el apoyo" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="nivel-gobierno" class="text-muted text-sm mb-0">Nivel / orden de gobierno<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Federal/Estatal/Municipal.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/radiobuttons.html' with field_select=apoyos_form.fields.cat_ordenes_gobierno  field_name=apoyos_form.cat_ordenes_gobierno  otro_name=apoyos_form.otro_orden_gobierno%}
+                    </div>
+                    <div class="col-md-8">
+                        <label for="tipo-apoyo" class="text-muted text-sm mb-0">Tipo de apoyo<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Subsidio/Servicio/Obra/Otro.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/radiobuttons.html' with field_select=apoyos_form.fields.cat_tipos_apoyos  field_name=apoyos_form.cat_tipos_apoyos otro_name=form.otro_apoyo col=2 col_o=6 %}
+                    </div>
+                    <div class="col-md-4">
+                        <label for="valor-anual-apoyo" class="text-muted text-sm mb-0">Valor anual del apoyo<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Monto del apoyo anual.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                            {% bootstrap_field apoyos_form.valor_anual show_label=False placeholder="Valor anual del apoyo" %}
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="observaciones" class="label-secondary">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Detallar información del Apoyo Público.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field  observaciones_form.observacion show_label=False placeholder="Observaciones y comentarios" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 text-right row-form"  style="{% if checked %}display: none;{% endif %}">
+                    <button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-success font-weight-semibold text-uppercase">
+                      Guardar y agregar otro apoyo
+                        <img src="/static/src/img/plus.svg" alt="agregar" class="svg">
+                    </button>
+                            </div>
+                   {% include 'layout/guardar.html' %}
+
+            </form>
+            <div class="row"><div class="col-12"><br/></div></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

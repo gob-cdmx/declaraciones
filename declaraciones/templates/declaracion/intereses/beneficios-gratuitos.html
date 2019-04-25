@@ -1,0 +1,101 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+<div class="container-fluid">
+	<div class="row">
+		{% include 'layout/sidebar.html'%}
+		<div class="col-md-9">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+					<li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+					<li class="breadcrumb-item"><a href="#" class="text-reset">Intereses</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Beneficios gratuitos distintos a efectivo y bienes. (No recibidos por motivo del encargo)</li>
+				</ol>
+			</nav>
+			<h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+            <h2 class="h6 text-uppercase mb-3">2. Interes <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">IX. Beneficios gratuitos distintos a efectivo y bienes. (No recibidos por motivo del encargo)</span></h2>
+			{% if agregar %}
+			  <form action="{% url 'declaracion:beneficios-gratuitos-agregar' folio_declaracion %}" method="post" novalidate>
+			{% elif editar_id %}
+			  <form action="{% url 'declaracion:beneficios-gratuitos-editar' folio_declaracion editar_id %}" method="post" novalidate>
+			{% else %}
+			  <form action="{% url 'declaracion:beneficios-gratuitos' folio_declaracion %}" method="post" novalidate>
+			{% endif %}
+	  			{% csrf_token %}
+					<div class="row">
+						{% include 'layout/no_aplica.html' %}
+					</div>
+					{% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Tipo de Beneficio" titulo_dos="Origen del beneficio" titulo_tres="Sector / industria" agregar=agregar editar_id=editar_id %}
+					<div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+	  				<div class="col-12 my-2">
+                        <label class="label-secondary">Tipo de Beneficio<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar tipo de beneficio.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                         {% include 'layout/radiobuttons.html' with field_select=beneficios_gratuitos_form.fields.cat_tipos_beneficios  field_name=beneficios_gratuitos_form.cat_tipos_beneficios otro_name=beneficios_gratuitos_form.otros_beneficios col=2 col_o=4%}
+                    </div>
+
+	  				<div class="col-md-12">
+	  					<div class="form-group">
+							<label class="label-secondary">Origen del beneficio<span class="text-danger text-lg font-weight-bold">*</span></label>
+							<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nombre o Razón Social del beneficiario.">
+								<img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+							</button>
+							{% bootstrap_field  beneficios_gratuitos_form.origen_beneficio  show_label=False%}
+						</div>
+	  				</div>
+
+
+  					<div class="col-md-12">
+  						 <label class="label-secondary mb-2">Sector / industria<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar el sector del beneficiario.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                     {% include 'layout/radiobuttons.html' with field_select=beneficios_gratuitos_form.fields.cat_sectores_industria  field_name=beneficios_gratuitos_form.cat_sectores_industria otro_name=beneficios_gratuitos_form.otro_sector col=4 col_o=4 %}
+
+  					</div>
+
+
+  					<div class="col-md-4">
+	  					<div class="form-group">
+							<label class="label-secondary">Valor del beneficio<span class="text-danger text-lg font-weight-bold">*</span></label>
+							<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Monto del beneficio.">
+								<img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+							</button>
+							{% bootstrap_field  beneficios_gratuitos_form.valor_beneficio show_label=False placeholder="Valor del beneficio" %}
+						</div>
+	  				</div>
+	  				<div class="col-md-12">
+  						<div class="form-group">
+							<label class="label-secondary" for="textForm">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+							<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Detallar información de los beneficios.">
+								<img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+							</button>
+						    {% bootstrap_field  observaciones_form.observacion show_label=False placeholder="Observaciones y comentarios" %}
+						  </div>
+
+  					</div>
+  			</div>
+  			 <div class="text-right row-form" style="{% if checked %}display: none;{% endif %}">
+                    <button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-success font-weight-semibold text-uppercase">
+											Guardar y agregar otro beneficio
+                        <img src="/static/src/img/plus.svg" alt="agregar" class="svg">
+                    </button>
+                </div>
+                {% include 'layout/guardar.html' %}
+				<div class="row"><div class="col-12"><br/></div></div>
+
+
+
+			</form>
+
+		</div>
+	</div>
+
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

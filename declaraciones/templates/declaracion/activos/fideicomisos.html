@@ -1,0 +1,275 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        {% include 'layout/sidebar.html'%}
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Activos</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Fideicomisos</li>
+                </ol>
+            </nav>
+            <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+            <h2 class="h6 text-uppercase">4. Activos <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">VI. Fideicomisos</span></h2>
+            <p class="text-sm font-italic text-muted font-weight-extralight">Acciones, bonos, valores, títulos, cuentas de ahorro o bancarias o con entidades financieras, fondo de retiro, etc.</p>
+            {% if agregar %}
+              <form action="{% url 'declaracion:fideicomisos-agregar' folio_declaracion %}" method="post" novalidate>
+            {% elif editar_id %}
+              <form action="{% url 'declaracion:fideicomisos-editar' folio_declaracion editar_id %}" method="post" novalidate>
+            {% else %}
+              <form action="{% url 'declaracion:fideicomisos' folio_declaracion %}" method="post" novalidate>
+            {% endif %}
+            {% csrf_token %}
+            <div class="row">
+              {% include 'layout/no_aplica.html' %}
+            </div>
+            {% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Tipo de operación" titulo_dos="Tipo de Fideicomiso" titulo_tres="Nombre o identificador del Fideicomiso" agregar=agregar editar_id=editar_id %}
+            <div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+                    <div class="col-12 mb-2">
+                        <label class="label-secondary">Tipo de operación<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar tipo de operación del fideicomiso.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                         {% include 'layout/radiobuttons.html' with field_select=fideicomisos_form.fields.cat_tipos_operaciones  field_name=fideicomisos_form.cat_tipos_operaciones otro_name=fideicomisos_form.otra_operacion col=2 col_o=6%}
+
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="fedeicomiso-nombre" class="label-secondary">Nombre o identificador del Fideicomiso<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Dato que identifique el fideicomiso">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field fideicomisos_form.nombre_fideicomiso show_label=False placeholder="Nombre o identificador del Fideicomiso" %}
+                        </div>
+
+                        </div>
+
+
+                    <div class="col-12 mb-2">
+                        <label class="label-secondary">Tipo de Fideicomiso<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Tipo de fideicomiso con marco normativo.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/radiobuttons.html' with field_select=fideicomisos_form.fields.cat_tipos_fideicomisos  field_name=fideicomisos_form.cat_tipos_fideicomisos otro_name=fideicomisos_form.otro_fideicomiso col=2 col_o=6%}
+
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="fideicomiso-objetivo" class="label-secondary">Objetivo del Fideicomiso<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Especifique.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field fideicomisos_form.objetivo_fideicomiso show_label=False %}
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="fideicomiso-id" class="label-secondary">Número de registro o identificador<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Dato que haga identificable el fideicomiso.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field fideicomisos_form.num_registro show_label=False placeholder="Número de registro o identificador" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary">Fecha de creación del fideicomiso<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Objeto de creación del fideicomiso">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <div class="form-row">
+                            {% bootstrap_field fideicomisos_form.fecha_creacion show_label=False placeholder="Fecha de creación del fideicomiso" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="fideicomiso-vigencia" class="label-secondary">Vigencia del fideicomiso<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Plazo que comprende el fideicomiso convenido.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field fideicomisos_form.plazo_vigencia show_label=False placeholder="Vigencia del fideicomiso" %}
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="fideicomiso-residencia" class="label-secondary">Residencia del fideicomiso<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar el territorio en el que se encuentra el fideicomiso.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% include 'layout/nacionalidad.html' with field=fideicomisos_form.cat_paises %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="fideicomiso-valor" class="label-secondary">Valor del fideicomiso<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Valor total del fideicomiso.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field fideicomisos_form.valor_fideicomiso    show_label=False placeholder="Valor del fideicomiso" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="fideicomiso-moneda" class="label-secondary">Moneda del fideicomiso<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Tipo de moneda en el que se constituyo el fideicomiso.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field fideicomisos_form.cat_monedas show_label=False field_class="moneda" placeholder="Moneda del fideicomiso" %}
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="fideicomiso-porcentaje-fiduciario" class="label-secondary">Porcentaje propiedad/derechos fiduciarios <span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Porcentaje que representa la participación.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field bienes_personas_form.porcentaje show_label=False placeholder="Porcentaje propiedad/derechos fiduciarios" %}
+
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="fideicomiso-ingreso" class="label-secondary">Ingreso monetario que obtiene del fideicomiso <span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Monto total que obtiene el Declarante por el fideicomiso.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            <small class="text-help text-primary">(Si aplica)</small>
+                            {% bootstrap_field fideicomisos_form.ingreso_monetario show_label=False placeholder="Ingreso monetario que obtiene del fideicomiso" %}
+
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="fideicomiso-institucion-fiduciaria" class="label-secondary">Institución fiduciaria<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nombre de la institución fiduciaria encargada de la administración de los bienes.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field fideicomisos_form.institucion_fiduciaria show_label=False placeholder="Institución fiduciaria" %}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        {% include 'layout/persona.html' with form=fideicomitente_form  title="Tipo de persona del fideicomitente" label=" del fideicomitente" rfc=True tipo=True nombre=True razon_social=True curp=True %}
+                        <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fideicomitente-rfc" class="label-secondary">RFC de fideicomitente <span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <small class="text-help text-primary">(Si aplica)</small>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field fideicomitente_form.rfc   field_class='valida_rfc' show_label=False placeholder="RFC de fideicomitente" %}
+
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+
+
+                    <div class="col-12">
+                        {% include 'layout/persona.html' with form=fideicomisario_form  title="Tipo de persona del fideicomisario" label=" del fideicomisario" rfc=True  tipo=True nombre=True razon_social=True curp=True %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="fideicomisario-rfc" class="label-secondary">RFC de fideicomisario<span class="text-danger text-lg font-weight-bold">*</span></label>
+                                    <small class="text-help text-primary">(Si aplica)</small>
+                                    <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                                        <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                    </button>
+                                    {% bootstrap_field fideicomisario_form.rfc  field_class='valida_rfc' show_label=False placeholder="RFC de fideicomisario" %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        {% include 'layout/persona.html' with form=fiduciario_form  title="Tipo de persona del fiduciario" label=" del fiduciario" rfc=True  tipo=True nombre=True razon_social=True curp=True %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="fiduciario-rfc" class="label-secondary">RFC de fiduciario<span class="text-danger text-lg font-weight-bold">*</span></label>
+                                        <small class="text-help text-primary">(Si aplica)</small>
+                                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                        </button>
+                                        {% bootstrap_field fiduciario_form.rfc  field_class='valida_rfc' show_label=False placeholder="RFC de fiduciario" %}
+
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 mb-2">
+                        <label class="label-secondary">Domicilio de fideicomitente</label>
+                    </div>
+                  {% include 'declaracion/direccion.html' with form=domicilio_fideicomitente_form  colonia=True municipio=True pais=True tipo_via=true nombre_via=True exterior=True inteterior=True cp=True entidad=True %}
+                    <div class="col-12 mb-2">
+                        <label class="label-secondary">Domicilio de fideicomisario</label>
+                    </div>
+                    {% include 'declaracion/direccion.html' with form=domicilio_fideicomisario_form colonia=True   municipio=True pais=True tipo_via=true nombre_via=True exterior=True inteterior=True cp=True entidad=True %}
+
+                    <div class="col-12 mb-2">
+                        <label class="label-secondary">Domicilio de fiduciario</label>
+                    </div>
+                    {% include 'declaracion/direccion.html' with form=domicilio_fiduciario_form colonia=True   municipio=True pais=True tipo_via=true nombre_via=True exterior=True inteterior=True cp=True  entidad=True %}
+                    <div class="col-md-4">
+                        <label class="label-secondary">Fecha de nacimiento o de constitución del fideicomitente </label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="dd/mm/aaaa">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <div class="form-row">
+                          {% bootstrap_field fideicomitente_form.fecha_nacimiento show_label=False %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary">Fecha de nacimiento o de constitución del fideicomisario</label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="dd/mm/aaaa">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <div class="form-row">
+                            {% bootstrap_field fideicomisario_form.fecha_nacimiento show_label=False %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary">Fecha de nacimiento o de constitución del fiduciario</label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="dd/mm/aaaa">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <div class="form-row">
+                            {% bootstrap_field fiduciario_form.fecha_nacimiento show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group mr-4">
+                            <label for="fideicomiso-comentarios" class="label-secondary">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Detallar información respecto al fideicomiso.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                             {% bootstrap_field observaciones_form.observacion show_label=False placeholder="Observaciones y comentarios" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right row-form" style="{% if checked %}display: none;{% endif %}">
+                    <button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-primary font-weight-semibold text-uppercase">
+                      Guardar y agregar otro fideicomiso<img src="{% static 'src/img/plus.svg'%}" alt="agregar" class="svg">
+                    </button>
+                </div>
+                {% include 'layout/guardar.html' %}
+                <div class="row"><div class="col-12"><br/></div></div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

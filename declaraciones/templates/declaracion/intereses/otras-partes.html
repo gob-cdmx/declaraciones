@@ -1,0 +1,144 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+<div class="container-fluid h-100">
+	<div class="row h-100">
+		{% include 'layout/sidebar.html'%}
+		<div class="col-md-9">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+					<li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+					<li class="breadcrumb-item"><a href="#" class="text-reset">Intereses</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Otras partes relacionadas</li>
+				</ol>
+			</nav>
+			<h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+            <h2 class="h6 text-uppercase mb-3">2. Interes <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">VIII. Otras partes relacionadas</span></h2>
+			{% if agregar %}
+			  <form action="{% url 'declaracion:otras-partes-relacionadas-agregar' folio_declaracion %}" method="post" novalidate>
+			{% elif editar_id %}
+			  <form action="{% url 'declaracion:otras-partes-relacionadas-editar' folio_declaracion editar_id %}" method="post" novalidate>
+			{% else %}
+			  <form action="{% url 'declaracion:otras-partes-relacionadas' folio_declaracion %}" method="post" novalidate>
+			{% endif %}
+	  			{% csrf_token %}
+					<div class="row">
+						{% include 'layout/no_aplica.html' %}
+					</div>
+					{% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Nombre, denominación o razón social de la parte relacionada" titulo_dos="Tipo de relación con el titular" titulo_tres="Sector / industria" agregar=agregar editar_id=editar_id %}
+					<div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+	  				<div class="col-12 my-2">
+							<label class="label-secondary">Tipo de relación con el titular<span class="text-danger text-lg font-weight-bold">*</span></label>
+							<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar tipo de relación.">
+									<img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+							</button>
+							{% include 'layout/radiobuttons.html' with field_select=otras_partes_form.fields.cat_titular_tipos_relaciones  field_name=otras_partes_form.cat_titular_tipos_relaciones otro_name=otras_partes_form.otra_relacion col=3 col_o=6 %}
+
+						</div>
+						<div class="col-12">
+                        {% include 'layout/persona.html' with form=otraspartes_infopersonalvar_form title="Tipo de persona de la parte relacionada" label=" de la parte relacionada" tipo=True%}
+						</div>
+
+	  				<div class="col-md-4">
+						<label class="label-secondary">Fecha de inicio/constitución de la relación<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="dd/mm/aaaa">
+							<img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+						</button>
+						<div class="form-row">
+							{% bootstrap_field  otras_partes_form.fecha_inicio_relacion show_label=False placeholder="Fecha de inicio/constitución de la relación" %}
+	                </div>
+	  					</div>
+	  				<div class="col-md-4">
+						<label class="label-secondary">Nacionalidad(es)<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nacionalidad de la parte telacionada.">
+							<img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+						</button>
+						{% bootstrap_field  otraspartes_infopersonalvar_form.nacionalidades field_class="multiples-nacionalidades" show_label=False%}
+	  				</div>
+
+	  				<div class="col-md-4">
+						<label class="label-secondary">RFC <small class="text-help text-primary">(si aplica)</small>:</label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+							<img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+						</button>
+						{% bootstrap_field  otraspartes_infopersonalvar_form.rfc  field_class='valida_rfc'  show_label=False placeholder="RFC" %}
+	  				</div>
+	  				<div class="col-md-4">
+						<label class="label-secondary">Fecha de nacimiento<span class="text-danger text-lg font-weight-bold">*</span> </label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Fecha de nacimiento">
+							<img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+						</button>
+						<div class="form-row">
+							{% bootstrap_field  otraspartes_infopersonalvar_form.fecha_nacimiento  show_label=False placeholder="Fecha de nacimiento" %}
+	                	</div>
+					</div>
+	  				<div class="col-md-4">
+						<label class="label-secondary">Ocupación/profesión<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Ocupación de la parte relacionada.">
+							<img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+						</button>
+						{% bootstrap_field  otraspartes_infopersonalvar_form.ocupacion_girocomercial  show_label=False placeholder="Ocupación/profesión" %}
+	  				</div>
+	  				<div class="col-md-12">
+
+	  					<div class="form-check form-check-inline">
+							<label class="label-secondary">¿Tiene la parte relacionada intereses en el mismo Sector/Industria al que pertenece el empleo oficial del declarante?<span class="text-danger text-lg font-weight-bold">*</span> </label>
+							<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar Si / No">
+								<img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+							</button>
+						</div>
+	  				</div>
+	  				<div class="col-md-12">
+							<div class="form-check form-check-inline">
+								<div class="custom-control custom-radio custom-control-inline radio-secondary tipo_persona">
+										<input {% if not otras_partes_form.intereses_comunes.initial %}checked{% endif %}  {% if otras_partes_form.intereses_comunes.initial == True %}checked{% endif %} type="radio"  id="id-{{otras_partes_form.intereses_comunes.html_name}}-f" value="true" name="{{ otras_partes_form.intereses_comunes.html_name }}" class="custom-control-input pfisica" onchange="dui.radioTPersona(this.value,'{{ otras_partes_form.intereses_comunes.html_name }}')">
+										<label class="custom-control-label text-rg" for="id-{{otras_partes_form.intereses_comunes.html_name}}-f">Sí</label>
+								</div>
+							</div>
+							<div class="form-check form-check-inline">
+								<div class="custom-control custom-radio custom-control-inline radio-secondary tipo_persona">
+										<input {% if otras_partes_form.intereses_comunes.initial == False %}checked{% endif %} type="radio" id="id-{{ otras_partes_form.intereses_comunes.html_name }}-m"  value="false" name="{{ otras_partes_form.intereses_comunes.html_name }}" class="custom-control-input pmoral " onchange="dui.radioTPersona(this.value,'{{ otras_partes_form.intereses_comunes.html_name }}')">
+										<label class="custom-control-label text-rg" for="id-{{ otras_partes_form.intereses_comunes.html_name }}-m">No</label>
+								</div>
+							</div>
+	  				</div>
+  					<div class="col-md-12">
+						<label class="label-secondary">Sector / Industria<span class="text-danger text-lg font-weight-bold">*</span></label>
+						<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar el sector al que pertenece.">
+							<img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+						</button>
+						{% include 'layout/radiobuttons.html' with field_select=otraspartes_infopersonalvar_form.fields.cat_sectores_industria  field_name=otraspartes_infopersonalvar_form.cat_sectores_industria otro_name=otraspartes_infopersonalvar_form.otro_sector col=4 col_o=4%}
+  					</div>
+
+  					<div class="col-md-12">
+  						<div class="form-group">
+							<label class="label-secondary" for="textForm">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+							<button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Detallar información de la parte relacionada.">
+								<img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+							</button>
+						    {% bootstrap_field  observaciones_form.observacion show_label=False placeholder="Observaciones y comentarios" %}
+						  </div>
+
+  					</div>
+  			</div>
+  			<div class="text-right row-form" style="{% if checked %}display: none;{% endif %}">
+                <button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-success font-weight-semibold text-uppercase">
+									Guardar y agregar otras partes relacionadas
+                    <img src="{% static 'src/img/plus.svg'%}" alt="agregar" class="svg">
+                </button>
+            </div>
+            {% include 'layout/guardar.html' %}
+			<div class="row"><div class="col-12"><br/></div></div>
+
+
+			</form>
+
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

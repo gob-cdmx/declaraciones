@@ -1,0 +1,238 @@
+.sidebar {
+  background-color: $gray-200;
+  counter-reset: section;
+  height: 100%;
+
+  > .card {
+    background-color: transparent;
+    border-color: $success-light;
+    border-width: 1px 0;
+    padding-left: ($spacer * 3);
+
+    &:first-of-type {
+      border-radius: 0;
+      border-top: none;
+    }
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+
+ /* &__heading,
+  &__link {
+
+    &::before,
+    &::after {
+      bottom: 0;
+      margin: auto;
+      position: absolute;
+      top: 0;
+    }
+
+    &::after {
+      background: url('../../static/src/img/status-pending.svg') center / contain no-repeat;
+      content: '';
+      height: 10px;
+      right: ($spacer * 0.75);
+      width: 10px;
+    }
+
+    &.success,
+    &.in-progress {
+
+      &::after {
+        height: 15px;
+        right: ($spacer * 0.55);
+        width: 15px;
+      }
+    }
+
+    &.success::after {
+      background-image: url('../../static/src/img/status-success.svg');
+    }
+
+    &.in-progress::after {
+      background-image: url('../../static/src/img/status-progress.svg');
+    }
+  }*/
+
+
+
+  &__trigger {
+    border: none;
+    border-radius: 0;
+    color: $body-color;
+    font-weight: $font-weight-extralight;
+    transition: $btn-transition, font-weight .15s ease-in-out;
+
+    .sidebar__heading {
+      padding: ($spacer * 0.75) ($spacer * 2);
+
+      &::before {
+        color: $success-light;
+        content: counter(section);
+        counter-increment: section;
+        font-size: $h5-font-size;
+        font-weight: $font-weight-semibold;
+        height: 1em;
+        left: ($spacer * 0.75);
+        line-height: normal;
+      }
+    }
+
+    &::before {
+      background: center / auto no-repeat;
+      bottom: 0;
+      content: '';
+      height: 60%;
+      left: -($spacer * 3);
+      margin: auto;
+      position: absolute;
+      top: 0;
+      width: ($spacer * 3);
+    }
+
+    &#node-1::before {
+      background-image: url('../../static/src/img/user.svg');
+    }
+
+    &#node-12::before {
+      background-image: url('../../static/src/img/share.svg');
+    }
+
+    &#node-13::before {
+      background-image: url('../../static/src/img/dollar.svg');
+    }
+
+    &#node-14::before {
+      background-image: url('../../static/src/img/home.svg');
+    }
+
+    &#node-15::before {
+      background-image: url('../../static/src/img/card.svg');
+    }
+
+    &#taxReturn::before {
+      background-image: url('../../static/src/img/percent.svg');
+    }
+
+    &:hover,
+    &:focus {
+      background-color: rgba($black, 0.045);
+      color: $black;
+    }
+
+    &:not(.collapsed) {
+      color: $black;
+      font-weight: $font-weight-semibold;
+    }
+  }
+
+  &__link {
+    color: $black;
+    display: block;
+    font-size: $font-size-xs;
+    font-weight: $font-weight-semibold;
+    padding: ($spacer * 0.75) ($spacer * 2.25) ($spacer * 0.75) ($spacer * 2);
+    position: relative;
+    transition: all 0.15s ease-in-out;
+
+    span::after {
+      color: $success-light;
+      content: counter(link, upper-roman) ".";
+      counter-increment: link;
+    }
+
+    + .sidebar__link {
+      border-top: 1px dashed #a6a6a6;
+    }
+
+    &:hover:not(.active) {
+      background-color: rgba($black, 0.045);
+      color: $black;
+    }
+
+    &.observations::after {
+      content: normal;
+    }
+
+    &.active {
+      color: $primary;
+
+      span {
+        color: inherit;
+      }
+
+      &::before {
+        background: url('../../static/src/img/play.svg') center / 40% no-repeat;
+        content: '';
+        height: 100%;
+        left: 0;
+        width: ($spacer * 2);
+      }
+
+      &:hover {
+        cursor: default;
+        text-decoration: none;
+      }
+    }
+  }
+
+  &__content {
+    border-top: 1px solid $success-light;
+    counter-reset: link;
+  }
+
+  &::before {
+    background-color: $success-light;
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    width: 3rem;
+  }
+}
+@media print {
+   .sidebar {
+       display: none;
+    }
+    .footer {
+      display: none;
+    }
+}
+.icon-status{
+    &::before,
+    &::after {
+      bottom: 0;
+      margin: auto;
+      position: absolute;
+      top: 0;
+    }
+
+    &::after {
+      background: url('../../static/src/img/status-pending.svg') center / contain no-repeat;
+      content: '';
+      height: 10px;
+      right: ($spacer * 0.75);
+      width: 10px;
+    }
+
+    &.success,
+    &.in-progress {
+
+      &::after {
+        height: 15px;
+        right: ($spacer * 0.55);
+        width: 15px;
+      }
+    }
+
+    &.success::after {
+      background-image: url('../../static/src/img/status-success.svg');
+    }
+
+    &.in-progress::after {
+      background-image: url('../../static/src/img/status-progress.svg');
+    }
+  }

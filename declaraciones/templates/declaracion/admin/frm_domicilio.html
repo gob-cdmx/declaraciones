@@ -1,0 +1,37 @@
+<h6 class="text-success-lighter p_opciones mb-0">Domicilio</h6>
+<dl class="p_opciones">
+  <dt>Código postal</dt>
+  <dd class="text-black_opciones">{{ domicilio.cp|default_if_none:"" }}</dd>
+</dl>
+<dl class="p_opciones">
+  <dt>País</dt>
+  <dd class="text-black_opciones">{{ domicilio.cat_pais|default_if_none:"" }}</dd>
+</dl>
+<dl class="p_opciones">
+  <dt>Entidad federativa</dt>
+  <dd class="text-black_opciones">{{ domicilio.cat_entidades_federativas|default_if_none:"" }}</dd>
+</dl>
+<dl class="p_opciones">
+  <dt>Municipio</dt>
+  <dd class="text-black_opciones">{{ domicilio.municipio|default_if_none:"" }}</dd>
+</dl>
+<dl class="p_opciones">
+  <dt>Colonia</dt>
+  <dd class="text-black_opciones">{{ domicilio.colonia|default_if_none:"" }}</dd>
+</dl>
+<dl class="p_opciones">
+  <dt>Tipo de vía</dt>
+  <dd class="text-black_opciones">{{ domicilio.cat_tipo_via|default_if_none:"" }}</dd>
+</dl>
+<dl class="p_opciones">
+  <dt>Nombre de vía</dt>
+  <dd class="text-black_opciones">{{ domicilio.nombre_via|default_if_none:"" }}</dd>
+</dl>
+<dl class="p_opciones">
+  <dt>Número exterior</dt>
+  <dd class="text-black_opciones">{{ domicilio.num_exterior|default_if_none:"" }}</dd>
+</dl>
+<dl class="p_opciones">
+  <dt>Número interior</dt>
+  <dd class="text-black_opciones">{{ domicilio.num_interior|default_if_none:"" }}</dd>
+</dl>

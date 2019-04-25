@@ -1,0 +1,170 @@
+{% load no_aplica %}
+<span class="text-primary font-weight-bold">I. DEUDAS</span>
+{% no_aplica declaracion.folio 'deudas' as checked %}
+{% if checked %}
+  {% include 'declaracion/admin/frm_no_aplica.html' %}
+{% else %}
+{% for deuda in declaracion.deudasotros_set.all %}
+{% if deuda.cat_tipos_pasivos_id == 1%}
+<h6 class="h6 mb-3 text-uppercase font-weight-bold mt-2" style="font-size: 14px;">DEUDA {{ forloop.counter }} </h6>
+<div class="row mt-2">
+  <div class="col-6">
+    <dl class="p_opciones"><dt> Tipo de operación </dt>
+      <dd class="text-black_opciones">{{ deuda.tipo_operacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Tipo de acreedor </dt>
+      <dd class="text-black_opciones">{{ deuda.tipo_acreedor }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Tipo de adeudo </dt>
+      <dd class="text-black_opciones">{{ deuda.tipo_adeudo}}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Número de cuenta, contrato o identificador de la deuda </dt>
+      <dd class="text-black_opciones">{{ deuda.numero_cuenta }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nacional o extranjero </dt>
+      <dd class="text-black_opciones">{{ deuda.cat_paises }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nombre, denominación o razón social del acreedor </dt>
+      <dd class="text-black_opciones">{{ deuda.acreedor_infopersonalvar.nombre_completo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> RFC del acreedor </dt>
+      <dd class="text-black_opciones">{{ deuda.acreedor_infopersonalvar.rfc }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Sector/Industria Servicios </dt>
+      <dd class="text-black_opciones">{{ deuda.acreedor_infopersonalvar.sectores_industrias }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Fecha en la que se generó el adeudo </dt>
+      <dd class="text-black_opciones">{{ deuda.fecha_generacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Monto original del adeudo </dt>
+      <dd class="text-black_opciones">{{ deuda.monto_original }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Tipo de moneda </dt>
+      <dd class="text-black_opciones">{{ deuda.cat_monedas }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Tasa de interés </dt>
+      <dd class="text-black_opciones">{{ deuda.tasa_interes }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Saldo pendiente </dt>
+      <dd class="text-black_opciones">{{ deuda.saldo_pendiente }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Montos abonados a favor de la deuda </dt>
+      <dd class="text-black_opciones">{{ deuda.monto_abonado }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Plazo del adeudo </dt>
+      <dd class="text-black_opciones">{{ deuda.plazo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Unidad de medida del plazo </dt>
+      <dd class="text-black_opciones">{{ deuda.cat_unidades_temporales }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Titular </dt>
+      <dd class="text-black_opciones">{{ deuda.titular }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Porcentaje de adeudo del titular </dt>
+      <dd class="text-black_opciones">{{ deuda.porcentaje_adeudo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> ¿Se otorgó garantía? </dt>
+      <dd class="text-black_opciones">{{ deuda.garantia|yesno:"Sí,No" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nombres de garantes </dt>
+      <dd class="text-black_opciones">{{ deuda.nombre_garantes }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Observaciones y comentarios </dt>
+      <dd class="text-black_opciones">{{ deuda.observaciones }}</dd>
+    </dl>
+  </div>
+  <div class="col-6">
+
+    {% include 'declaracion/admin/frm_domicilio.html' with domicilio=deuda.acreedor_infopersonalvar.domicilio %}
+  </div>
+</div>
+{%endif%}
+{% endfor %}
+{% endif %}
+<hr class="linea" />
+<span class="text-primary font-weight-bold">II. OTRAS OBLIGACIONES</span>
+{% no_aplica declaracion.folio 'deudas-otros' as checked %}
+{% if checked %}
+  {% include 'declaracion/admin/frm_no_aplica.html' %}
+{% else %}
+{% for deuda in declaracion.deudasotros_set.all %}
+{% if deuda.cat_tipos_pasivos_id == 2%}
+<h6 class="h6 mb-3 text-uppercase font-weight-bold mt-2" style="font-size: 14px;">OBLIGACIÓN {{ forloop.counter }}</h6>
+<div class="row mt-2">
+  <div class="col-6">
+    <dl class="p_opciones"><dt> Tipo de operación </dt>
+      <dd class="text-black_opciones">{{ deuda.tipo_operacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Tipo de acreedor </dt>
+      <dd class="text-black_opciones">{{ deuda.tipo_acreedor }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Tipo de adeudo </dt>
+      <dd class="text-black_opciones">{{ deuda.tipo_adeudo}}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Número de cuenta, contrato o identificador de la deuda </dt>
+      <dd class="text-black_opciones">{{ deuda.numero_cuenta }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nacional o extranjero </dt>
+      <dd class="text-black_opciones">{{ deuda.cat_paises }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nombre, denominación o razón social del acreedor </dt>
+      <dd class="text-black_opciones">{{ deuda.acreedor_infopersonalvar.nombre_completo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> RFC del acreedor </dt>
+      <dd class="text-black_opciones">{{ deuda.acreedor_infopersonalvar.rfc }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Sector/Industria Servicios </dt>
+      <dd class="text-black_opciones">{{ deuda.acreedor_infopersonalvar.sectores_industrias }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Fecha en la que se generó el adeudo </dt>
+      <dd class="text-black_opciones">{{ deuda.fecha_generacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Monto original del adeudo </dt>
+      <dd class="text-black_opciones">{{ deuda.monto_original }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Tipo de moneda </dt>
+      <dd class="text-black_opciones">{{ deuda.cat_monedas }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Tasa de interés </dt>
+      <dd class="text-black_opciones">{{ deuda.tasa_interes }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Saldo pendiente </dt>
+      <dd class="text-black_opciones">{{ deuda.saldo_pendiente }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Montos abonados a favor de la deuda </dt>
+      <dd class="text-black_opciones">{{ deuda.monto_abonado }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Plazo del adeudo </dt>
+      <dd class="text-black_opciones">{{ deuda.plazo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Unidad de medida del plazo </dt>
+      <dd class="text-black_opciones">{{ deuda.cat_unidades_temporales }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Titular </dt>
+      <dd class="text-black_opciones">{{ deuda.titular }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Porcentaje de adeudo del titular </dt>
+      <dd class="text-black_opciones">{{ deuda.porcentaje_adeudo }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> ¿Se otorgó garantía? </dt>
+      <dd class="text-black_opciones">{{ deuda.garantia|yesno:"Sí,No" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nombres de garantes </dt>
+      <dd class="text-black_opciones">{{ deuda.nombre_garantes }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Observaciones y comentarios </dt>
+      <dd class="text-black_opciones">{{ deuda.observaciones }}</dd>
+    </dl>
+  </div>
+  <div class="col-6">
+    {% include 'declaracion/admin/frm_domicilio.html' with domicilio=deuda.acreedor_infopersonalvar.domicilio %}
+  </div>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+<hr class="linea" />
+<span class="text-primary font-weight-bold">OBSERVACIONES DE TUS PASIVOS</span>
+<dl class="p_opciones"><dt></dt>
+  <dd class="text-black_opciones">{{ observaciones|linebreaks|default_if_none:"" }}</dd>
+</dl>

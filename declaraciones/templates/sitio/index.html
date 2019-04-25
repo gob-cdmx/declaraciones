@@ -1,0 +1,44 @@
+{% load static %}
+{% include '../layout/headertop.html' %}
+<section class="container-fluid container-offset-x">
+  <h1 class="text-gray text-xl font-weight-medium text-uppercase mt-5 line-height-md title-mobile text-mobile">Bienvenido al sistema <br> de declaraciones de <br> la <span class="text-primary-light font-weight-semibold">Ciudad de México</span></h1>
+  {%if msg %}
+    <div class="alert alert-success" role="alert">
+      <h4 class="alert-heading">{{msg}}</h4>
+    </div>
+  {%endif%}
+            {% if messages %}
+                {% for message in messages %}
+
+                        {% if message.tags == "success" %}
+                            <div class="alert alert-success alert-dismissable alert-link">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                 <strong>{{ message }}</strong>
+                            </div>
+                        {% endif %}
+                        {% if message.tags == "error" %}
+                            <div class="alert alert-danger alert-dismissable alert-link">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                 <strong>{{ message }}</strong>
+                            </div>
+                        {% endif %}
+
+
+                {% endfor %}
+            {% endif %}
+  <div class="d-flex justify-content-center align-items-center flex-column flex-sm-row my-sm-7 py-7">
+    {% if not user.is_staff and not user.is_superuser %}
+    <a href="{% url 'declaracion:declaracion' %}" class="btn btn-success-lighter btn-index">
+      Realiza tu declaración
+      <img src="{% static 'src/img/declarations.svg' %}" alt="Realiza tu declaración" class="svg">
+    </a>
+    {%endif%}
+    {% if not user.is_authenticated %}
+      <a href="{% url 'declaracion:nuevo' %}" class="btn btn-success-lighter btn-index">
+        Crea tu cuenta
+        <img src="{% static 'src/img/user-circle.svg' %}" alt="Crea tu cuenta" class="svg">
+      </a>
+    {% endif %}
+  </div>
+</section>
+{% include '../layout/footer.html' %}

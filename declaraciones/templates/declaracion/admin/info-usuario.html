@@ -1,0 +1,74 @@
+{% include 'layout/headertop.html' %}
+{% load bootstrap4 %}
+{% load static %}
+{% block content %}
+
+<section class="container">
+  <div class="row">
+     <div class="col-sm-12 col-md-6">
+        <h2 class="text-gray text-xl font-weight-medium text-uppercase mt-5 line-height-md title-mobile text-mobile"><span class="text-primary-light font-weight-semibold">{{ info.nombres|upper }} {{ info.apellido1|upper }} {{ info.apellido2|upper }}</span></h2>
+     </div>
+     <div class="col-sm-12 col-md-6 mt-3">
+         <div class="row">
+             <!--<div class="col-sm-3 p-1">
+                  <a href="{% url 'declaracion:busqueda-usuarios' %}" class="btn btn-warning btn-block btn-lg font-weight-semibold text-light"> <img src="{% static 'src/img/regresar.svg' %}"> REGRESAR</a>
+
+             </div>-->
+             <div class="col-sm-6 p-1">
+
+                       <button class="btn btn-danger btn-block btn-lg font-weight-semibold text-light" type="button" name="button"  data-toggle="modal" data-target="#modal" onclick="$('#id-usuario').val({{ info.usuario.id }});$('#nombre-usuario').html('{{ info.usuario.username }}'); ">
+                           <img src="{% static 'src/img/eliminar-blanco.svg' %}"> ELIMINAR USUARIO
+                       </button>
+             </div>
+             <div class="col-sm-6 p-1">
+                  <a href="{% url 'declaracion:editar-usuario'  info.usuario.id %}" class="btn btn-warning btn-block btn-lg font-weight-semibold text-light"> <img src="{% static 'src/img/editar-blanco.svg' %}"> EDITAR USUARIO</a>
+             </div>
+         </div>
+
+
+     </div>
+
+
+
+  </div>
+  <div class="row row-md">
+    <div class="col-12 mb-5">
+      <div class="pl-3 border-left text-dark mb-5">
+        <p> Ente público <strong class="text-black text-dynamic">{{ info.cat_ente_publico}}</strong></p>
+        <p> Empleo o cargo <strong class="text-black text-dynamic">{{ info.puesto}}</strong></p>
+        <p> Teléfono <strong class="text-black text-dynamic">{{ info.telefono}}</strong></p>
+        <p> Correo <strong class="text-black text-dynamic">{{ info.usuario.email}}</strong></p>
+        <p> Estatus <strong class="text-black text-dynamic">  {% if info.usuario.is_active %} Activo {% else %} Inactivo {% endif %}</strong></p>
+        <p> Rol <strong class="text-black text-dynamic">  {% if info.usuario.is_superuser %} Administrador {% else %} {% if info.usuario.is_staff %} Enlace {% else %} Declarante {% endif %} {% endif %}</strong></p>
+
+      </div>
+    </div>
+  </div>
+
+
+</section>
+<div class="modal" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Eliminar Usuario</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <p>¿Está seguro de elminar este usuario <span id="nombre-usuario" class="text-primary-light font-weight-semibold"></span> ?</p>
+          <form method="post"  id="elimina_usuario_form" >
+              {% csrf_token %}
+              <input type="hidden" id="id-usuario"/>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="dui.borraUsuario('{% url 'declaracion:eliminar-usuario' 0 %}','elimina_usuario_form','{% url 'declaracion:busqueda-usuarios' %}')">Eliminar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

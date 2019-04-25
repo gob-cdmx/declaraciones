@@ -1,0 +1,202 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        {% include 'layout/sidebar.html' %}
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Información personal</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Información general</li>
+                </ol>
+            </nav>
+            <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+            <h2 class="h6 mb-3 text-uppercase">1. Información personal <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">I. Información general</span></h2>
+            {% if cat_tipos_declaracion %}
+              <form action="{% url 'declaracion:informacion-general' cat_tipos_declaracion %}" method="post">
+            {% endif %}
+            {% if folio_declaracion %}
+              <form action="{% url 'declaracion:informacion-general' folio_declaracion %}" method="post">
+            {% endif %}
+              {% csrf_token %}
+              {{ declaracion }}
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="nombre2" class="label-secondary">Nombre(s)<span class="text-danger text-lg font-weight-bold">*</span> </label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nombre o nombres sin abreviatiuras ni signos especiales.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var.nombres    show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="apellido1_2" class="label-secondary">Primer apellido<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Apellido materno sin abreviaturas ni sognos especiales.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var.apellido1    show_label=False placeholder="Primer apellido" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="apellido2_2" class="label-secondary">Segundo apellido:</label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Apellido paterno sin abreviaturas ni signos especiales.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var.apellido2    show_label=False placeholder="Segundo apellido" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="pais" class="label-secondary">País de Nacimiento<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nacionalidad del Declarante.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var.cat_pais   field_class="pais"  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="entidad" class="label-secondary">Entidad Federativa de Nacimiento<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Entidad donde nació el Declarante.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var.cat_entidades_federativas    field_class='entidad'  show_label=False%}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="nacionalidad" class="label-secondary">Nacionalidad (es)<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nacionalidad(es) del Declarante.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var.nacionalidades field_class="multiples-nacionalidades"  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col d-flex align-items-center">
+                        <button type="button" class="btn btn-primary rounded-circle btn-plus agregar-nacionalidad">&#43;</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="curp" class="label-secondary">CURP<span class="text-danger text-lg font-weight-bold">*</span> <small class="text-help text-primary">(si aplica)</small></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 18 caracteres de la Clave Única de Registro de Población.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var.curp    field_class='valida_curp' show_label=False placeholder="CURP" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="rfc" class="label-secondary">RFC con Homoclave <span class="text-danger text-lg font-weight-bold">*</span> <small class="text-help text-primary">(si aplica)</small></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var.rfc    field_class='valida_rfc' show_label=False placeholder="RFC con Homoclave" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="fecha-nacimiento" class="label-secondary">Fecha de nacimiento<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="dd/mm/aaaa">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <div class="form-row">
+                            {% bootstrap_field info_personal_var.fecha_nacimiento   placeholder='DD/MM/AAAA' show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="identificacion-numero" class="label-secondary">Número de identificación<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Número de identificación oficial.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var.num_id_identificacion   show_label=False placeholder="Número de identificación" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="correo" class="label-secondary">Correo electrónico personal<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="ejemplo@emplo.com">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var.email_personal    field_class='valida_email'  show_label=False placeholder="Correo electrónico personal" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="telefono-particular" class="label-secondary">Teléfono particular<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="LADA + Número de telefono fijo.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var.tel_particular   show_label=False placeholder="Teléfono particular"  field_class="valida_telefono"  %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="telefono-celular" class="label-secondary">Teléfono celular<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="LADA + Número de telfono móvil.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var.tel_movil    show_label=False placeholder="Teléfono celular"  field_class="valida_telefono"  %}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="label-secondary mb-0">Domicilio</label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Lugar donde se encuentra actualmente.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <p class="text-sm font-weight-light text-primary">Lugar en el que se encuentra:</p>
+                        <div class="row">
+                            {% include 'declaracion/direccion.html' with form=domicilio tipo_via=True nombre_via=True  exterior=True%}
+
+                        </div>
+
+
+                    </div>
+
+                    <div class="col-md-6 ">
+                        <label class="label-secondary mb-2">Estado civil o situación personal<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar situación personal.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+
+                            {% bootstrap_field info_personal_var.cat_estados_civiles  show_label=False%}
+
+                    </div>
+                    <div class="col-md-6">
+                        <label class="label-secondary mb-2">Régimen matrimonial:</label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar tipo de régimen.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+
+                            {% bootstrap_field info_personal_var.cat_regimenes_matrimoniales    show_label=False%}
+
+                    </div>
+                    <div class="col-12">
+
+                        <label class="label-secondary mb-2">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span> </label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Observaciones y comentarios">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% bootstrap_field observaciones.observacion   show_label=False placeholder="Observaciones y comentarios" %}
+                    </div>
+                </div>
+                {% include 'layout/guardar.html' %}
+                  <div class="row"><div class="col-12"><br/></div></div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

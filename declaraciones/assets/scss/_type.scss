@@ -1,0 +1,71 @@
+@include text-emphasis-variant('.text-black', $black);
+@include text-emphasis-variant('.text-primary-light', $primary-light);
+@include text-emphasis-variant('.text-success-lighter', $success-lighter);
+@include text-emphasis-variant('.text-gray-light', $gray-100);
+@include text-emphasis-variant('.text-gray', $gray-500);
+@include text-emphasis-variant('.text-gray-dark', $gray-700);
+@include text-emphasis-variant('.text-gray-darker', $gray-800);
+
+.text-rg {
+  font-size: $font-size-rg;
+}
+
+.text-xl {
+  font-size: $font-size-xxl;
+}
+
+.text-lg {
+  font-size: $font-size-xl;
+}
+
+.text-md {
+  font-size: $font-size-sm;
+}
+
+.text-sm {
+  font-size: $font-size-xs;
+}
+
+.text-base {
+  font-size: $font-size-base;
+}
+
+.font-weight-medium {
+  font-weight: $font-weight-medium;
+}
+
+.font-weight-semibold {
+  font-weight: $font-weight-semibold;
+}
+
+.font-weight-extralight {
+  font-weight: $font-weight-extralight;
+}
+
+.text-help {
+  font-size: 0.625rem;
+}
+
+.line-height-md {
+  line-height: 1.35;
+}
+
+.hyphen-auto {
+  hyphens: auto;
+}
+
+@include media-breakpoint-down(xs) {
+  .title-mobile {
+    font-size: 1.85rem;
+  }
+
+  .text-mobile br {
+    display: none;
+  }
+}
+
+.text-dynamic:empty::after {
+  color: $success-lighter;
+  content: '-----';
+  margin: 0 ($spacer / 2);
+}

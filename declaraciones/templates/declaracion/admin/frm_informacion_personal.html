@@ -1,0 +1,396 @@
+{% load static %}
+<h4 class="text-base text-uppercase text-success-lighter mb-25">I. Información personal</h4>
+<div class="row">
+  <div class="col-md-6">
+    <dl class="p_opciones"><dt> Nombre </dt>
+      <dd class="text-black_opciones">{{ declaracion.info_personal_fija.nombres|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Primer apellido </dt>
+      <dd class="text-black_opciones">{{ declaracion.info_personal_fija.apellido1|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Segundo apellido </dt>
+      <dd class="text-black_opciones">{{ declaracion.info_personal_fija.apellido2|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> País de nacimiento </dt>
+      <dd class="text-black_opciones">{{ declaracion.info_personal_fija.cat_pais|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Entidad federativa de nacimiento </dt>
+      <dd class="text-black_opciones">{{ declaracion.info_personal_fija.cat_entidades_federativas|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nacionalidad(es) </dt>
+      <dd class="text-black_opciones">
+        {% for n in declaracion.infopersonalvar_set.first.nacionalidades.all %}
+          {{n}}
+          {% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      </dd>
+    </dl>
+    <dl class="p_opciones"><dt> CURP </dt>
+      <dd class="text-black_opciones">{{ declaracion.infopersonalvar_set.first.curp }} </dd>
+    </dl>
+    <dl class="p_opciones"><dt> RFC con homoclave </dt>
+      <dd class="text-black_opciones"> {{ declaracion.info_personal_fija.rfc|default_if_none:"" }} </dd>
+    </dl>
+    <dl class="p_opciones"><dt> Sector/Industria Servicios </dt>
+      <dd class="text-black_opciones">
+
+      </dd>
+    </dl>
+    <dl class="p_opciones"><dt> Fecha de nacimiento </dt>
+      <dd class="text-black_opciones">{{ declaracion.infopersonalvar_set.first.fecha_nacimiento }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Identificación oficial </dt>
+      <dd class="text-black_opciones"></dd>
+    </dl>
+    <dl class="p_opciones"><dt> Número de identificación </dt>
+      <dd class="text-black_opciones">{{ declaracion.infopersonalvar_set.first.num_id_identificacion }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Correo electrónico </dt>
+      <dd class="text-black_opciones">{{ info_personal_var.email_personal|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Teléfono particular </dt>
+      <dd class="text-black_opciones">{{ info_personal_var.tel_particular|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Teléfono celular </dt>
+      <dd class="text-black_opciones"> {{ info_personal_var.tel_movil|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Estado civil o situación personal </dt>
+      <dd class="text-black_opciones">{{ info_personal_var.cat_estados_civiles|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Observaciones y comentarios </dt>
+      <dd class="text-black_opciones">{{ info_personal_var.observaciones }}</dd>
+    </dl>
+  </div>
+  <div class="col-6">
+    <p class="text-primary font-weight-bold p_opciones"> Domicilio</p>
+    <dl class="p_opciones"><dt> Código postal </dt>
+      <dd class="text-black_opciones">{{ declaracion.infopersonalvar_set.first.domicilios.cp|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> País </dt>
+      <dd class="text-black_opciones">{{ declaracion.infopersonalvar_set.first.domicilios.cat_pais|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Entidad federativa </dt>
+      <dd class="text-black_opciones">{{ declaracion.infopersonalvar_set.first.domicilios.cat_entidades_federativas|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Municipio </dt>
+      <dd class="text-black_opciones">{{ declaracion.infopersonalvar_set.first.domicilios.municipio|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Colonia </dt>
+      <dd class="text-black_opciones">{{ declaracion.infopersonalvar_set.first.domicilios.colonia|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Tipo de vía </dt>
+      <dd class="text-black_opciones">{{ declaracion.infopersonalvar_set.first.domicilios.cat_tipo_via|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nombre de vía </dt>
+      <dd class="text-black_opciones">{{ declaracion.infopersonalvar_set.first.domicilios.nombre_via|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Número exterior </dt>
+      <dd class="text-black_opciones">{{ declaracion.infopersonalvar_set.first.domicilios.num_exterior|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Número interior </dt>
+      <dd class="text-black_opciones">{{ declaracion.infopersonalvar_set.first.domicilios.num_interior|default_if_none:"" }}</dd>
+    </dl>
+  </div>
+</div>
+<hr class="linea" />
+<span class="text-primary font-weight-bold">II. DATOS CURRICULARES</span>
+{% for datos_curriculares in declaracion.datoscurriculares_set.all %}
+<h6 class="h6 mb-3 text-uppercase font-weight-bold mt-2" style="font-size: 14px;">DATO CURRICULAR {{ forloop.counter }}</h6>
+<div class="row mt-2">
+  <div class="col-6">
+    <dl class="p_opciones"><dt> Grado académico obtenido </dt>
+      <dd class="text-black_opciones">{{ datos_curriculares.cat_grados_academicos|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Institución educativa </dt>
+      <dd class="text-black_opciones">{{ datos_curriculares.institucion_educativa|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Carrera o área de conocimiento </dt>
+      <dd class="text-black_opciones">{{ datos_curriculares.carrera_o_area|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Estatus </dt>
+      <dd class="text-black_opciones">{{ datos_curriculares.cat_estatus_estudios|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Año de conclusión </dt>
+      <dd class="text-black_opciones">{{ datos_curriculares.conclusion|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Documento obtenido </dt>
+      <dd class="text-black_opciones">{{ datos_curriculares.cat_documentos_obtenivos|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Cédula profesional </dt>
+      <dd class="text-black_opciones">{{ datos_curriculares.cedula_profesional|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Observaciones y comentarios </dt>
+      <dd class="text-black_opciones">{{ datos_curriculares.observaciones|default_if_none:"" }}</dd>
+    </dl>
+  </div>
+  <div class="col-6">
+    <p class="text-primary font-weight-bold p_opciones">Ubicación de la institución educativa</p>
+    <dl class="p_opciones"><dt> Entidad federativa </dt>
+      <dd class="text-black_opciones">{{ datos_curriculares.cat_entidades_federativas|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Municipio </dt>
+      <dd class="text-black_opciones">{{ datos_curriculares.municipio|default_if_none:"" }}</dd>
+    </dl>
+  </div>
+</div>
+{%  endfor %}
+<hr class="linea" />
+<span class="text-primary font-weight-bold">III. DATOS DEL ENCARGO ACTUAL</span>
+<div class="row mt-2">
+  <div class="col-6">
+    <dl class="p_opciones"><dt> Ente público </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.cat_entes_publicos|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nombre del empleo, cargo o comisión </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.empleo_cargo_comision|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nivel/orden de gobierno </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.cat_ordenes_gobierno|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Poder/naturaleza jurídica del ente </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.poderes|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Contrato por honorarios </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.honorarios|yesno:"Sí,No" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nivel de encargo </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.nivel_encargo|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Área de adscripción </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.area_adscripcion|default_if_none:"" }}</dd>
+    </dl>
+
+    <dl class="p_opciones"><dt> Fecha de toma de posesión/conclusión </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.posesion_inicio|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Teléfono laboral </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.telefono_laboral|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Correo electrónico laboral </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.email_laboral|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Sector/industria </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.cat_sectores_industria|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Funciones principales </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.cat_funciones_principales|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Observaciones y comentarios </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.observaciones|default_if_none:"" }}</dd>
+    </dl>
+  </div>
+  <div class="col-6">
+    <p class="text-primary font-weight-bold p_opciones">Lugar donde se ubica</p>
+    <dl class="p_opciones"><dt> Código postal </dt>
+      <dd class="text-black_opciones"> {{ declaracion.encargos_set.first.domicilios.cp|default_if_none:"" }} </dd>
+    </dl>
+    <dl class="p_opciones"><dt> País </dt>
+      <dd class="text-black_opciones"> {{ declaracion.encargos_set.first.domicilios.cat_pais|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Entidad federativa </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.domicilios.cat_entidades_federativas|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Municipio </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.domicilios.municipio|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Colonia </dt>
+      <dd class="text-black_opciones"> {{ declaracion.encargos_set.first.domicilios.colonia|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Tipo de vía </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.domicilios.cat_tipo_via|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nombre de vía </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.domicilios.nombre_via|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Número exterior </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.domicilios.num_exterior|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Número interior </dt>
+      <dd class="text-black_opciones">{{ declaracion.encargos_set.first.domicilios.num_interior|default_if_none:"" }}</dd>
+    </dl>
+
+  </div>
+</div>
+<hr class="linea" />
+<span class="text-primary font-weight-bold">IV. EXPERIENCIA LABORAL</span>
+{% for experiecia_laboral in declaracion.experiencialaboral_set.all %}
+<h6 class="h6 mb-3 text-uppercase font-weight-bold mt-2" style="font-size: 14px;">EXPERIENCIA LABORAL {{ forloop.counter }}</h6>
+<div class="row mt-2">
+  <div class="col-6">
+    <dl class="p_opciones"><dt> Ámbito </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.cat_ambitos_laborales|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nivel/orden de gobierno </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.cat_ordenes_gobierno|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Poder </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.cat_poderes|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nombre de la institución </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.nombre_institucion|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Sector/industria </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.cat_sectores_industria|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Jerarquía/rango </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.jerarquia_rango|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Cargo/puesto </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.cargo_puesto|default_if_none:"" }}</dd>
+    </dl>
+
+    <dl class="p_opciones"><dt> Fecha de ingreso </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.fecha_ingreso|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Fecha de salida </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.fecha_salida|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Funciones principales </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.funciones_principales|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Observaciones y comentarios </dt>
+      <dd class="text-black_opciones"> {{ experiecia_laboral.observaciones|default_if_none:"" }}</dd>
+    </dl>
+  </div>
+  <div class="col-6">
+    <p class="text-primary font-weight-bold p_opciones"> Dirección de la institución</p>
+    <dl class="p_opciones"><dt> Código postal </dt>
+      <dd class="text-black_opciones"> {{ experiecia_laboral.domicilios.cp|default_if_none:"" }} </dd>
+    </dl>
+    <dl class="p_opciones"><dt> País </dt>
+      <dd class="text-black_opciones"> {{ experiecia_laboral.domicilios.cat_pais|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Entidad federativa </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.domicilios.cat_entidades_federativas|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Municipio </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.domicilios.municipio|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Colonia </dt>
+      <dd class="text-black_opciones"> {{ experiecia_laboral.domicilios.colonia|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Tipo de vía </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.domicilios.cat_tipo_via|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nombre de vía </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.domicilios.nombre_via|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Número exterior </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.domicilios.num_exterior|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Número interior </dt>
+      <dd class="text-black_opciones">{{ experiecia_laboral.domicilios.num_interior|default_if_none:"" }}</dd>
+    </dl>
+  </div>
+</div>
+{% endfor %}
+<hr class="linea" />
+<span class="text-primary font-weight-bold">V. DATOS DEL CÓNYUGE O CONCUBINARIO Y/O DEPENDIENTES ECONÓMICOS</span>
+{% for conyuge_dependientes in declaracion.conyugedependientes_set.all %}
+<h6 class="h6 mb-3 text-uppercase font-weight-bold mt-2" style="font-size: 14px;">DEPENDIENTE {{ forloop.counter }}</h6>
+<h6 class="h6 mb-3 text-uppercase font-weight-bold mt-2" style="font-size: 14px;">{{ conyuge_dependientes.tipo_relacion_personal }}</h6>
+<div class="row mt-2">
+  <div class="col-6">
+    <dl class="p_opciones"><dt> Nombre(s) </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.nombres|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Primer apellido </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.apellido1|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Segundo apellido </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.apellido2|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nacionalidad(es) </dt>
+      <dd class="text-black_opciones">
+      {% for n in conyuge_dependientes.dependiente_infopersonalvar.nacionalidades.all %}
+        {{n}}
+        {% if not forloop.last %}, {% endif %}
+      {% endfor %}
+      </dd>
+    </dl>
+    <dl class="p_opciones"><dt> CURP </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.curp|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> RFC con homoclave </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.rfc|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Fecha de nacimiento </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.fecha_nacimiento|default_if_none:"" }}</dd>
+    </dl>
+
+    <dl class="p_opciones"><dt> Habita en el domicilio del declarante </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.habita_domicilio|yesno:"Sí,No" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Ocupación/profesión </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.ocupacion_girocomercial }} </dd>
+    </dl>
+    <dl class="p_opciones"><dt> Sector/industria </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.cat_sectores_industria|default_if_none:"" }} </dd>
+    </dl>
+    <dl class="p_opciones"><dt> ¿Es proveedor o contratista de gobierno? </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.proveedor_contratista|yesno:"Sí,No" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> ¿Tiene el familiar o dependiente intereses en el mismo sector/industria al que pertenece el empleo oficial del Declarante? </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.intereses_comunes|yesno:"Sí,No" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> ¿Desarrolla el familiar o dependiente actividades de cabildeo en el mismo sector/industria al que pertenece el empleo oficial del declarante? </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.cabildeo_sector|yesno:"Sí,No" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Observaciones y comentarios </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.observaciones|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> ¿El familiar o dependiente es beneficiario directo de un programa público (apoyo, subsidio, transferencia)? </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.tiene_apoyos|yesno:"Sí,No" }}</dd>
+    </dl>
+    {% if conyuge_dependientes.tiene_apoyos %}
+    <dl class="p_opciones"><dt> Nombre del programa </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.apoyos_set.first.nombre_programa }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Institución que otorga el apoyo </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.apoyos_set.first.institucion_otorgante }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Tipo de apoyo del apoyo</dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.apoyos_set.first.tipos_apoyos }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Observaciones y comentarios </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.apoyos_set.first.observaciones }}</dd>
+    </dl>
+    {% endif %}
+  </div>
+  <div class="col-6">
+    <p class="text-primary font-weight-bold p_opciones"> Dirección de la persona</p>
+    <dl class="p_opciones"><dt> Código postal </dt>
+      <dd class="text-black_opciones"> {{ conyuge_dependientes.dependiente_infopersonalvar.domicilios.cp|default_if_none:"" }} </dd>
+    </dl>
+    <dl class="p_opciones"><dt> País </dt>
+      <dd class="text-black_opciones"> {{ conyuge_dependientes.dependiente_infopersonalvar.domicilios.cat_pais|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Entidad federativa </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.domicilios.cat_entidades_federativas|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Municipio </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.domicilios.municipio|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Colonia </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.domicilios.colonia|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Tipo de vía </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.domicilios.cat_tipo_via|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Nombre de vía </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.domicilios.nombre_via|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Número exterior </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.domicilios.num_exterior|default_if_none:"" }}</dd>
+    </dl>
+    <dl class="p_opciones"><dt> Número interior </dt>
+      <dd class="text-black_opciones">{{ conyuge_dependientes.dependiente_infopersonalvar.domicilios.num_interior|default_if_none:"" }}</dd>
+    </dl>
+  </div>
+</div>
+{% endfor %}
+<hr class="linea" />
+<span class="text-primary font-weight-bold">OBSERVACIONES DE TU INFORMACIÓN PERSONAL</span>
+<dl class="p_opciones">
+  <dd class="text-black_opciones">{{ observaciones|linebreaks|default_if_none:"" }}</dd>
+</dl>

@@ -1,0 +1,199 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        {% include 'layout/sidebar.html'%}
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Activos</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Bienes intangibles</li>
+                </ol>
+            </nav>
+            <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span>
+            </h1>
+            <h2 class="h6 text-uppercase mb-3">4. Activos <span class="text-black mx-1">|</span> <span
+                    class="text-primary font-weight-light">VII. Bienes intangibles</span></h2>
+            {% if agregar %}
+              <form action="{% url 'declaracion:bienes-intangibles-agregar' folio_declaracion %}" method="post" novalidate>
+            {% elif editar_id %}
+              <form action="{% url 'declaracion:bienes-intangibles-editar' folio_declaracion editar_id %}" method="post" novalidate>
+            {% else %}
+              <form action="{% url 'declaracion:bienes-intangibles' folio_declaracion %}" method="post" novalidate>
+            {% endif %}
+                {% csrf_token %}
+                <div class="row">
+                  {% include 'layout/no_aplica.html' %}
+                </div>
+                {% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Tipo de operación" titulo_dos="Forma de adquisición" titulo_tres="Sector / industria" agregar=agregar editar_id=editar_id %}
+                <div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+                    <div class="col-12 mb-2">
+                        <label class="label-secondary">Tipo de operación<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar tipo de operación de los bienes intangibles.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/radiobuttons.html' with field_select=bienes_intangibles_form.fields.cat_tipos_operaciones field_name=bienes_intangibles_form.cat_tipos_operaciones otro_name=bienes_intangibles_form.otra_operacion col=2 col_o=6 %}
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="intangible-dueño" class="label-secondary">Propietario registrado<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nombre del propietario de los derechos del bien intangible.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field propietario_form.nombres  show_label=False%}
+
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="intangible-descripcion" class="label-secondary">Descripción<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Mencione la naturaleza y las características del bien intangible.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field bienes_intangibles_form.descripcion  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="intangible-dependencia-registro" class="label-secondary">Dependencia encargada del registro<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Ente Público o entidad en el que fue registrado el bien.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            <small class="text-help text-primary">(Si aplica)</small>
+                            {% bootstrap_field bienes_intangibles_form.otra_dependencia  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="intangible-numero-registro" class="label-secondary">Número de registro<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Folio de registro en el que fue registrado el bien.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            <small class="text-help text-primary">(Si aplica)</small>
+                            {% bootstrap_field bienes_intangibles_form.num_registro  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="label-secondary">Fecha de registro<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="dd/mm/aaaa">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <div class="form-row">
+                            {% bootstrap_field bienes_intangibles_form.fecha_registro  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="label-secondary mb-2">Sector / industria <small class="text-help text-primary">(Si aplica)</small><span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar el sector al que pertenece.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+
+                        {% include 'layout/radiobuttons.html' with field_select=bienes_intangibles_form.fields.cat_sectores_industria field_other=bienes_intangibles_form.otro_sector field_name=bienes_intangibles_form.cat_sectores_industria otro_name=bienes_intangibles_form.otro_sector %}
+
+                    </div>
+                    <div class="col-6 mt-2">
+                        <div class="form-group">
+                            <label for="intangible-precio" class="label-secondary">Precio de adquisición</label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Monto y moneda de la adquisición según la escritura.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            <small class="text-help text-primary">(Si aplica)</small><span class="text-danger text-lg font-weight-bold">*</span>
+                            {% bootstrap_field bienes_intangibles_form.precio_adquisicion     show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-6 mt-2">
+                        <div class="form-group">
+                            <label for="intangible-precio" class="label-secondary">Moneda</label>
+                            <small class="text-help text-primary">(Si aplica)</small><span class="text-danger text-lg font-weight-bold">*</span>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar tipo de moneda.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field bienes_intangibles_form.cat_monedas field_class="moneda" show_label=False%}
+
+                        </div>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <label class="label-secondary">Forma de adquisición<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar la forma o vía de la adquisición.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/radiobuttons.html' with field_select=bienes_intangibles_form.fields.cat_formas_adquisiciones field_name=bienes_intangibles_form.cat_formas_adquisiciones otro_name=bienes_intangibles_form.otra_forma col=1 col_o=4 %}
+
+
+                    </div>
+
+                    <div class="col-4">
+                        <label class="label-secondary">Fecha de vencimiento</label>
+                        <small class="text-help text-primary">(Si aplica)</small><span class="text-danger text-lg font-weight-bold">*</span>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="dd/mm/aaaa">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <div class="form-row">
+                            <div class="col form-group">
+                                {% bootstrap_field bienes_intangibles_form.fecha_vencimiento  show_label=False%}
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="intangible-precio-total" class="label-secondary">Precio total de adquisición</label>
+                            <small class="text-help text-primary">(En caso de copropiedad)</small><span class="text-danger text-lg font-weight-bold">*</span>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Monto y moneda de la adquisición según la escritura en caso de ser copropietario.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field bienes_intangibles_form.precio_total_adquisicion     show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-12 my-2">
+						{% include 'layout/persona.html' with form=copropietario_form title="Tipo de copropietario" label=" del copropietario" %}
+                         <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="rfc-prestatario" class="label-secondary mb-2 ">RFC del copropietario</label>
+                                    <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                                        <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                    </button>
+                                    <small class="text-help text-primary">(Si aplica)</small>
+                                    {% bootstrap_field copropietario_form.rfc  show_label=False  field_class='valida_rfc'  %}
+                                </div>
+                            </div>
+
+                        </div>
+					</div>
+
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="intangible-comentarios" class="label-secondary">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Detallar información respecto a bienes intangibles.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field observaciones_form.observacion show_label=False placeholder="Observaciones y comentarios" %}
+                        </div>
+                    </div>
+                </div>
+  				 <div class="row mt-6 row-form" style="{% if checked %}display: none;{% endif %}">
+                    <div class="col-9"></div>
+                    <div class="col-3 text-right">
+                        <button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-primary font-weight-semibold text-uppercase">Agregar otro bien intangible
+                        <img src="{% static 'src/img/plus.svg'%}" alt="agregar" class="svg">
+                        </button>
+                    </div>
+                </div>
+                {% include 'layout/guardar.html' %}
+                <div class="row"><div class="col-12"><br/></div></div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

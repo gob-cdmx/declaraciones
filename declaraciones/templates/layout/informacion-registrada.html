@@ -1,0 +1,50 @@
+{% load static %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% if registros %}
+  <div class="row row-form registros text-sm font-weight-bold" style="{% if checked %}display: none;{% endif %}">
+    <div class="col-md-12">
+      <h3 class="h6 text-uppercase tu-informacion">TU INFORMACIÓN REGISTRADA</h3>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th style="width: 5%">#</th>
+          <th style="width: 30%" class="text-center">{{ titulo_uno }}</th>
+          <th style="width: 30%" class="text-center">{{ titulo_dos }}</th>
+          <th style="width: 30%" class="text-center">{{ titulo_tres }}</th>
+          <th style="width: 5%" class="text-center">Editar</th>
+          <th style="width: 5%" class="text-center">Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for data in registros %}
+        {% if agregar %}
+          <tr id="borrar-registro-{{data.pk}}">
+        {% elif editar_id and editar_id|slugify == data.pk|slugify %}
+          <tr id="borrar-registro-{{data.pk}}" class="table-active registro-editar">
+        {% elif not editar_id and forloop.last %}
+          <tr id="borrar-registro-{{data.pk}}" class="table-active registro-editar">
+        {% else %}
+          <tr id="borrar-registro-{{data.pk}}">
+        {% endif %}
+            <th scope="row">{{ forloop.counter }}</th>
+            <td class="text-center">{{ data.columna_uno }}</td>
+            <td class="text-center">{{ data.columna_dos }}</td>
+            <td class="text-center">{{ data.columna_tres }}</td>
+            <td class="text-center">
+              <a class="btn btn-link btn-link-plus" href="{{ data.url_editar }}">
+                <img src="{% static 'src/img/editar.svg'%}" class="svg">
+              </a>
+            </td>
+            <td class="text-center">
+              <button class="btn btn-link btn-link-plus" type="button" name="button" onclick="dui.borrarRegistro('{{ data.url_borrar }}', '{{ data.url_todos }}', {{ data.pk }})">
+                <img src="{% static 'src/img/eliminar.svg'%}" class="svg">
+              </button>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}

@@ -1,0 +1,19 @@
+server {
+    listen                  80;
+    server_name             localhost;
+    charset                 utf-8;
+    client_max_body_size    10M;
+
+    location /static/ {
+        alias   /django_static/;
+    }
+
+    location /src/ {
+        alias   /django_static/;
+    }
+
+    location / {
+        include     /etc/nginx/uwsgi_params;
+        uwsgi_pass  declaraciones:8001;
+    }
+}

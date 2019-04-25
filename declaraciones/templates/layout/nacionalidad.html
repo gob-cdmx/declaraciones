@@ -1,0 +1,23 @@
+{% load bootstrap4 %}
+<label for="cargo-municipio" class="label-secondary">{%if label %}{{label}}{% else %}Especifique país{%endif%}{% if pais %}<span class="text-danger text-lg font-weight-bold">*</span>:{% endif %}</label>
+
+    <div class="row">
+        <div class="col-3">
+            <div class="custom-control custom-radio custom-control-inline radio-secondary">
+                <input {% if field.initial == 142 %} checked{% endif %} type="radio"  id="id-{{field.html_name}}-mx" value="mx" name="{{ field.html_name }}-mx" class="custom-control-input pais-rmx" onchange="dui.radioMx(this.value,'id_{{ field.html_name }}')">
+                <label class="custom-control-label text-rg" for="id-{{field.html_name}}-mx">México</label>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="custom-control custom-radio custom-control-inline radio-secondary">
+                <input type="radio" id="id-{{ field.html_name }}-ex" {% if field.initial and not field.initial == 142 %} checked{% endif %} value="ex" name="{{ field.html_name }}-mx" class="custom-control-input " onchange="dui.radioMx(this.value,'id_{{ field.html_name }}')">
+                <label class="custom-control-label text-rg" for="id-{{ field.html_name }}-ex">Extranjero</label>
+            </div>
+        </div>
+        <div class="col-5" >
+            <div id="id_{{ field.html_name }}_container">
+            {% bootstrap_field field   show_label=False field_class="pais"  %}
+
+            </div>
+        </div>
+    </div>

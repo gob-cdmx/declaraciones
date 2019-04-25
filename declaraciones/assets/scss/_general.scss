@@ -1,0 +1,9 @@
+:root {
+  scroll-behavior: smooth;
+  ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+::selection {
+  background-color: rgba($success-lighter, 0.5);
+}

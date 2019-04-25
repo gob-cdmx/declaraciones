@@ -1,0 +1,24 @@
+.container-offset-x {
+  @include media-breakpoint-up(lg) {
+    padding-left: 8.33333%;
+    padding-right: 8.33333%;
+  }
+}
+
+.page-container {
+  @include media-breakpoint-up(sm) {
+    display: grid;
+    grid-template: min-content 1fr min-content / 100%;
+    min-height: 100vh;
+  }
+}
+
+.row-md {
+  margin-left: -30px;
+  margin-right: -30px;
+
+  > [class^=col] {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}

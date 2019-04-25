@@ -1,0 +1,40 @@
+
+.modal-header {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    border-bottom: 1px solid #fff;
+    border-top-left-radius: .3rem;
+    border-top-right-radius: .3rem;
+}
+    
+    .modal-footer {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    padding: 1rem;
+    border-top: 1px solid #fff;
+    border-bottom-right-radius: .3rem;
+    border-bottom-left-radius: .3rem;
+}
+button.close {
+    padding: 0;
+    background-color: transparent;
+    border: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: max-content;
+}
+.cerrar-modal {
+    width: 160px; 
+    height: 20px; 
+    color: #000;
+}

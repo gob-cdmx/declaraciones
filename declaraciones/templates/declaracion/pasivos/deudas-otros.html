@@ -1,0 +1,272 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        {% include 'layout/sidebar.html'%}
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Pasivos</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Deudas</li>
+                </ol>
+            </nav>
+            <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+            <h2 class="h6 text-uppercase mb-3">5. Pasivos <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">II. Otras obligaciones</span></h2>
+            {% if agregar %}
+              <form action="{% url 'declaracion:deudas-otros-agregar' folio_declaracion %}" method="post" novalidate>
+            {% elif editar_id %}
+              <form action="{% url 'declaracion:deudas-otros-editar' folio_declaracion editar_id %}" method="post" novalidate>
+            {% else %}
+              <form action="{% url 'declaracion:deudas-otros' folio_declaracion %}" method="post" novalidate>
+            {% endif %}
+              {% csrf_token %}
+              <div class="row">
+      					{% include 'layout/no_aplica.html' %}
+      				</div>
+              {% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Tipo de operación" titulo_dos="Tipo de acreedor" titulo_tres="Tipo de adeudo" agregar=agregar editar_id=editar_id %}
+      				<div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+                  <div class="col-12 mb-2">
+                      <label class="label-secondary">Tipo de operación<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar operación a la obligación del Declarante.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                      {% include 'layout/radiobuttons.html' with field_select=deudas_otros_form.fields.cat_tipos_operaciones  field_name=deudas_otros_form.cat_tipos_operaciones otro_name=deudas_otros_form.otra_operacion col=2 col_o=4 %}
+                  </div>
+
+                    <div class="col-12 mb-2">
+                        <label class="label-secondary">Tipo de acreedor<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar prestador del adeudo que declare.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/radiobuttons.html' with field_select=deudas_otros_form.fields.cat_tipos_acreedores  field_name=deudas_otros_form.cat_tipos_acreedores otro_name=deudas_otros_form.otro_tipo_acreedor col=2 col_o=4 %}
+
+                    </div>
+                    <div class="col-12">
+                        <label class="label-secondary">Tipo de adeudo<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar adeudo que se declara.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/radiobuttons.html' with field_select=deudas_otros_form.fields.cat_tipos_adeudos  field_name=deudas_otros_form.cat_tipos_adeudos otro_name=deudas_otros_form.otro_tipo_adeudo col=2 col_o=4 %}
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="deudas-id" class="label-secondary">Número de cuenta, contrato o identicador de la deuda<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Número de cuenta o contrato del préstamo otorgado.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field deudas_otros_form.numero_cuenta placeholder="Número de cuenta, contrato o identicador de la deuda"  show_label=False%}
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="label-secondary">Nacional o extranjero<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar la nacionalidad.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/nacionalidad.html'  with field=deudas_otros_form.cat_paises pais=True %}
+                    </div>
+                    <div class="col-md-12">
+                       {% include 'layout/persona.html' with form=acreedor_infopersonalvar_form title="Tipo de persona del acreedor" label=" del acreedor" tipo=True %}
+                    </div>
+
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="deudas-rfc" class="label-secondary">RFC del acreedor</label>
+                            <small class="text-help text-primary">(Si aplica)</small>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                             {% bootstrap_field acreedor_infopersonalvar_form.rfc placeholder="RFC"   field_class='valida_rfc' show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-12 mb-2">
+                        <label class="label-secondary mb-2">Sector / industria <small class="text-help text-primary">(Si aplica)</small><span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar el sector al que pertenece.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/radiobuttons.html' with field_select=acreedor_infopersonalvar_form.fields.cat_sectores_industria  field_name=acreedor_infopersonalvar_form.cat_sectores_industria otro_name=acreedor_infopersonalvar_form.otro_sector  %}
+
+                    </div>
+                    <div class="col-12">
+                        <label class="label-secondary">Domicilio del acreedor</label>
+                    </div>
+                    {% include 'declaracion/direccion.html' with form=domicilio_form pais=True %}
+                    <div class="col-md-4">
+                        <label class="label-secondary">Fecha en la que se generó el adeudo<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="dd/mm/aaaa">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        <div class="form-row">
+                             {% bootstrap_field deudas_otros_form.fecha_generacion placeholder="Especifique"  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="deudas-monto" class="label-secondary">Monto original del adeudo<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Cantidad inicial con la que se origino el préstamo.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                             {% bootstrap_field deudas_otros_form.monto_original placeholder="Especifique"  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="deudas-moneda" class="label-secondary">Tipo de moneda<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Tipo de moneda del préstamo.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                             {% bootstrap_field deudas_otros_form.cat_monedas placeholder="Especifique" field_class="moneda" show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="deudas-interes" class="label-secondary">Tasa de interés<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Tasa de interés convenida por el Declarante y el prestador.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field deudas_otros_form.tasa_interes placeholder="Interés"  show_label=False%}
+
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="deudas-saldo" class="label-secondary">Saldo pendiente<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Monto total pendiente de cobro.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field deudas_otros_form.saldo_pendiente placeholder="Saldo"  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="deudas-abonos" class="label-secondary">Montos abonados a favor de la deuda<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Registro de pagos abonados en el periodo reportado.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field deudas_otros_form.monto_abonado placeholder="Abono"  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="deudas-plazos" class="label-secondary">Plazo del adeudo<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Se deberá indicar la cantidad de tiempo (días, meses, años) en la cual se convino el préstamo. En el caso de crédito hipotecario, indicar el plazo original del adeudo en años. Para compra de vehículos indicar el plazo del adeudo en meses. De haber efectuado una reestructuración indicar el plazo y monto en el apartado de observaciones/comentarios.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field deudas_otros_form.plazo placeholder="Plazo"  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-md-8 d-flex align-items-center">
+                        <div class="row align-items-center w-100">
+                            <div class="col-auto">
+                                <label class="label-secondary">Marcar las unidades con las que se <span class="d-block">podría medir la actividad</span></label>
+                                <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="días/meses/años">
+                                    <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                </button>
+                            </div>
+                            <div class="col">
+                                <div class="custom-control custom-checkbox my-1 checkbox-secondary">
+                                    <input type="checkbox" class="custom-control-input" id="plazo-dia" name="deudas-um_dias" value="Días">
+
+
+                                    <label class="custom-control-label text-rg" for="plazo-dia">Días</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="custom-control custom-checkbox my-1 checkbox-secondary">
+                                    <input type="checkbox" class="custom-control-input" id="plazo-mes" name="deudas-um_meses" >
+                                    <label class="custom-control-label text-rg" for="plazo-mes">Meses</label>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="custom-control custom-checkbox my-1 checkbox-secondary">
+                                    <input type="checkbox" class="custom-control-input" id="plazo-año" name="deudas-um_anual" >
+                                    <label class="custom-control-label text-rg" for="plazo-año">Años</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="label-secondary">Titular<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar titular del instrumento.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                    </div>
+                    <div class="col-12">
+                        {% include 'layout/radiobuttons.html' with field_select=deudas_otros_form.fields.cat_tipos_titulares  field_name=deudas_otros_form.cat_tipos_titulares otro_name=deudas_otros_form.otro_titular col=2 col_o=4 %}
+                    </div>
+
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="deudas-titular-porcentaje" class="label-secondary">Porcentaje de adeudo del titular<span class="text-danger text-lg font-weight-bold">*</span></label>
+                                    <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Porcentaje del adeudo original.">
+                                        <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                    </button>
+                                     {% bootstrap_field deudas_otros_form.porcentaje_adeudo  placeholder="Porcentaje"  show_label=False%}
+                                </div>
+                            </div>
+                            <div class="col flex-grow-5 d-flex align-items-center">
+                                <div class="row align-items-center w-100">
+                                    <div class="col-auto">
+                                        <label class="label-secondary">¿Se otorgó garantía?<span class="text-danger text-lg font-weight-bold">*</span></label>
+                                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Indicar Si / No">
+                                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                                        </button>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="custom-control custom-radio custom-control-inline radio-secondary">
+                                            <input type="radio" id="id_deudas_otros-garantia_1" name="deudas_otros-otros-garantia" class="custom-control-input" value="True" {% if deudas_otros_form.garantia.initial == True %} checked {% endif %}>
+                                            <label class="custom-control-label text-rg" for="id_deudas_otros-garantia_1">Sí</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="custom-control custom-radio custom-control-inline radio-secondary">
+                                            <input type="radio" id="id_deudas_otros-garantia_0" name="deudas_otros-garantia" class="custom-control-input" value="False" {% if deudas_otros_form.garantia.initial == False or deudas_form.garantia.initial == None %} checked {% endif %}>
+                                            <label class="custom-control-label text-rg" for="id_deudas_otros-garantia_0" value="False">No</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="deudas-garantia-nombre" class="label-secondary">Nombre de garantes</label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nombre o nombres completos sin abreviaturas ni signos especiales.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field deudas_otros_form.nombre_garantes  placeholder="Nombre de garantes"  show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="deudas-comentarios" class="label-secondary">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Detallar información de alguna obligación.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field observaciones_form.observacion  placeholder="Observaciones y comentarios"  show_label=False%}
+                        </div>
+                    </div>
+                </div>
+                <div class="text-right row-form" style="{% if checked %}display: none;{% endif %}">
+                    <button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-primary font-weight-semibold text-uppercase">
+                      Guardar y agregar otra obligación <img src="/static/src/img/plus.svg" alt="agregar" class="svg">
+                    </button>
+                </div>
+                {% include 'layout/guardar.html' %}
+                <div class="row"><div class="col-12"><br/></div></div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include '../../layout/footer.html' %}

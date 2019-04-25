@@ -1,0 +1,183 @@
+.Ingresa-al-sistema {
+  font-size: 20px;
+  color: #37bf00;
+}
+.Escribe-tus-datos-por-favor {
+  font-size: 14px;
+  font-weight: $font-weight-semibold;
+  color: #858489;
+}
+.label {
+  font-size: 16px;
+  font-weight: 500;
+  color: #4c4e4f;
+  margin-top: 20px;
+}
+.inputCrearCuenta {
+  width: 358px;
+  height: 38px;
+  border: solid 1px #31b700;
+  border-radius: 5px;
+}
+
+.Olvidaste-tu-contrasea {
+  font-size: 14px;
+  font-weight: bold;
+  color: #37bf00;
+}
+.An-no-tienes-cuenta-Crear-cuenta {
+  font-size: 14px;
+  font-weight: bold;
+  color: #858489;
+  margin-top: -10px;
+}
+.ciudad-Mexico{
+  font-weight: bold;
+  color: #37bf00;
+}
+.texto-Crear-Cuenta{
+	color: #37bf00;
+}
+.txt-Bienvenido{
+	font-size: 36px;
+	font-weight: 500;
+	color: #b0b0af;
+}
+.txt-Servidor{
+	font-size: 18px;
+	font-weight: 500;
+	color: #000000;
+}
+.card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 0.25rem;
+    background-color: #fff;
+}
+.num {
+  font-weight: bold;
+  font-size: 21px;
+  color: #31b700;
+}
+.pregunta{
+  font-size: 15px;
+  color: #000000;
+  font-weight: bold;
+}
+.respuesta{
+  font-size: 14px;
+  padding: 21px;
+}
+.card-body {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: .25rem;
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+.table-secondary, .table-secondary>td, .table-secondary>th {
+    background-color: #e9ecef;
+    border-bottom-style: solid;
+    border-bottom-width: 6px;
+    border-bottom-color: #fff;
+}
+.color-negro{
+  color: #000000;
+}
+.rectangle-copy {
+  width: 259px;
+  height: 259px;
+  border-radius: 8px;
+  background-color: #37bf00;
+  padding: 32px;
+}
+.notificar-cambio{
+  background-color: #37bf00;
+  border-radius: 2px;
+  height: 38px;
+  vertical-align: middle;
+  padding:10px;
+  color:white;
+}
+
+ .anuncio-portada{
+  width: 187px;
+  height: 60px;
+  font-size: 25px;
+  font-weight: 800;
+  text-align: center;
+  color: #ffffff;
+}
+.texto-chico-boton{
+  font-size: 16px;
+  font-weight: 800;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  text-align: center;
+  color: #ffffff;
+}
+.registros {
+  border-style: solid;
+  border-color: #00000030;
+  border-top-color: white;
+  border-width: thin;
+  margin: 20px 1px 20px 0px;
+  border-radius: 8px
+}
+.tu-informacion {
+  padding: 10px;
+  margin: 0px;
+  color: black;
+}
+.registros table thead {
+  color: white;
+  background-color: #5d5d5e;
+}
+.registros thead th {
+    vertical-align: bottom;
+    border-bottom: 0px solid #aaa !important;
+}
+.registros th, td {
+    vertical-align: middle !important;
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 0px solid #aaa !important;
+}
+.registros table {
+  margin-bottom: 0px;
+}
+.registro-editar {
+  color: #31b700;
+}
+
+.select2-container--default .select2-selection--multiple {
+  border: 1px solid $primary !important;
+}
+.select2-search--inline::after {
+  background-color: initial !important;
+}
+.select2-selection__choice::after{
+  background-color: initial !important;
+}
+.print-button {
+  padding-right: 50px;
+  position: fixed;
+  bottom: 20px;
+  right: 0px;
+  cursor: pointer;
+}
+.printable-area {
+  display: none;
+}
+@media print {
+  .printable-area {
+    display: block;
+  }
+  .printable {
+    width: 100% !important;
+    flex: 0 0 100%;
+    max-width: 100% !important;
+  }
+}

@@ -1,0 +1,43 @@
+.menu-property {
+  border-bottom: 2px solid $success-lighter;
+
+  .nav-link {
+    color: #727176;
+    padding: 12px;
+    transition: $transition-base;
+    @include border-top-radius(4px);
+
+    &:hover,
+    &.active {
+      background-color: #31b700;
+      color: $white;
+      text-decoration: none;
+    }
+
+    &:hover,
+    &:focus {
+      box-shadow: none;
+    }
+
+    + .nav-link {
+      margin-left: 5px;
+    }
+  }
+}
+
+.p-detalle {
+  font-size: 36px;
+}
+
+.p-nombre-usuario {
+  font-size: 18px;
+}
+
+.boton-resultados {
+  box-shadow: none;
+  color: $white;
+
+  + .boton-resultados {
+    margin-left: $spacer;
+  }
+}

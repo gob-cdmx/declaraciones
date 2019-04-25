@@ -1,0 +1,112 @@
+{% load static %}
+{% include 'layout/headertop.html' %}
+{% load bootstrap4 %}
+
+<section class="container">
+  <div class="row row-md my-7 py-7">
+    <div class="col-8 mb-5">
+      <h1 class="text-gray text-xl font-weight-medium text-uppercase line-height-md title-mobile text-mobile">Bienvenido(a) a tu cuenta<br> <span class="text-primary-light font-weight-semibold hyphen-auto">{{ user.first_name|upper}} {{ user.last_name|upper}}</span></h1>
+            {% if messages %}
+                {% for message in messages %}
+
+                        {% if message.tags == "success" %}
+                            <div class="alert alert-success alert-dismissable alert-link">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                 <strong>{{ message }}</strong>
+                            </div>
+                        {% endif %}
+                        {% if message.tags == "error" %}
+                            <div class="alert alert-danger alert-dismissable alert-link">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                 <strong>{{ message }}</strong>
+                            </div>
+                        {% endif %}
+
+
+                {% endfor %}
+            {% endif %}
+      <p class="txt-Servidor mb-5 text-mobile">Si requieres modificar alguno de tus datos por favor ponte <br>en contacto con el enlace de tu ente público.</p>
+      <div class="pl-3 border-left text-dark mb-5">
+        <p>Trabajas como <strong class="text-black text-dynamic">{{ infopersonalfija.puesto }}</strong> en <strong class="text-black text-dynamic">{{infopersonalfija.cat_ente_publico}}</strong> desde el <strong class="text-black text-dynamic">{{infopersonalfija.fecha_inicio}}</strong></p>
+        <p>Tu RFC con homoclave es <strong class="text-black text-dynamic">{{user.username|upper}}</strong></p>
+        <p>Tu telefono es <strong class="text-black text-dynamic">{{infopersonalfija.telefono}}</strong> y tu correo eléctronico es <strong class="text-black text-dynamic">{{user.email}}</strong></p>
+      </div>
+      {% if not user.is_staff and not user.is_superuser %}
+            <button class="btn btn-success-lighter text-uppercase font-weight-semibold" data-toggle="modal" data-target="#ventana-modal">Notificar cambio de ente público</button>
+      {%endif%}
+    </div>
+    <div class="col-4 mb-5">
+      <div class="d-flex justify-content-center align-items-center flex-column flex-sm-row my-sm-7 ">
+        {% if not user.is_staff and not user.is_superuser %}
+          {% if declaracion %}
+              <a href="{% url 'declaracion:informacion-general' declaracion.folio %}"
+                 class="btn btn-success-lighter btn-index">
+                  <span class="texto-chico-boton">CONCLUYE LA {{ declaracion.cat_tipos_declaracion|upper }} QUE TIENES EN CURSO</span>
+                  <img src="{% static 'src/img/declarations_2.svg' %}" alt="Termina tu declaración" class="svg">
+              </a>
+
+
+          {% else %}
+              <a href="{% url 'declaracion:declaracion' %}" class="btn btn-success-lighter btn-index">
+                  Realiza tu declaración
+                  <img src="{% static 'src/img/declarations.svg' %}" alt="Realiza tu declaración" class="svg">
+              </a>
+
+          {% endif %}
+         {% endif %}
+
+      </div>
+        {% if not user.is_staff and not user.is_superuser %}
+            {% if declaracion %}
+              <div  class="d-flex justify-content-center align-items-center flex-column flex-sm-row ">
+                  <div  id="">
+                    <h6 id="progress_title" class="text-uppercase text-md">Avance de tu declaración</h6>
+                    <div class="progress">
+                      <div class="progress-bar bg-warning progress_card" role="progressbar" style="width: {{ declaracion.avance }}%;" aria-valuenow="{{ declaracion.avance }}" aria-valuemin="0" aria-valuemax="100">{{ declaracion.avance }}%</div>
+                    </div>
+                  </div>
+                </div>
+
+            {% endif %}
+    {% endif %}
+
+        </div>
+
+  </div>
+</section>
+{% if not user.is_staff and not user.is_superuser %}
+<div class="modal fade" id="ventana-modal" tabindex="-1" role="dialog" aria-labelledby="lost-password-label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <button type="button" class="close text-base" data-dismiss="modal" aria-label="Close">CERRAR
+          <img src="{% static 'src/img/close.svg' %}" alt="Cerrar" class="svg">
+        </button>
+        <form action="{% url 'declaracion:perfil' %}" method="post" id="form_dependencia" class="mb-2">
+            {% csrf_token %}
+          <label for="dependency" class="h3 modal-title mt-5 mb-3 text-lg text-uppercase font-weight-normal text-center" id="lost-password-label">Selecciona tu ente público actual por favor</label>
+          {% bootstrap_field form.dependencia show_label=False %}
+        </form>
+        <div class="text-right mt-3">
+          <button type="button" class="btn btn-success-lighter font-weight-semibold text-uppercase" id="cambiar-ente">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Ventana modal despues de que el usuario ya escribio el RFC como homoclave  -->
+<div class="modal fade" id="modal-cambia-ente" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <button type="button" class="close text-base" data-dismiss="modal" aria-label="Close">CERRAR
+          <img src="{% static 'src/img/close.svg' %}" alt="Cerrar" class="svg">
+        </button>
+        <h3 class="text-primary text-lg text-uppercase mt-7 mb-3">¡Muchas gracias!</h3>
+        <p class="text-lg w-75 mb-7 mx-auto">Hemos enviado la notificación de tu cambio de ente público.</p>
+      </div>
+    </div>
+  </div>
+</div>
+{%endif%}
+{% include 'layout/footer.html' %}

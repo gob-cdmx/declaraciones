@@ -1,0 +1,457 @@
+{% load no_aplica %}
+      <h4 class="text-base text-uppercase text-success-lighter mb-25">I. Empresas, sociedades o asociaciones</h4>
+      {% no_aplica declaracion.folio 'empresas-sociedades-asociaciones' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for empresa in declaracion.empresassociedades_set.all %}
+      <h6 class="h6 mb-3 text-uppercase font-weight-bold mt-2" style="font-size: 14px;">Empresa {{ forloop.counter }}</h6>
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="p_opciones">
+            <dt>Nombre de la empresa, sociedad o asociación</dt>
+            <dd class="text-black_opciones">{{ empresa.empresa_infopersonalvar.razon_social }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>País</dt>
+            <dd class="text-black_opciones">{{ empresa.empresa_infopersonalvar.cat_pais.pais }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Fecha en que fue constituida la entidad</dt>
+            <dd class="text-black_opciones">{{ empresa.empresa_infopersonalvar.fecha_nacimiento|date:"Y-m-d" }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Número de registro</dt>
+            <dd class="text-black_opciones">{{ empresa.empresa_infopersonalvar.num_id_identificacion }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>RFC</dt>
+            <dd class="text-black_opciones">{{ empresa.empresa_infopersonalvar.rfc }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Rol dentro de la empresa, sociedad o asociación</dt>
+            <dd class="text-black_opciones">{{ empresa.rol_empresa }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>¿Tiene actividad económica?</dt>
+            <dd class="text-black_opciones">{{ empresa.actividad_economica|yesno:"Sí,No" }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Sector/industria</dt>
+            <dd class="text-black_opciones">{{ empresa.empresa_infopersonalvar.sectores_industrias }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Porcentaje de participación</dt>
+            <dd class="text-black_opciones">{{ empresa.porcentaje_participacion }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Observaciones</dt>
+            <dd class="text-black_opciones">{{ empresa.observaciones }}</dd>
+          </dl>
+        </div>
+        <div class="col-md-6">
+          {% include 'declaracion/admin/frm_domicilio.html' with domicilio=empresa.domicilio %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr class="my-3">
+      <h4 class="text-base text-uppercase text-success-lighter mb-25">II. Membresías</h4>
+      {% no_aplica declaracion.folio 'membresias' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for membresia in declaracion.membresias_set.all%}
+      <h5 class="text-md text-uppercase mb-4">Membresía {{ forloop.counter }}</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="p_opciones">
+            <dt>Tipo de institución</dt>
+            <dd class="text-black_opciones">{{ membresia.tipos_instituciones }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Nombre de la institución</dt>
+            <dd class="text-black_opciones">{{ membresia.nombre_institucion }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Naturaleza de la membresía</dt>
+            <dd class="text-black_opciones">{{ membresia.naturaleza }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Sector/industria</dt>
+            <dd class="text-black_opciones">{{ membresia.tipo_sector }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Puesto/rol</dt>
+            <dd class="text-black_opciones">{{ membresia.puesto_rol }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Fecha de inicio</dt>
+            <dd class="text-black_opciones">{{ membresia.fecha_inicio }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Pagado o no pagado</dt>
+            <dd class="text-black_opciones">{{ membresia.pagado|yesno:"Sí,No" }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Observaciones y comentarios</dt>
+            <dd class="text-black_opciones">{{ membresia.observaciones }}</dd>
+          </dl>
+        </div>
+        <div class="col-md-6">
+          {% include 'declaracion/admin/frm_domicilio.html' with domicilio=membresia.domicilio %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr class="my-3">
+      <h4 class="text-base text-uppercase text-success-lighter mb-25">III. Apoyos o beneficios públicos en especie o monetario</h4>
+      {% no_aplica declaracion.folio 'apoyos' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for apoyos in declaracion.infopersonalvar_set.first.apoyos_set.all %}
+      <h5 class="text-md text-uppercase mb-4">Apoyo o beneficio públicos en especie o monetario {{ forloop.counter }}</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="p_opciones">
+            <dt>Nombre del programa público</dt>
+            <dd class="text-black_opciones">{{ apoyos.nombre_programa }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Institución que otorga el apoyo</dt>
+            <dd class="text-black_opciones">{{ apoyos.institucion_otorgante }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Nivel/orden de gobierno</dt>
+            <dd class="text-black_opciones">{{ apoyos.cat_ordenes_gobierno }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Tipo de apoyo</dt>
+            <dd class="text-black_opciones">{{ apoyos.tipos_apoyos }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Valor anual del apoyo</dt>
+            <dd class="text-black_opciones">{{ apoyos.valor_anual }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Observaciones</dt>
+            <dd class="text-black_opciones">{{ apoyos.observaciones }}</dd>
+          </dl>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr class="my-3">
+      <h4 class="text-base text-uppercase text-success-lighter mb-25">IV. Representación activa</h4>
+      {% no_aplica declaracion.folio 'representacion-activa' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for representacion in activas %}
+      <h5 class="text-md text-uppercase mb-4">Representación activa {{ forloop.counter }}</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="p_opciones">
+            <dt>Tipo de representación</dt>
+            <dd class="text-black_opciones">{{ representacion.representaciones }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Nombre de la parte representada</dt>
+            <dd class="text-black_opciones">{{ representacion.info_personal_var.nombre_completo }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>CURP de la parte representada</dt>
+            <dd class="text-black_opciones">{{ representacion.info_personal_var.curp }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>RFC de la parte representada</dt>
+            <dd class="text-black_opciones">{{ representacion.info_personal_var.rfc }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Fecha de nacimiento de la parte representada</dt>
+            <dd class="text-black_opciones">{{ representacion.info_personal_var.fecha_nacimiento }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Sector/industria</dt>
+            <dd class="text-black_opciones">{{ representacion.info_personal_var.sectores_industrias }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Fecha de inicio</dt>
+            <dd class="text-black_opciones">{{ representacion.fecha_inicio }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Pagado o no pagado</dt>
+            <dd class="text-black_opciones">{{ representacion.pagado }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Observaciones y comentarios</dt>
+            <dd class="text-black_opciones">{{ representacion.observaciones }}</dd>
+          </dl>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr class="my-3">
+      <h4 class="text-base text-uppercase text-success-lighter mb-25">V. Representación pasiva</h4>
+      {% no_aplica declaracion.folio 'representacion-pasiva' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for representacion in pasivas %}
+      <h5 class="text-md text-uppercase mb-4">Representación pasiva {{ forloop.counter }}</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="p_opciones">
+            <dt>Tipo de representación</dt>
+            <dd class="text-black_opciones">{{ representacion.representaciones }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Nombre de la parte representada</dt>
+            <dd class="text-black_opciones">{{ representacion.info_personal_var.nombre_completo }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>CURP de la parte representada</dt>
+            <dd class="text-black_opciones">{{ representacion.info_personal_var.curp }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>RFC de la parte representada</dt>
+            <dd class="text-black_opciones">{{ representacion.info_personal_var.rfc }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Fecha de nacimiento de la parte representada</dt>
+            <dd class="text-black_opciones">{{ representacion.info_personal_var.fecha_nacimiento }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Sector/industria</dt>
+            <dd class="text-black_opciones">{{ representacion.info_personal_var.sectores_industrias }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Fecha de inicio</dt>
+            <dd class="text-black_opciones">{{ representacion.fecha_inicio }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Pagado o no pagado</dt>
+            <dd class="text-black_opciones">{{ representacion.pagado }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Observaciones y comentarios</dt>
+            <dd class="text-black_opciones">{{ representacion.observaciones }}</dd>
+          </dl>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr class="my-3">
+      <h4 class="text-base text-uppercase text-success-lighter mb-25">VI. Socios comerciales</h4>
+      {% no_aplica declaracion.folio 'socios-comerciales' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for socio in declaracion.socioscomerciales_set.all %}
+      <h5 class="text-md text-uppercase mb-4">Socio comercial {{ forloop.counter }}</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="p_opciones">
+            <dt>Nombre de la actividad comercial vinculante</dt>
+            <dd class="text-black_opciones">{{ socio.actividad_vinculante }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Tipo de vínculo</dt>
+            <dd class="text-black_opciones">{{ socio.tipo_vinculo }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Antigüedad del vínculo</dt>
+            <dd class="text-black_opciones">{{ socio.antiguedad_vinculo }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>RFC de la entidad vinculante</dt>
+            <dd class="text-black_opciones">{{ socio.rfc_entidad_vinculante }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Nombre, denominación o razón social del socio comercial</dt>
+            <dd class="text-black_opciones">{{ socio.socio_infopersonalvar.nombre_completo }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>CURP del socio</dt>
+            <dd class="text-black_opciones">{{ socio.socio_infopersonalvar.curp }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>RFC- Homoclave del socio</dt>
+            <dd class="text-black_opciones">{{ socio.socio_infopersonalvar.rfc }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Lugar de nacimiento del socio</dt>
+            <dd class="text-black_opciones">{{ socio.socio_infopersonalvar.cat_pais }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Fecha de nacimiento del socio</dt>
+            <dd class="text-black_opciones">{{ socio.socio_infopersonalvar.fecha_nacimiento }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Porcentaje de participación del socio</dt>
+            <dd class="text-black_opciones">{{ socio.porcentaje_participacion }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Sector/industria</dt>
+            <dd class="text-black_opciones">{{ socio.socio_infopersonalvar.sectores_industrias }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Observaciones y comentarios</dt>
+            <dd class="text-black_opciones">{{ socio.observaciones }}</dd>
+          </dl>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr class="my-3">
+      <h4 class="text-base text-uppercase text-success-lighter mb-25">VII. Clientes principales</h4>
+      {% no_aplica declaracion.folio 'clientes-principales' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for clientes in declaracion.clientesprincipales_set.all %}
+      <h5 class="text-md text-uppercase mb-4">Cliente principal {{ forloop.counter }}</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="p_opciones">
+            <dt>Nombre o naturaleza del negocio/actividad lucrativa</dt>
+            <dd class="text-black_opciones">{{ clientes.info_personal_var.nombre_negocio }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Número de registro</dt>
+            <dd class="text-black_opciones">{{ clientes.info_personal_var.num_id_identificacion }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Dueño o encargado del negocio/actividad lucrativa</dt>
+            <dd class="text-black_opciones">{{ clientes.nombre_encargado }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Nombre o denominación social del cliente principal del negocio/ actividad lucrativa</dt>
+            <dd class="text-black_opciones">{{ clientes.info_personal_var.nombre_completo }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>RFC del cliente principal</dt>
+            <dd class="text-black_opciones">{{ clientes.info_personal_var.rfc }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Sector/industria</dt>
+            <dd class="text-black_opciones">{{ clientes.info_personal_var.sectores_industrias }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Porcentaje de facturación total que representa el cliente</dt>
+            <dd class="text-black_opciones">{{ clientes.porcentaje_facturacion_cliente }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Observaciones y comentarios</dt>
+            <dd class="text-black_opciones">{{ clientes.observaciones }}</dd>
+          </dl>
+        </div>
+        <div class="col-md-6">
+          {% include 'declaracion/admin/frm_domicilio.html' with domicilio=clientes.info_personal_var.domicilios %}
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr class="my-3">
+      <h4 class="text-base text-uppercase text-success-lighter mb-25">VIII. Otras partes relacionadas</h4>
+      {% no_aplica declaracion.folio 'otras-partes-relacionadas' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for otras in declaracion.otraspartes_set.all %}
+      <h5 class="text-md text-uppercase mb-4">Parte relacionada {{ forloop.counter }}</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="p_opciones">
+            <dt>Tipo de relación con el titular</dt>
+            <dd class="text-black_opciones">{{ otras.tipos_relaciones }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Nombre o denominación social de la parte relacionada</dt>
+            <dd class="text-black_opciones">{{ otras.otraspartes_infopersonalvar.nombre_completo }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Fecha de inicio/constitución de la relación</dt>
+            <dd class="text-black_opciones">{{ otras.fecha_inicio_relacion }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Nacionalidad(es)</dt>
+            <dd class="text-black_opciones">
+            {% for n in otras.otraspartes_infopersonalvar.nacionalidades.all %}
+              {{n}}
+              {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+            </dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>CURP</dt>
+            <dd class="text-black_opciones">{{ otras.otraspartes_infopersonalvar.curp }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>RFC</dt>
+            <dd class="text-black_opciones">{{ otras.otraspartes_infopersonalvar.rfc }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Fecha de nacimiento</dt>
+            <dd class="text-black_opciones">{{ otras.otraspartes_infopersonalvar.fecha_nacimiento }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Ocupación/profesión</dt>
+            <dd class="text-black_opciones">{{ otras.otraspartes_infopersonalvar.ocupacion_girocomercial }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>¿Tiene la parte relacionada intereses en el mismo sector/industria al que pertenece el empleo oficial del declarante?</dt>
+            <dd class="text-black_opciones">{{ otras.intereses_comunes|yesno:"Sí,No" }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Sector/industria</dt>
+            <dd class="text-black_opciones">{{ otras.otraspartes_infopersonalvar.sectores_industrias }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Observaciones y comentarios</dt>
+            <dd class="text-black_opciones">{{ otras.observaciones }}</dd>
+          </dl>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr class="my-3">
+      <h4 class="text-base text-uppercase text-success-lighter mb-25">IX. Beneficios gratuitos distintos a efectivo y bienes</h4>
+      {% no_aplica declaracion.folio 'beneficios-gratuitos' as checked %}
+      {% if checked %}
+        {% include 'declaracion/admin/frm_no_aplica.html' %}
+      {% else %}
+      {% for beneficio in declaracion.beneficiosgratuitos_set.all%}
+      <h5 class="text-md text-uppercase mb-4">Beneficio gratuito {{ forloop.counter }}</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="p_opciones">
+            <dt>Tipo de beneficio</dt>
+            <dd class="text-black_opciones">{{ beneficio.tipo_beneficio }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Origen del beneficio</dt>
+            <dd class="text-black_opciones">{{ beneficio.origen_beneficio }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Sector/industria</dt>
+            <dd class="text-black_opciones">{{ beneficio.sectores_industrias }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Valor del beneficio</dt>
+            <dd class="text-black_opciones">{{ beneficio.valor_beneficio }}</dd>
+          </dl>
+          <dl class="p_opciones">
+            <dt>Observaciones y comentarios</dt>
+            <dd class="text-black_opciones">{{ beneficio.observaciones }}</dd>
+          </dl>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr class="my-3">
+      <h4 class="text-base text-uppercase text-success-lighter mb-25">Observaciones de tus intereses</h4>
+      <dl class="p_opciones">
+        <dd class="text-black_opciones">{{ observaciones|linebreaks|default_if_none:"" }}</dd>
+      </dl>

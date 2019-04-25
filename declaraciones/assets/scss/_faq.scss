@@ -1,0 +1,48 @@
+.accordion-faq {
+  counter-reset: faq;
+
+  .card {
+    margin-bottom: 3px;
+
+    .card-body {
+      border-bottom: $card-border-width solid $card-border-color;
+
+      > :only-child {
+        margin-bottom: 0;
+      }
+    }
+
+    [data-toggle=collapse] {
+      counter-increment: faq;
+      position: relative;
+
+      &::after {
+        background: url('../../static/src/img/chevron-down.svg') center / contain no-repeat;
+        content: '';
+        bottom: 0;
+        height: auto;
+        margin: auto;
+        position: absolute;
+        right: ($spacer / 2);
+        top: 0;
+        transition: $transition-base;
+        width: ($spacer * 1.1);
+      }
+
+      &::before {
+        color: $success-lighter;
+        content: counter(faq);
+        font-size: $h5-font-size;
+        margin-right: ($spacer / 2);
+      }
+
+      &:not(.collapsed)::after {
+        transform: rotate(0.5turn);
+      }
+    }
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+}

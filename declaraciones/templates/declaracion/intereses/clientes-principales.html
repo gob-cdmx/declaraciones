@@ -1,0 +1,123 @@
+{% include 'layout/headertop.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load flujo_declaracion %}
+{% load no_aplica %}
+{% no_aplica as checked %}
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        {% include 'layout/sidebar.html'%}
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb text-sm text-uppercase font-weight-extralight">
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Declaración en curso</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-reset">Intereses</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Clientes principales</li>
+                </ol>
+            </nav>
+            <h1 class="text-uppercase text-black h5">Declaración de intereses y patrimonial <span class="text-primary">{% tipo_declaracion %}</span></h1>
+            <h2 class="h6 mb-3 text-uppercase">2. INTERESES <span class="text-black mx-1">|</span> <span class="text-primary font-weight-light">VII. Clientes principales</span></h2>
+            {% if agregar %}
+              <form action="{% url 'declaracion:clientes-principales-agregar' folio_declaracion %}" method="post" novalidate>
+            {% elif editar_id %}
+              <form action="{% url 'declaracion:clientes-principales-editar' folio_declaracion editar_id %}" method="post" novalidate>
+            {% else %}
+              <form action="{% url 'declaracion:clientes-principales' folio_declaracion %}" method="post" novalidate>
+            {% endif %}
+               {% csrf_token %}
+               <div class="row">
+                 {% include 'layout/no_aplica.html' %}
+               </div>
+               {% include 'layout/informacion-registrada.html' with registros=informacion_registrada titulo_uno="Nombre o naturaleza del negocio / actividad lucrativa" titulo_dos="Número de registro" titulo_tres="Sector / industria" agregar=agregar editar_id=editar_id %}
+               <div class="row row-form" style="{% if checked %}display: none;{% endif %}">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="tipo-representacion" class="label-secondary">Nombre o naturaleza del negocio / actividad lucrativa<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Nombre o naturaleza del negocio / actividad lucrativa">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var_form.nombre_negocio  show_label=False%}
+
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="nombre-representacion" class="label-secondary">Número de registro<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Dato que identifique el negocio.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var_form.num_id_identificacion  show_label=False placeholder="Número de registro" %}
+                        </div>
+                    </div>
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label for="nombre-representacion" class="label-secondary">Dueño o encargado del negocio / actividad lucrativa<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Persona que funja como dueño.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field clientes_principales_form.nombre_encargado  show_label=False placeholder="Dueño o encargado del negocio / actividad lucrativa" %}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                       {% include 'layout/persona.html' with form=info_personal_var_form title="Tipo de persona del cliente principal del negocio o actividad lucrativa" label="  del cliente principal del negocio o actividad lucrativa" tipo=True%}
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="curp-representada" class="label-secondary">RFC del cliente principal  <small class="text-help text-primary">(si aplica)</small></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Los 10 caracteres básicos y los 3 caracteres de la homoclave.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field info_personal_var_form.rfc  field_class='valida_rfc'  show_label=False placeholder="RFC del cliente principal" %}
+
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <label class="label-secondary mb-0">Domicilio del cliente principal<span class="text-danger text-lg font-weight-bold">*</span></label>
+                    </div>
+                    {% include 'declaracion/direccion.html' with form=domicilio_form %}
+
+                    <div class="col-12">
+                        <label class="label-secondary mb-2 ml-3">Sector / industria<span class="text-danger text-lg font-weight-bold">*</span></label>
+                        <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Seleccionar el sector al que pertenece.">
+                            <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                        </button>
+                        {% include 'layout/radiobuttons.html' with field_select=info_personal_var_form.fields.cat_sectores_industria  field_name=info_personal_var_form.cat_sectores_industria otro_name=info_personal_var_form.otro_sector col=4 col_o=4%}
+                    </div>
+                    <div class="col-8 ">
+                        <div class="form-group">
+                            <label for="observaciones" class="label-secondary">Porcentaje de facturación total que representa el cliente<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Porcentaje referido.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field clientes_principales_form.porcentaje_facturacion_cliente    show_label=False%}
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="observaciones" class="label-secondary">Observaciones y comentarios<span class="text-danger text-lg font-weight-bold">*</span></label>
+                            <button type="button" class="btn btn-link p-0 btn-information" data-toggle="tooltip" tabindex="9999"  title="Detallar información de los clientes.">
+                                <img src="{% static 'src/img/info.svg'%}" alt="info" class="svg">
+                            </button>
+                            {% bootstrap_field observaciones_form.observacion show_label=False placeholder="Observaciones y comentarios" %}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="text-right row-form" style="{% if checked %}display: none;{% endif %}">
+                           <button type="submit" name="accion" value="guardar_otro" class="btn btn-link btn-link-plus text-success font-weight-semibold text-uppercase">
+                             Guardar y agregar otro cliente
+                               <img src="/static/src/img/plus.svg" alt="agregar" class="svg">
+                           </button>
+                       </div>
+
+                 {% include 'layout/guardar.html' %}
+                    <div class="row"><div class="col-12"><br/></div></div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% include 'layout/footer.html' %}

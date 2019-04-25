@@ -1,0 +1,110 @@
+{% include 'layout/headertop.html' %}
+{% load bootstrap4 %}
+{% load static %}
+{% block content %}
+    <form action="{% url 'declaracion:busqueda-declaraciones' %}" method="post" id="form">
+<section class="container">
+  <div class="row row-md ">
+    <h1 class="text-gray text-xl font-weight-medium text-uppercase mt-5 line-height-md title-mobile text-mobile"><span class="text-primary-light font-weight-semibold">DECLARACIONES</span> Búsqueda</h1>
+    <div class="d-flex justify-content-center align-items-center flex-column flex-sm-row bg-gray p-4 rounded">
+               {% csrf_token %}
+               {%  bootstrap_field form.page %}
+               <div class="row">
+                   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                       {% bootstrap_field form.folio  %}
+                   </div>
+                   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                       {% bootstrap_field form.tipo  field_class="solo_letras" %}
+                   </div>
+                   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                       <label> Ente público</label>
+                       {% bootstrap_field form.ente show_label=False %}
+                   </div>
+                   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                       {% bootstrap_field form.ano    %}
+                   </div>
+                   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+
+                       {% bootstrap_field form.estatus %}
+                   </div>
+                   <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4 ">
+                       <button class="btn btn-success-lighter text-uppercase font-weight-semibold mt-5"  type="submit">Buscar  <img src="{% static 'src/img/busqueda.svg' %}"/></button>
+                   </div>
+               </div>
+    </div>
+  </div>
+ {% if result %}
+  <div class="row row-md">
+
+        <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">ENTE PÚBLICO</th>
+                  <th scope="col">CARGO</th>
+                  <th scope="col">PLAZO DE REALIZACIÓN</th>
+                  <th scope="col">FECHA DE FIRMA</th>
+                  <th scope="col">INICIO DE CARGO</th>
+                  <th scope="col">FIN DE CARGO</th>
+                  <th scope="col">VER DECLARACIÓN</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for r in result %}
+
+              {% for p in r.encargos_set.all %}
+                <tr>
+                  <th scope="row">{{ p.cat_entes_publicos }}</th>
+                  <td>{{ p.empleo_cargo_comision }}</td>
+                  <td>{{ r.fecha_declaracion }}</td>
+                  <td>{{ r.fecha_declaracion }}</td>
+                  <td>{{ p.posesion_inicio }}</td>
+                  <td>{{ p.posesion_conclusion }}</td>
+                  <td><a href="{%  url 'declaracion:info-declaracion' r.pk %}"> <img src="{% static 'src/img/contar2.svg' %}"></a></td>
+                </tr>
+              {% endfor %}
+              {% endfor %}
+              </tbody>
+        </table>
+
+
+
+
+
+  </div>
+
+<div class="row row-md text-center">
+<div class="col-12">
+ 	<nav aria-label="Páginas" class="nav d-flex justify-content-center">
+	  <ul class="pagination flex-wrap">
+		{% if result.has_previous %}
+		<li class="page-item"><a class="page-link"  onclick="$('#id_page').val({{ result.previous_page_number }});$('#form').submit()" href="#">«</a></li>
+		 {% endif %}
+
+						{%for p in paginas%}
+							{%ifequal p result.number %}
+								<li class="page-item"><a class="page-link bg-primary text-light" href="#">{{result.number}}</a></li>
+							{%else%}
+								<li class="page-item"><a class="page-link"  onclick="$('#id_page').val({{ p }});$('#form').submit()" href="#">{{p}}</a></li>
+							{%endifequal%}
+						{%endfor%}
+		 {% if result.has_next %}
+		<li class="page-item"><a class="page-link"  onclick="$('#id_page').val({{ result.next_page_number }});$('#form').submit()" href="#">»</a></li>
+		  {%endif%}
+
+	  </ul>
+	</nav>
+</div>
+    <!--<div class="col-12 text-center">
+  	    <span>Página {{ result.number }} de {{ result.paginator.num_pages }}.</span>
+    </div>-->
+
+
+
+</div>
+
+ {% endif %}
+
+</section>
+    </form>
+{% endblock %}
+{% include 'layout/footer.html' %}
